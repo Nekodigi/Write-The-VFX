@@ -1,0 +1,31 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+Texture2D<float> Source;
+RWTexture2D<float2> Dest;
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    float width, height;
+    Source.GetDimensions(width, height);
+
+    float dxd = 2;
+    float dyd = 2;
+    if (id.x == 0 || id.x == width-1){
+        dxd = 1;
+    }
+    if (id.y == 0 || id.y == width-1){
+        dyd = 1;
+    }
+    float x1 = Source[float2(clamp(id.x-1, 0, width-1), id.y)];
+    float x2 = Source[float2(clamp(id.x+1, 0, width-1), id.y)];
+    float y1 = Source[float2(id.x, clamp(id.y-1, 0, height-1))];
+    float y2 = Source[float2(id.x, clamp(id.y+1, 0, height-1))];
+    float dx = (x2-x1)/dxd;
+    float dy = (y2-y1)/dyd;
+
+    Dest[id.xy] = float2(dx, dy);
+}
