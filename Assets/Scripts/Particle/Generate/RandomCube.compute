@@ -8,6 +8,9 @@
 #include "Assets/Scripts/Particle/Function/Boundary.hlsl"
 #include "Assets/Scripts/Utils/Time/Time.hlsl"
 
+#include "Assets/Scripts/Value/SimplexNoise.cginc"
+
+
 float3 _VelMin;
 float3 _VelMax;
 float3 _SizeMin;
@@ -19,10 +22,10 @@ SamplerState linearClampSampler;
 
 static const float PI = 3.14159265f;
 
-[numthreads(128, 1, 1)]
+[numthreads(16, 1, 1)]
 void Initialize(uint3 id : SV_DispatchThreadID)
 {
-    particle p = _ParticleBuffer[id.x];
+    Particle p = _ParticleBuffer[id.x];
     p.pos = _PosMin + random3(id.xxx)*(_PosMax-_PosMin);
     p.vel = _VelMin + random3(id.xxx+1)*(_VelMax-_VelMin);
     p.rot = random3(id.xxx+2)*2*PI;
@@ -30,20 +33,40 @@ void Initialize(uint3 id : SV_DispatchThreadID)
     p.size = _SizeMin + random3(id.xxx+4)*(_SizeMax-_SizeMin);
     p.spawnTime = _Time;
     p.lifeTime = 10;
-    p.enable = true;
     //p.col = float4(random3(id), 1);
     p.col = _ColorDist.SampleLevel(linearClampSampler, random2(id.xxx+5), 0);
     _ParticleBuffer[id.x] = p;
 }
 
-[numthreads(128, 1, 1)]
+[numthreads(16, 1, 1)]
 void Update(uint3 id : SV_DispatchThreadID)
 {
-    particle p = _ParticleBuffer[id.x];
+    Particle p = _ParticleBuffer[id.x];
     p.pos += p.vel * _DeltaTime;
     p.rot += p.rotVel * _DeltaTime;
-    float2 vec = GetFieldVec(id.x);
-    p.pos += float3(vec.x,0,vec.y);
+    if(p.disable == 2)p.disable = 0;
+
+    //float2 vec = GetFieldVec(id.x);
+
+    float dxd = 0.001;
+    float dyd = 0.001;
+    float scale = 10;
+    float x1 = simplexNoise(float3(p.pos.xz/scale+float2(-dxd, 0), _Time/100.0));
+    float x2 = simplexNoise(float3(p.pos.xz/scale+float2(dxd, 0), _Time/100.0));
+    float y1 = simplexNoise(float3(p.pos.xz/scale+float2(0, -dyd), _Time/100.0));
+    float y2 = simplexNoise(float3(p.pos.xz/scale+float2(0, dyd), _Time/100.0));
+    float dx = (x2-x1)/dxd/2;
+    float dy = (y2-y1)/dyd/2;
+    //return float2(dx, dy);
+
+    p.pos += float3(dy,0,-dx)*0.001;
+
+    if(random(id.x+_Time*12.9898) < 0.01){//disable particle and update trail  mask trail?
+        p.pos = _PosMin + random3(id.xxx)*(_PosMax-_PosMin);
+        p.disable = 2;
+    }
+
+
     _ParticleBuffer[id.x] = p;
-    LoopBoundary(id.x);
+    CollideBoundary(id.x);
 }

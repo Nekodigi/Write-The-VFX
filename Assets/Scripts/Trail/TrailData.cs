@@ -7,8 +7,10 @@ using System.Runtime.InteropServices;
 
 public class TrailData : MonoBehaviour
 {
-    float life = 0.2f;
-    float inputPerSec = 60f;
+    public float life = 1f;
+    public float inputPerSec = 60f;
+
+
 
     public TrailData(int trailNum)
     {
@@ -30,6 +32,7 @@ public class TrailData : MonoBehaviour
         public Vector3 pos;
         public float spawnTime;
         public Color color;
+        public int disable;
     }
 
     public struct Trail

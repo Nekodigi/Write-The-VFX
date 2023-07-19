@@ -14,9 +14,12 @@ public class TrailRender : MonoBehaviour
 
     public ComputeShader computeShader;
     public Material material;
+    public ParticleGen particleGen;
 
     TrailData trailData;
     Bounds bounds = new(Vector3.zero, Vector3.one * 100000f);
+
+    float deltaTimeUpdate;
 
     public struct Vertex
     {
@@ -27,17 +30,11 @@ public class TrailRender : MonoBehaviour
 
     void Start()
     {
-        this.trailData = new TrailData(20);
+        this.trailData = new TrailData(particleGen.maxCount);
         vertexPerTrail = trailData.NodeNumPerTrail * 2;
         vertexNum = trailData.TrailNum * vertexPerTrail;
         IndexNumPerTrail = (vertexPerTrail - 1) * 6;
         InitBufferIfNeed();
-        var kernel = computeShader.FindKernel("CreateVertex");
-        computeShader.SetInt("_VertexPerTrail", vertexPerTrail);
-        computeShader.SetBuffer(kernel, "_VertexBuffer", vertexBuffer);
-
-        //gpuTrailIndexDispatcher.Dispatch(createVertexCS, kernel, trailNum);
-        computeShader.Dispatch(kernel, vertexNum / 16, 1, 1);
     }
 
     protected GraphicsBuffer vertexBuffer;
@@ -105,6 +102,40 @@ public class TrailRender : MonoBehaviour
 
     protected virtual void LateUpdate()
     {
+        var toCameraDir = default(Vector3);
+        if (Camera.main.orthographic)
+        {
+            toCameraDir = -Camera.main.transform.forward;
+        }
+
+        var kernel = computeShader.FindKernel("CreateNodeTrail");
+        var kernelAppendNode = computeShader.FindKernel("AppendNode");
+        var kernelVertex = computeShader.FindKernel("CreateVertex");
+        computeShader.SetFloat("_Time", Time.time);
+        computeShader.SetFloat("_DeltaTime", Time.deltaTime);
+
+        computeShader.SetVector("_ToCameraDir", toCameraDir);
+        computeShader.SetVector("_CameraPos", Camera.main.transform.position);
+        computeShader.SetInt("_VertexPerTrail", vertexPerTrail);
+
+
+        deltaTimeUpdate += Time.deltaTime;
+        if (deltaTimeUpdate > 1 / trailData.inputPerSec)
+        {
+            computeShader.SetBuffer(kernelAppendNode, "_ParticleBuffer", particleGen.particleBuffer);
+            computeShader.SetBuffer(kernelAppendNode, "_NodeBuffer", trailData.NodeBuffer);
+            computeShader.SetBuffer(kernelAppendNode, "_TrailBuffer", trailData.TrailBuffer);
+            computeShader.SetBuffer(kernelAppendNode, "_VertexBuffer", vertexBuffer);
+
+            computeShader.Dispatch(kernelAppendNode, vertexNum / 512 / 2, 1, 1);
+            deltaTimeUpdate = 0;
+        }
+
+        computeShader.SetBuffer(kernelVertex, "_NodeBuffer", trailData.NodeBuffer);
+        computeShader.SetBuffer(kernelVertex, "_TrailBuffer", trailData.TrailBuffer);
+        computeShader.SetBuffer(kernelVertex, "_VertexBuffer", vertexBuffer);
+
+        computeShader.Dispatch(kernelVertex, vertexNum / 512 / 2, 1, 1);
 
         PropertyBlock.SetInt("_VertexPerTrail", vertexPerTrail);
         PropertyBlock.SetBuffer("_VertexBuffer", vertexBuffer);

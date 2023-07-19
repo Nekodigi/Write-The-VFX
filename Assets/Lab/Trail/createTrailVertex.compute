@@ -1,6 +1,24 @@
 // Each #kernel tells which function to compile; you can have many kernels
-#pragma kernel CreateVertex NUM_THREAD_X=16
+#pragma kernel CreateNodeTrail NUM_THREAD_X=512
+#pragma kernel AppendNode NUM_THREAD_X=512
+#pragma kernel CreateVertex NUM_THREAD_X=512
 
+#include "Assets/Scripts/Particle/Particle.hlsl"
+#include "Assets/Scripts/Utils/Time/Time.hlsl"
+
+
+struct Node
+{
+    float3 pos;
+    float spawnTime;
+	half4 color;
+    int disable;
+};
+struct Trail
+{
+    float spawnTime;
+    int totalInputNum;
+};
 struct Vertex
 {
     float3 pos;
@@ -8,19 +26,96 @@ struct Vertex
 	half4 color;
 };
 
+float3 _ToCameraDir; // for orthographic camera
+float3 _CameraPos;   // for perspective camera
 
+inline bool useToCameraDir()
+{
+	return all(_ToCameraDir == 0);
+}
+
+inline float3 calcToCameraDir(float3 pos)
+{
+	return useToCameraDir() ? normalize(_CameraPos - pos) : _ToCameraDir;
+}
+
+RWStructuredBuffer<Node> _NodeBuffer;
+RWStructuredBuffer<Trail> _TrailBuffer;
 RWStructuredBuffer<Vertex> _VertexBuffer;
 uint _VertexPerTrail;
 
+[numthreads(NUM_THREAD_X,1,1)]
+void CreateNodeTrail(uint3 id : SV_DispatchThreadID)
+{
+	uint vertexIdx = id.x;
+    Node n = _NodeBuffer[vertexIdx];
+    int NodePerTrail = _VertexPerTrail / 2;
+    int x = id.x % NodePerTrail;
+    int z = id.x / NodePerTrail;
+    n.pos = float3(x, x, z);
+    _NodeBuffer[vertexIdx] = n;
+}
+
+[numthreads(NUM_THREAD_X,1,1)]
+void AppendNode(uint3 id : SV_DispatchThreadID)
+{
+	uint nodeId = id.x;
+    int NodePerTrail = _VertexPerTrail / 2;
+    uint nodeIdInTrail = id.x % NodePerTrail ;
+    uint trailId = nodeId / NodePerTrail;
+    uint nodeStartId = trailId * NodePerTrail;
+
+    Trail trail = _TrailBuffer[trailId];
+    Particle p = _ParticleBuffer[trailId];
+    Node node = (Node)0;
+    node.pos = p.pos+p.disable;
+    node.color = p.col;
+    node.disable = p.disable;
+    node.spawnTime = _Time;
+    _NodeBuffer[nodeStartId+trail.totalInputNum] = node;
+
+    trail.totalInputNum += 1;
+    trail.totalInputNum %= NodePerTrail;
+    
+    /*if(trail.totalInputNum < NodePerTrail-1){
+        trail.totalInputNum += 1;
+    }else{
+        for(int i=NodePerTrail-2; i>=0; i--){
+            Node n = (Node)0;
+            n.pos = _NodeBuffer[nodeStartId+i+1].pos;
+            _NodeBuffer[nodeStartId+i] = n;
+        }
+    }*/
+    //_NodeBuffer[nodeStartId+trail.totalInputNum] = node;
+	_TrailBuffer[trailId] = trail;
+}
 
 [numthreads(NUM_THREAD_X,1,1)]
 void CreateVertex(uint3 id : SV_DispatchThreadID)
 {
-	uint vertexIdx = id.x;
-    Vertex v = _VertexBuffer[vertexIdx];
-    int y = id.x % 2;
-    int x = (id.x / 2) % (_VertexPerTrail / 2);
-    int z = (id.x / 2) / (_VertexPerTrail / 2);
-    v.pos = float3(x, y, z);
-    _VertexBuffer[vertexIdx] = v;
+	uint nodeId = id.x;
+    
+    int NodePerTrail = _VertexPerTrail / 2;
+    uint trailId = nodeId / NodePerTrail;
+    Trail trail = _TrailBuffer[trailId];
+    uint nodeIdInTrail = (NodePerTrail+id.x-trail.totalInputNum) % NodePerTrail ;
+    //uint nodeIdInTrail = NodePerTrail+id.x % NodePerTrail ;
+    
+   
+    Vertex v = _VertexBuffer[nodeId*2];
+    Node n = _NodeBuffer[nodeId];
+    Node next = _NodeBuffer[nodeId+1];
+    float3 dir = float3(0, 0, 0);
+    if(nodeIdInTrail != NodePerTrail - 1 && n.disable == 0 && next.disable == 0){//last particle=> disable
+    //if(nodeIdInTrail < 100){
+        dir = _NodeBuffer[nodeId+1].pos - n.pos;
+     //}
+    }
+    v.pos = n.pos;
+    _VertexBuffer[nodeId*2] = v;
+
+    float3 toCameraDir = calcToCameraDir(n.pos);
+	float3 right = normalize(cross(dir, toCameraDir)) * 0.01 * 0.5f;
+    v.pos = n.pos+right;
+    _VertexBuffer[nodeId*2+1] = v;
 }

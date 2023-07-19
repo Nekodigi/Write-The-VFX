@@ -19,7 +19,7 @@ public class ParticleGen : MonoBehaviour
         public Vector4 customData;
         public float lifeTime;
         public float spawnTime;
-        public int enable;
+        public int disable;
     }
 
     [GradientUsage(true)] public Gradient gradient;
@@ -35,13 +35,13 @@ public class ParticleGen : MonoBehaviour
     public Mesh mesh;
     public Material material;
 
-    ComputeBuffer particleBuffer;
+    public ComputeBuffer particleBuffer;
     Particle[] particles;
 
     int kernelIndexInitialize;
     int kernelIndexUpdate;
 
-    const int THREAD_NUM = 128;
+    const int THREAD_NUM = 16;
 
     public RenderTexture field;
 
@@ -81,6 +81,7 @@ public class ParticleGen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        computeShader.SetFloat("_Time", Time.time);
         computeShader.SetFloat("_DeltaTime", Time.deltaTime);
         computeShader.SetTexture(kernelIndexUpdate, "_SourceVec", field);
 

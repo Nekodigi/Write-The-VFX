@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using UnityEngine.Pool;
 using UnityEngine.XR;
 
-public class Trail : MonoBehaviour
+public class TrailGPU : MonoBehaviour
 {
     public int trailNum;
     public int vertexPerTrail;
@@ -19,13 +19,26 @@ public class Trail : MonoBehaviour
 
     public ComputeShader createVertexCS;
 
+    protected GraphicsBuffer nodeBuffer;
+    protected GraphicsBuffer trailBuffer;
 
     protected GraphicsBuffer vertexBuffer;
     protected GraphicsBuffer indexBuffer;
     protected GraphicsBuffer argsBuffer;
 
     public MaterialPropertyBlock PropertyBlock;
+    public struct Node
+    {
+        public Vector3 pos;
+        public float spawnTime;
+        public Color color;
+    }
 
+    public struct Trail
+    {
+        public float spawnTime;
+        public int totalInputNum;
+    }
 
     public struct Vertex //NODE AND VERTEX ARE DIFFERENT!
     {
@@ -43,11 +56,8 @@ public class Trail : MonoBehaviour
         vertexNum = trailNum * vertexPerTrail;
         IndexNumPerTrail = (vertexPerTrail - 1) * 6;
         InitBufferIfNeed();
-        var kernel = createVertexCS.FindKernel("CreateVertex");
-        createVertexCS.SetInt("_VertexPerTrail", vertexPerTrail);
-        createVertexCS.SetBuffer(kernel, "_VertexBuffer", vertexBuffer);
 
-        createVertexCS.Dispatch(kernel, vertexNum / 16, 1, 1);
+        
     }
 
     protected void InitBufferIfNeed()
@@ -59,6 +69,10 @@ public class Trail : MonoBehaviour
         PropertyBlock = new();
         vertexBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, vertexNum, Marshal.SizeOf<Vertex>()); // 1 node to 2 vtx(left,right)
         vertexBuffer.Fill(default(Vertex));
+        trailBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, trailNum, Marshal.SizeOf<Trail>());
+        trailBuffer.Fill(default(Trail));
+        nodeBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, vertexNum/2, Marshal.SizeOf<Node>());
+        nodeBuffer.Fill(default(Node));
 
         indexBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Index | GraphicsBuffer.Target.Structured, IndexNumPerTrail, Marshal.SizeOf<uint>()); // 1 node to 2 triangles(6vertexs)
 #if UNITY_2022_2_OR_NEWER
@@ -90,7 +104,18 @@ public class Trail : MonoBehaviour
         argsBuffer = new GraphicsBuffer(GraphicsBuffer.Target.IndirectArguments, 5, sizeof(uint));
         ResetArgsBuffer();
     }
+
     protected bool IsSinglePassInstancedRendering => XRSettings.enabled && XRSettings.stereoRenderingMode == XRSettings.StereoRenderingMode.SinglePassInstanced;
+
+    protected virtual void ReleaseBuffer()
+    {
+        trailBuffer?.Release();
+        nodeBuffer?.Release();
+    }
+    public void Dispose()
+    {
+        ReleaseBuffer();
+    }
 
     public void ResetArgsBuffer()
     {
@@ -110,15 +135,34 @@ public class Trail : MonoBehaviour
     // Update is called once per frame
     protected virtual void LateUpdate()
     {
-        //Debug.Log(PropertyBlock);
-        //Debug.Log();
-        //PropertyBlock = new MaterialPropertyBlock();
-        //Debug.Log(vertexBuffer.count);
-        /*matVert.SetInt("_VertexPerTrail", vertexPerTrail);
-        matVert.SetBuffer("_VertexBuffer", vertexBuffer);
-        Graphics.DrawMeshInstancedProcedural(mesh, 0, matVert, new Bounds(Vector3.zero, Vector3.one * 100), vertexNum);
-        */
-        
+        var toCameraDir = default(Vector3);
+        if (Camera.main.orthographic)
+        {
+            toCameraDir = -Camera.main.transform.forward;
+        }
+
+
+        createVertexCS.SetFloat("_Time", Time.time);
+
+        createVertexCS.SetVector("_ToCameraDir", toCameraDir);
+        createVertexCS.SetVector("_CameraPos", Camera.main.transform.position);
+
+        var kernel = createVertexCS.FindKernel("CreateNodeTrail");
+        var kernelVertex = createVertexCS.FindKernel("CreateVertex");
+        createVertexCS.SetInt("_VertexPerTrail", vertexPerTrail);
+        createVertexCS.SetBuffer(kernel, "_NodeBuffer", nodeBuffer);
+        createVertexCS.SetBuffer(kernel, "_TrailBuffer", trailBuffer);
+        createVertexCS.SetBuffer(kernel, "_VertexBuffer", vertexBuffer);
+
+        createVertexCS.Dispatch(kernel, vertexNum / 16 / 2, 1, 1);
+
+        createVertexCS.SetBuffer(kernelVertex, "_NodeBuffer", nodeBuffer);
+        createVertexCS.SetBuffer(kernelVertex, "_TrailBuffer", trailBuffer);
+        createVertexCS.SetBuffer(kernelVertex, "_VertexBuffer", vertexBuffer);
+
+        createVertexCS.Dispatch(kernelVertex, vertexNum / 16 / 2, 1, 1);
+
+
         PropertyBlock.SetInt("_VertexPerTrail", vertexPerTrail);
         PropertyBlock.SetBuffer("_VertexBuffer", vertexBuffer);
         var renderParams = new RenderParams(material)

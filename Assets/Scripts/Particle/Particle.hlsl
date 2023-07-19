@@ -1,7 +1,7 @@
 #ifndef PARTICLE
 #define PARTICLE
 
-struct particle
+struct Particle
 {
     float3 pos;
     float3 vel;
@@ -12,13 +12,13 @@ struct particle
     float4 customData;
     float lifeTime;
     float spawnTime;
-    int enable;
+    int disable;//0=enable, 1 disable 2=warped
 };
 
 #ifndef PARTICLE_R_ONLY
-RWStructuredBuffer<particle>  _ParticleBuffer;
+RWStructuredBuffer<Particle>  _ParticleBuffer;
 #else
-StructuredBuffer<particle>  _ParticleBuffer;
+StructuredBuffer<Particle>  _ParticleBuffer;
 #endif
 
 float3 _PosMax;

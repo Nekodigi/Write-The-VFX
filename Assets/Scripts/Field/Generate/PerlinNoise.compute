@@ -11,7 +11,7 @@ float _Time;
 [numthreads(8,8,1)]
 void PerlinNoise (uint3 id : SV_DispatchThreadID)
 {
-    _Dest[id.xy] = perlinNoise(float3(id.xy/100.0, _Time/10.0))*0.5+0.5;
+    _Dest[id.xy] = perlinNoise(float3(id.xy/200.0, _Time/1000.0))*0.5+0.5;
 }
 
 [numthreads(8,8,1)]
@@ -19,4 +19,5 @@ void CurlNoise (uint3 id : SV_DispatchThreadID)
 {
     float2 grad = Grad(id.xy);
     _DestVec[id.xy] = float2(grad.y, -grad.x);
+
 }

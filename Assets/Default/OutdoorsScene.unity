@@ -358,7 +358,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &360546235
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -526,6 +526,7 @@ MonoBehaviour:
   vertexPerTrail: 16
   computeShader: {fileID: 7200000, guid: b57cee17282b30544bc7be4a9fa4dc4e, type: 3}
   material: {fileID: 2100000, guid: db803c5c210dc8a46a5cc0980d78eea0, type: 2}
+  particleGen: {fileID: 1153580334}
 --- !u!4 &449026348
 Transform:
   m_ObjectHideFlags: 0
@@ -711,14 +712,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823688464}
-  m_LocalRotation: {x: -0.051330928, y: 0.38209227, z: 0.021261966, w: 0.92245245}
-  m_LocalPosition: {x: -10, y: 2.61, z: -10}
+  m_LocalRotation: {x: 0.31961918, y: 0.35905337, z: -0.13239059, w: 0.8668316}
+  m_LocalPosition: {x: -5, y: 2.61, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -6.37, y: 45, z: 0}
+  m_LocalEulerAnglesHint: {x: 40.48, y: 45, z: 0}
 --- !u!114 &1823688468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -912,7 +913,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1846527328}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

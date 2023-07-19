@@ -59,6 +59,22 @@ float taylorInvSqrt(float r)
 	return 1.79284291400159 - 0.85373472095314 * r;
 }
 
+// 4次元の勾配ベクトル
+float4 grad4(float j, float4 ip)
+{
+	const float4 ones = float4(1.0, 1.0, 1.0, -1.0);
+	float4 p, s;
+	p.xyz = floor(frac((float3)j * ip.xyz) * 7.0) * ip.z - 1.0;
+	p.w = 1.5 - dot(abs(p.xyz), ones.xyz);
+	// lessthan GLSL -> HLSL
+	// https://gist.github.com/fadookie/25adf86ae7e2753d717c
+	s = float4(1.0 - step((float4)0.0, p));
+	p.xyz = p.xyz + (s.xyz * 2.0 - 1.0) * s.www;
+	return p;
+}
+
+// (sqrt(5.0) - 1.0) / 4.0 = F4
+#define F4 0.309016994374947451
 
 // Simplex Noise 2D
 float _simplexNoise(float2 v)

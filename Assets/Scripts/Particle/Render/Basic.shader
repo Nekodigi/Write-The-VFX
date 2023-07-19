@@ -45,7 +45,7 @@ Shader "Particle/Basic"
 
             v2f vert (appdata v, uint instanceID : SV_InstanceID)
             {
-                particle p = _ParticleBuffer[instanceID];
+                Particle p = _ParticleBuffer[instanceID];
 
                 v2f o;
 
