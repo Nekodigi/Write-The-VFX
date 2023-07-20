@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 
 
-public class TrailData : MonoBehaviour
+public class TrailData
 {
     public float life = 1f;
     public float inputPerSec = 60f;
@@ -27,13 +27,7 @@ public class TrailData : MonoBehaviour
 
     public bool IsInitialized => TrailBuffer != null;
 
-    public struct Node
-    {
-        public Vector3 pos;
-        public float spawnTime;
-        public Color color;
-        public int disable;
-    }
+
 
     public struct Trail
     {
@@ -63,8 +57,8 @@ public class TrailData : MonoBehaviour
         TrailBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, TrailNum, Marshal.SizeOf<Trail>());
         TrailBuffer.Fill(default(Trail));
 
-        NodeBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, NodeNumTotal, Marshal.SizeOf<Node>());
-        NodeBuffer.Fill(default(Node));
+        NodeBuffer = new GraphicsBuffer(GraphicsBuffer.Target.Structured, NodeNumTotal, Marshal.SizeOf<Particle>());
+        NodeBuffer.Fill(default(Particle));
     }
 
     protected virtual void ReleaseBuffer()
