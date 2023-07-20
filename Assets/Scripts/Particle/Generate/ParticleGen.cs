@@ -8,20 +8,6 @@ public class ParticleGen : MonoBehaviour
 {
     public int maxCount = 10000;
 
-    public struct Particle
-    {
-        public Vector3 pos;
-        public Vector3 vel;
-        public Vector3 rot;
-        public Vector3 rotVel;
-        public Vector3 size;//customData0, customData1
-        public Color col;
-        public Vector4 customData;
-        public float lifeTime;
-        public float spawnTime;
-        public int disable;
-    }
-
     [GradientUsage(true)] public Gradient gradient;
     public Vector3 posMin;
     public Vector3 posMax;
