@@ -33,9 +33,8 @@ public class TrailData
     {
         public float spawnTime;
         public int totalInputNum;
+        public float life;
     }
-
-    
 
     public void Init()
     {

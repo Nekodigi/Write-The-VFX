@@ -5,12 +5,21 @@
 struct Trail
 {
     float spawnTime;
+    float life;
     int totalInputNum;
 };
 
 RWStructuredBuffer<Particle> _NodeBuffer;
 RWStructuredBuffer<Trail> _TrailBuffer;
 uint _NodePerTrail;
+float _TrailWidth;
+
+Texture2D<float4> _WidthOverLifetime;
+Texture2D<float4> _ColorOverLifetime;
+Texture2D<float4> _CustomDataOverLifetime;
+#ifndef CLAMPSAMPLE
+SamplerState linearClampSampler;
+#endif
 
 //*NOTE OFFSET ARE ALREADY APPLIED
 int getTrailId(int nodeId){
@@ -46,6 +55,24 @@ float3 getNodeDir(int trailId, int nodeId){//disable if particle warped
         dir = next.pos - current.pos;
     }
     return dir;
+}
+
+float getRate(Trail trail, Particle node){
+    float age = _Time - node.spawnTime;
+    return age/trail.life;
+}
+
+float getWidth(float rate){
+    float mult = _WidthOverLifetime.SampleLevel(linearClampSampler, float2(rate, 0), 0);
+    return mult * _TrailWidth;
+}
+float4 getColor(float rate){
+    float4 col = _ColorOverLifetime.SampleLevel(linearClampSampler, float2(rate, 0), 0);
+    return col;
+}
+float4 getCustomData(float rate){
+    float4 customData = _CustomDataOverLifetime.SampleLevel(linearClampSampler, float2(rate, 0), 0);
+    return customData;
 }
 
 

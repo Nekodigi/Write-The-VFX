@@ -9,12 +9,19 @@
 #include "Assets/Scripts/Utils/Camera/Camera.hlsl"
 #include "Assets/Scripts/Utils/Vertex/Vertex.hlsl"
 
+float _Life;
+
 [numthreads(NUM_THREAD_X,1,1)]
 void InitNode(uint3 id : SV_DispatchThreadID)
 {
     Particle node = (Particle)0;
     node.disable = 1;
     _NodeBuffer[id.x] = node;
+    //too much repeat. remove later
+    Trail trail = (Trail)0;
+    trail.spawnTime = _Time;
+    trail.life = _Life;
+    _TrailBuffer[id.x/_NodePerTrail] = trail;
 }
 
 [numthreads(NUM_THREAD_X,1,1)]
@@ -45,10 +52,14 @@ void CreateVertex(uint3 id : SV_DispatchThreadID)
     int vertexId = getVertexId(trailId, nodeId);
     Vertex v = _VertexBuffer[vertexId];
     Particle node = getNode(trailId, nodeId);
+    Trail trail = _TrailBuffer[trailId];
+    float rate = getRate(trail, node);
 
     float3 toCameraDir = calcToCameraDir(node.pos);
-	float3 right = rightFromCamera(getNodeDir(trailId, nodeId), 0.01, toCameraDir);
+	float3 right = rightFromCamera(getNodeDir(trailId, nodeId), getWidth(rate), toCameraDir);
 
+    v.col = getColor(rate);
+    v.customData = getCustomData(rate);
     v.pos = node.pos-right;
     _VertexBuffer[vertexId] = v;
     v.pos = node.pos+right;
