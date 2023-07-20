@@ -9,7 +9,7 @@ public class TrailGen : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        trailData = new TrailData(particleGen.maxCount);
+        //trailData = new TrailData(particleGen.maxCount);
 
     }
 

@@ -10,10 +10,10 @@ public class TrailData
     public float life = 1f;
     public float inputPerSec = 60f;
 
-
-
-    public TrailData(int trailNum)
+    public TrailData(int trailNum, float life, float inputPerSec)
     {
+        this.life = life;
+        this.inputPerSec = inputPerSec;
         this.TrailNum = trailNum;
         Init();
     }
@@ -33,9 +33,8 @@ public class TrailData
     {
         public float spawnTime;
         public int totalInputNum;
+        public float life;
     }
-
-    
 
     public void Init()
     {
@@ -65,11 +64,5 @@ public class TrailData
     {
         TrailBuffer?.Release();
         NodeBuffer?.Release();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

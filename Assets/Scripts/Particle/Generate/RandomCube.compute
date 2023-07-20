@@ -7,7 +7,6 @@
 #include "Assets/Scripts/Particle/Function/GetFieldValue.hlsl"
 #include "Assets/Scripts/Particle/Function/Boundary.hlsl"
 #include "Assets/Scripts/Utils/Time/Time.hlsl"
-
 #include "Assets/Scripts/Value/SimplexNoise.cginc"
 
 
@@ -16,7 +15,7 @@ float3 _VelMax;
 float3 _SizeMin;
 float3 _SizeMax;
 Texture2D<float4> _ColorDist;
-#ifndef FIELD
+#ifndef CLAMPSAMPLE
 SamplerState linearClampSampler;
 #endif
 
@@ -26,7 +25,8 @@ static const float PI = 3.14159265f;
 void Initialize(uint3 id : SV_DispatchThreadID)
 {
     Particle p = _ParticleBuffer[id.x];
-    p.pos = _PosMin + random3(id.xxx)*(_PosMax-_PosMin);
+    //p.pos = _PosMin + random3(id.xxx)*(_PosMax-_PosMin);
+    p.pos = (_PosMin+_PosMax)/2 + random3(id.xxx)-float3(-0.5, -0.5, -0.5)*(_PosMax-_PosMin)*0.1;
     p.vel = _VelMin + random3(id.xxx+1)*(_VelMax-_VelMin);
     p.rot = random3(id.xxx+2)*2*PI;
     p.rotVel = random3(id.xxx+3);
@@ -59,11 +59,11 @@ void Update(uint3 id : SV_DispatchThreadID)
     float dy = (y2-y1)/dyd/2;
     //return float2(dx, dy);
 
-    p.pos += float3(dy,0,-dx)*0.001;
+    p.pos += float3(dy,0,-dx)*0.5*_DeltaTime;
 
-    if(random(id.x+_Time*12.9898) < 0.01){//disable particle and update trail  mask trail?
-        p.pos = _PosMin + random3(id.xxx)*(_PosMax-_PosMin);
-        p.disable = 2;
+    if(random(id.x+_Time*12.9898) < 0.001){//disable particle and update trail  mask trail?
+    //    p.pos = _PosMin + random3(id.xxx)*(_PosMax-_PosMin);
+    //    p.disable = 2;
     }
 
 

@@ -21,15 +21,10 @@ SubShader {
 
 		#include "UnityCG.cginc"
 
-		struct Vertex
-		{
-			float3 pos;
-			float2 uv;
-			half4 color;
-		};
+		#define VERTEX_R_ONLY
+		#include "Assets/Scripts/Utils/Vertex/Vertex.hlsl"
 
 		uint _VertexPerTrail;
-		StructuredBuffer<Vertex> _VertexBuffer;
 
 
 		Vertex GetVertex(uint vertexIdx, uint trailIdx)
@@ -53,8 +48,8 @@ SubShader {
 			Out.uv = vtx.uv;
 			//Out.pos = float4(vId+iId, iId, 0);
 			//Out.uv = float2(0, 0);
-			Out.col = float4(1,1,1,1);
-			//Out.col = vtx.color;
+			//Out.col = float4(1,1,1,1);
+			Out.col = vtx.col;
 
 			return Out;
 		}

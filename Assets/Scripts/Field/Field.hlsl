@@ -1,5 +1,6 @@
 #ifndef FIELD
 #define FIELD
+#define CLAMPSAMPLE
 
 Texture2D<float> _Source;
 Texture2D<float2> _SourceVec;

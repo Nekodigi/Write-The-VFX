@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 262.38358, g: 325.10843, b: 430.30963, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -523,7 +523,106 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a68b6755924ea494987423ab3de66d75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vertexPerTrail: 0
+  life: 1
+  inputPerSec: 60
+  width: 0.01
+  widthOverLifetime:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 8.786546
+      outSlope: 8.786546
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.19999994
+    - serializedVersion: 3
+      time: 0.06040272
+      value: 0.58051246
+      inSlope: 6.0821037
+      outSlope: 6.0821037
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.20295818
+      value: 0.94452876
+      inSlope: 0.86251724
+      outSlope: 0.86251724
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.0014535785
+      inSlope: -0.50532913
+      outSlope: -0.50532913
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.2737643
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  colorOverLifetime:
+    serializedVersion: 2
+    key0: {r: 1.1353015, g: 1.1353015, b: 1.1353015, a: 0.38039216}
+    key1: {r: 1.6055589, g: 0.9838323, b: 0, a: 1}
+    key2: {r: 0.74901956, g: 0.1460352, b: 0.1460352, a: 1}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 13685
+    ctime2: 33924
+    ctime3: 65535
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 3084
+    atime2: 45682
+    atime3: 65535
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 4
+    m_NumAlphaKeys: 4
+  customDataXOverLifetime:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  customDataYOverLifetime:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  customDataZOverLifetime:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  customDataWOverLifetime:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  minimalDistance: 0.01
   computeShader: {fileID: 7200000, guid: 3f14267416fd36e4bb000643d1567db3, type: 3}
   material: {fileID: 2100000, guid: db803c5c210dc8a46a5cc0980d78eea0, type: 2}
   particleGen: {fileID: 1153580334}

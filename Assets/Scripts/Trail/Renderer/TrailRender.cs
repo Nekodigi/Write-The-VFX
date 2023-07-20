@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿//based on https://github.com/fuqunaga/GpuTrail
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Collections;
@@ -8,7 +9,25 @@ using UnityEngine.XR;
 
 public class TrailRender : MonoBehaviour
 {
-    public int vertexPerTrail;
+    public float life = 1f;
+    public float inputPerSec = 60f;
+    public float width = 0.01f;
+    public AnimationCurve widthOverLifetime;
+    [GradientUsage(true)] public Gradient colorOverLifetime;
+    public AnimationCurve customDataXOverLifetime;
+    public AnimationCurve customDataYOverLifetime;
+    public AnimationCurve customDataZOverLifetime;
+    public AnimationCurve customDataWOverLifetime;
+    public float minimalDistance = 0.01f;
+
+    RenderTexture bakedWidthOverLifetime;
+    RenderTexture bakedColorOverLifetime;
+    RenderTexture bakedCustomDataOverLifetime;
+
+    int bakeRes = 128;
+
+
+    int vertexPerTrail;
     int vertexNum;//vertex and nodes are different!
     int IndexNumPerTrail;//index used for creating surface
 
@@ -24,20 +43,27 @@ public class TrailRender : MonoBehaviour
     public struct Vertex
     {
         public Vector3 pos;
+        public Vector4 customData;
         public Vector2 uv;
         public Color col;
     }
 
     void Start()
     {
-        this.trailData = new TrailData(particleGen.maxCount);
+        this.trailData = new TrailData(particleGen.maxCount, life, inputPerSec);
         vertexPerTrail = trailData.NodeNumPerTrail * 2;
         vertexNum = trailData.TrailNum * vertexPerTrail;
         IndexNumPerTrail = (vertexPerTrail - 1) * 6;
         InitBufferIfNeed();
 
         var kernelInitNode = computeShader.FindKernel("InitNode");
+        computeShader.SetFloat("_Time", 0);
+        computeShader.SetFloat("_Life", life);
+        computeShader.SetInt("_NodePerTrail", trailData.NodeNumPerTrail);
+
+
         computeShader.SetBuffer(kernelInitNode, "_NodeBuffer", trailData.NodeBuffer);
+        computeShader.SetBuffer(kernelInitNode, "_TrailBuffer", trailData.TrailBuffer);
         computeShader.Dispatch(kernelInitNode, vertexNum / 512 / 2, 1, 1);
     }
 
@@ -104,8 +130,26 @@ public class TrailRender : MonoBehaviour
         argsBuffer.SetData(argsList);
     }
 
+    void Bake()
+    {
+        bakedWidthOverLifetime = MyCurve.Bake(widthOverLifetime, bakeRes);
+        bakedColorOverLifetime = MyGradient.Bake(colorOverLifetime, bakeRes);
+        bakedCustomDataOverLifetime = MyCurve.Bake(customDataXOverLifetime, customDataYOverLifetime, customDataZOverLifetime, customDataWOverLifetime, bakeRes);
+    }
+
+    public void Dispose()
+    {
+        ReleaseBuffer();
+    }
+
+    protected virtual void ReleaseBuffer()
+    {
+        vertexBuffer?.Release();
+    }
+
     protected virtual void LateUpdate()
     {
+        deltaTimeUpdate += Time.deltaTime;
         var toCameraDir = default(Vector3);
         if (Camera.main.orthographic)
         {
@@ -116,13 +160,14 @@ public class TrailRender : MonoBehaviour
         var kernelVertex = computeShader.FindKernel("CreateVertex");
         computeShader.SetFloat("_Time", Time.time);
         computeShader.SetFloat("_DeltaTime", Time.deltaTime);
+        computeShader.SetFloat("_TrailWidth", width);
 
         computeShader.SetVector("_ToCameraDir", toCameraDir);
         computeShader.SetVector("_CameraPos", Camera.main.transform.position);
         computeShader.SetInt("_NodePerTrail", trailData.NodeNumPerTrail);
 
+        Bake();
 
-        deltaTimeUpdate += Time.deltaTime;
         if (deltaTimeUpdate > 1 / trailData.inputPerSec)
         {
             computeShader.SetBuffer(kernelAppendNode, "_ParticleBuffer", particleGen.particleBuffer);
@@ -132,15 +177,18 @@ public class TrailRender : MonoBehaviour
 
             computeShader.Dispatch(kernelAppendNode, vertexNum / 512 / 2, 1, 1);
             deltaTimeUpdate = 0;
+
+            computeShader.SetBuffer(kernelVertex, "_NodeBuffer", trailData.NodeBuffer);
+            computeShader.SetBuffer(kernelVertex, "_TrailBuffer", trailData.TrailBuffer);
+            computeShader.SetBuffer(kernelVertex, "_VertexBuffer", vertexBuffer);
+            computeShader.SetTexture(kernelVertex, "_WidthOverLifetime", bakedWidthOverLifetime);
+            computeShader.SetTexture(kernelVertex, "_ColorOverLifetime", bakedColorOverLifetime);
+            computeShader.SetTexture(kernelVertex, "_CustomDataOverLifetime", bakedCustomDataOverLifetime);
+
+            computeShader.Dispatch(kernelVertex, vertexNum / 512 / 2, 1, 1);
         }
 
-        computeShader.SetBuffer(kernelVertex, "_NodeBuffer", trailData.NodeBuffer);
-        computeShader.SetBuffer(kernelVertex, "_TrailBuffer", trailData.TrailBuffer);
-        computeShader.SetBuffer(kernelVertex, "_VertexBuffer", vertexBuffer);
-
-        computeShader.Dispatch(kernelVertex, vertexNum / 512 / 2, 1, 1);
-
-        PropertyBlock.SetInt("_VertexPerTrail", trailData.NodeNumPerTrail*2);
+        PropertyBlock.SetInt("_VertexPerTrail", vertexPerTrail);
         PropertyBlock.SetBuffer("_VertexBuffer", vertexBuffer);
         var renderParams = new RenderParams(material)
         {
