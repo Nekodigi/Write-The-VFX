@@ -10,10 +10,10 @@ public class TrailData : MonoBehaviour
     public float life = 1f;
     public float inputPerSec = 60f;
 
-
-
-    public TrailData(int trailNum)
+    public TrailData(int trailNum, float life, float inputPerSec)
     {
+        this.life = life;
+        this.inputPerSec = inputPerSec;
         this.TrailNum = trailNum;
         Init();
     }
@@ -71,11 +71,5 @@ public class TrailData : MonoBehaviour
     {
         TrailBuffer?.Release();
         NodeBuffer?.Release();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

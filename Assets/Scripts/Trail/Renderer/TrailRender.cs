@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿//based on https://github.com/fuqunaga/GpuTrail
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Collections;
@@ -8,7 +9,18 @@ using UnityEngine.XR;
 
 public class TrailRender : MonoBehaviour
 {
-    public int vertexPerTrail;
+    public float life = 1f;
+    public float inputPerSec = 60f;
+    public float width = 0.01f;
+    public AnimationCurve widthOverLifetime;
+    public Gradient colorOverLifetime;
+    public AnimationCurve customDataXOverLifetime;
+    public AnimationCurve customDataYOverLifetime;
+    public AnimationCurve customDataZOverLifetime;
+    public AnimationCurve customDataWOverLifetime;
+    public float minimalDistance = 0.01f;
+
+    int vertexPerTrail;
     int vertexNum;//vertex and nodes are different!
     int IndexNumPerTrail;//index used for creating surface
 
@@ -30,7 +42,7 @@ public class TrailRender : MonoBehaviour
 
     void Start()
     {
-        this.trailData = new TrailData(particleGen.maxCount);
+        this.trailData = new TrailData(particleGen.maxCount, life, inputPerSec);
         vertexPerTrail = trailData.NodeNumPerTrail * 2;
         vertexNum = trailData.TrailNum * vertexPerTrail;
         IndexNumPerTrail = (vertexPerTrail - 1) * 6;
@@ -129,13 +141,13 @@ public class TrailRender : MonoBehaviour
 
             computeShader.Dispatch(kernelAppendNode, vertexNum / 512 / 2, 1, 1);
             deltaTimeUpdate = 0;
+
+            computeShader.SetBuffer(kernelVertex, "_NodeBuffer", trailData.NodeBuffer);
+            computeShader.SetBuffer(kernelVertex, "_TrailBuffer", trailData.TrailBuffer);
+            computeShader.SetBuffer(kernelVertex, "_VertexBuffer", vertexBuffer);
+
+            computeShader.Dispatch(kernelVertex, vertexNum / 512 / 2, 1, 1);
         }
-
-        computeShader.SetBuffer(kernelVertex, "_NodeBuffer", trailData.NodeBuffer);
-        computeShader.SetBuffer(kernelVertex, "_TrailBuffer", trailData.TrailBuffer);
-        computeShader.SetBuffer(kernelVertex, "_VertexBuffer", vertexBuffer);
-
-        computeShader.Dispatch(kernelVertex, vertexNum / 512 / 2, 1, 1);
 
         PropertyBlock.SetInt("_VertexPerTrail", vertexPerTrail);
         PropertyBlock.SetBuffer("_VertexBuffer", vertexBuffer);
