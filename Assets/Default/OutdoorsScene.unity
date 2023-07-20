@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.38358, g: 325.10843, b: 430.30963, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -523,8 +523,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a68b6755924ea494987423ab3de66d75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vertexPerTrail: 16
-  computeShader: {fileID: 7200000, guid: b57cee17282b30544bc7be4a9fa4dc4e, type: 3}
+  vertexPerTrail: 0
+  computeShader: {fileID: 7200000, guid: 3f14267416fd36e4bb000643d1567db3, type: 3}
   material: {fileID: 2100000, guid: db803c5c210dc8a46a5cc0980d78eea0, type: 2}
   particleGen: {fileID: 1153580334}
 --- !u!4 &449026348
@@ -571,7 +571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 312fa495afb84314ba1f292985906317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxCount: 1000
+  maxCount: 12800
   gradient:
     serializedVersion: 2
     key0: {r: 1.1353015, g: 1.1353015, b: 1.1353015, a: 0.38039216}
@@ -606,8 +606,8 @@ MonoBehaviour:
   posMax: {x: 5, y: 0, z: 5}
   velMin: {x: 0, y: 0, z: 0}
   velMax: {x: 0, y: 0, z: 0}
-  sizeMin: {x: 0.1, y: 0.1, z: 0.1}
-  sizeMax: {x: 0.1, y: 0.1, z: 0.1}
+  sizeMin: {x: 0.01, y: 0.01, z: 0.01}
+  sizeMax: {x: 0.01, y: 0.01, z: 0.01}
   computeShader: {fileID: 7200000, guid: afe33e89d01ab5440b811fe6067c4144, type: 3}
   mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 2100000, guid: 7cc3711805b53fa42b6352c4121927c8, type: 2}

@@ -47,6 +47,10 @@ public class TrailRender : MonoBehaviour
         vertexNum = trailData.TrailNum * vertexPerTrail;
         IndexNumPerTrail = (vertexPerTrail - 1) * 6;
         InitBufferIfNeed();
+
+        var kernelInitNode = computeShader.FindKernel("InitNode");
+        computeShader.SetBuffer(kernelInitNode, "_NodeBuffer", trailData.NodeBuffer);
+        computeShader.Dispatch(kernelInitNode, vertexNum / 512 / 2, 1, 1);
     }
 
     protected GraphicsBuffer vertexBuffer;
@@ -74,7 +78,7 @@ public class TrailRender : MonoBehaviour
 #endif
         // 各Nodeの最後と次のNodeの最初はポリゴンを繋がないので-1
         var idx = 0;
-        for (var iNode = 0; iNode < vertexPerTrail / 2 - 1; ++iNode)
+        for (var iNode = 0; iNode < trailData.NodeNumPerTrail - 1; ++iNode)
         {
             var offset = iNode * 2;
             indices[idx++] = 0 + offset;
@@ -119,8 +123,7 @@ public class TrailRender : MonoBehaviour
         {
             toCameraDir = -Camera.main.transform.forward;
         }
-
-        var kernel = computeShader.FindKernel("CreateNodeTrail");
+        
         var kernelAppendNode = computeShader.FindKernel("AppendNode");
         var kernelVertex = computeShader.FindKernel("CreateVertex");
         computeShader.SetFloat("_Time", Time.time);
@@ -128,7 +131,7 @@ public class TrailRender : MonoBehaviour
 
         computeShader.SetVector("_ToCameraDir", toCameraDir);
         computeShader.SetVector("_CameraPos", Camera.main.transform.position);
-        computeShader.SetInt("_VertexPerTrail", vertexPerTrail);
+        computeShader.SetInt("_NodePerTrail", trailData.NodeNumPerTrail);
 
 
         deltaTimeUpdate += Time.deltaTime;
