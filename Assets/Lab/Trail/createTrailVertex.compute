@@ -17,7 +17,7 @@ struct Node
 struct Trail
 {
     float spawnTime;
-    int totalInputNum;
+    uint totalInputNum;
 };
 struct Vertex
 {
@@ -95,7 +95,7 @@ void CreateVertex(uint3 id : SV_DispatchThreadID)
 {
 	uint nodeId = id.x;
     
-    int NodePerTrail = _VertexPerTrail / 2;
+    uint NodePerTrail = _VertexPerTrail / 2;
     uint trailId = nodeId / NodePerTrail;
     Trail trail = _TrailBuffer[trailId];
     uint nodeIdInTrail = (NodePerTrail+id.x-trail.totalInputNum) % NodePerTrail ;

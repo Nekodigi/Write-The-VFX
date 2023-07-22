@@ -1,6 +1,9 @@
 ﻿#ifndef SIMPLEX_NOISE
 #define SIMPLEX_NOISE
 
+#include "Assets/Scripts/Utils/Consts/Consts.hlsl"
+#include "Assets/Scripts/Value/CurlNoise.cginc"
+
 // https://github.com/stegu/webgl-noise/blob/master/src/noise2D.glsl
 //
 // Description : Array and textureless GLSL 2D simplex noise function.
@@ -314,6 +317,53 @@ float simplexNoise(float4 P)
 		amp *= 0.5;
 	}
 	return value;
+}
+
+//Assume Particle on XZ plane
+float2 simplexNoiseGrad2D(float3 P){
+    float x1 = simplexNoise(P+float3(-DELTA, 0, 0));
+    float x2 = simplexNoise(P+float3(DELTA, 0, 0));
+    float y1 = simplexNoise(P+float3(0, -DELTA, 0));
+    float y2 = simplexNoise(P+float3(0, DELTA, 0));
+    float dx = (x2-x1)/DELTA/2;
+    float dy = (y2-y1)/DELTA/2;
+
+	return float2(dx, dy);
+}
+
+float3 simplexNoiseGrad3D(float4 P){
+    float x1 = simplexNoise(P+float4(-DELTA, 0, 0, 0));
+    float x2 = simplexNoise(P+float4(DELTA, 0, 0, 0));
+    float y1 = simplexNoise(P+float4(0, -DELTA, 0, 0));
+    float y2 = simplexNoise(P+float4(0, DELTA, 0, 0));
+	float z1 = simplexNoise(P+float4(0, 0, -DELTA, 0));
+    float z2 = simplexNoise(P+float4(0, 0, DELTA, 0));
+    float dx = (x2-x1)/DELTA/2;
+    float dy = (y2-y1)/DELTA/2;
+	float dz = (z2-z1)/DELTA/2;
+
+	return float3(dx, dy, dz);
+}
+
+float3 simplexNoiseVec(float4 P){
+    float x = simplexNoise(P+float4(0, 0, 0, 0));
+	float y = simplexNoise(P+float4(0, 0, 0, 123));
+	float z = simplexNoise(P+float4(0, 0, 0, 234));
+
+	return float3(x, y, z);
+}
+float3 simplexNoiseCurl3D(float4 P){
+    float3 x1 = simplexNoiseVec(P+float4(-DELTA, 0, 0, 0));
+    float3 x2 = simplexNoiseVec(P+float4(DELTA, 0, 0, 0));
+    float3 y1 = simplexNoiseVec(P+float4(0, -DELTA, 0, 0));
+    float3 y2 = simplexNoiseVec(P+float4(0, DELTA, 0, 0));
+	float3 z1 = simplexNoiseVec(P+float4(0, 0, -DELTA, 0));
+    float3 z2 = simplexNoiseVec(P+float4(0, 0, DELTA, 0));
+    float3 dx = (x2-x1)/DELTA/2;
+    float3 dy = (y2-y1)/DELTA/2;
+	float3 dz = (z2-z1)/DELTA/2;
+
+	return curlNoise(dx, dy, dz);
 }
 #endif
 

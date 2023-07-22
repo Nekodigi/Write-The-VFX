@@ -132,9 +132,9 @@ public class TrailRender : MonoBehaviour
 
     void Bake()
     {
-        bakedWidthOverLifetime = MyCurve.Bake(widthOverLifetime, bakeRes);
-        bakedColorOverLifetime = MyGradient.Bake(colorOverLifetime, bakeRes);
-        bakedCustomDataOverLifetime = MyCurve.Bake(customDataXOverLifetime, customDataYOverLifetime, customDataZOverLifetime, customDataWOverLifetime, bakeRes);
+        bakedWidthOverLifetime = MyCurve.Bake(bakedWidthOverLifetime, widthOverLifetime);
+        bakedColorOverLifetime = MyGradient.Bake(bakedColorOverLifetime, colorOverLifetime);
+        bakedCustomDataOverLifetime = MyCurve.Bake(bakedCustomDataOverLifetime, customDataXOverLifetime, customDataYOverLifetime, customDataZOverLifetime, customDataWOverLifetime);
     }
 
     public void Dispose()
@@ -168,8 +168,8 @@ public class TrailRender : MonoBehaviour
 
         Bake();
 
-        if (deltaTimeUpdate > 1 / trailData.inputPerSec)
-        {
+        //if (deltaTimeUpdate > 1 / trailData.inputPerSec)
+        //{
             computeShader.SetBuffer(kernelAppendNode, "_ParticleBuffer", particleGen.particleBuffer);
             computeShader.SetBuffer(kernelAppendNode, "_NodeBuffer", trailData.NodeBuffer);
             computeShader.SetBuffer(kernelAppendNode, "_TrailBuffer", trailData.TrailBuffer);
@@ -181,12 +181,12 @@ public class TrailRender : MonoBehaviour
             computeShader.SetBuffer(kernelVertex, "_NodeBuffer", trailData.NodeBuffer);
             computeShader.SetBuffer(kernelVertex, "_TrailBuffer", trailData.TrailBuffer);
             computeShader.SetBuffer(kernelVertex, "_VertexBuffer", vertexBuffer);
-            computeShader.SetTexture(kernelVertex, "_WidthOverLifetime", bakedWidthOverLifetime);
-            computeShader.SetTexture(kernelVertex, "_ColorOverLifetime", bakedColorOverLifetime);
-            computeShader.SetTexture(kernelVertex, "_CustomDataOverLifetime", bakedCustomDataOverLifetime);
+            computeShader.SetTexture(kernelVertex, "_TWidthOverLifetime", bakedWidthOverLifetime);
+            computeShader.SetTexture(kernelVertex, "_TColorOverLifetime", bakedColorOverLifetime);
+            computeShader.SetTexture(kernelVertex, "_TCustomDataOverLifetime", bakedCustomDataOverLifetime);
 
             computeShader.Dispatch(kernelVertex, vertexNum / 512 / 2, 1, 1);
-        }
+        //}
 
         PropertyBlock.SetInt("_VertexPerTrail", vertexPerTrail);
         PropertyBlock.SetBuffer("_VertexBuffer", vertexBuffer);
