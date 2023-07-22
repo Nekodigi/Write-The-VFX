@@ -113,7 +113,6 @@ Particle updateParticle(Particle p, uint3 id){
 
     p.colDest = p.col * getColAt(rate);
     p.sizeDest = p.size * getSizeAt(rate);
-    //p.sizeDest = float3(0.1, 0.1, 0.1);
     p.customData = getCustomDataAt(rate);
 
     if(p.disable == 2)p.disable = 0;

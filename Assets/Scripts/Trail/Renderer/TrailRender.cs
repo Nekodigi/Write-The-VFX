@@ -12,12 +12,12 @@ public class TrailRender : MonoBehaviour
     public float life = 1f;
     public float inputPerSec = 60f;
     public float width = 0.01f;
-    public AnimationCurve widthOverLifetime;
-    [GradientUsage(true)] public Gradient colorOverLifetime;
-    public AnimationCurve customDataXOverLifetime;
-    public AnimationCurve customDataYOverLifetime;
-    public AnimationCurve customDataZOverLifetime;
-    public AnimationCurve customDataWOverLifetime;
+    public ParticleSystem.MinMaxCurve widthOverLifetime;
+    public ParticleSystem.MinMaxGradient colorOverLifetime;
+    public ParticleSystem.MinMaxCurve customDataXOverLifetime;
+    public ParticleSystem.MinMaxCurve customDataYOverLifetime;
+    public ParticleSystem.MinMaxCurve customDataZOverLifetime;
+    public ParticleSystem.MinMaxCurve customDataWOverLifetime;
     public float minimalDistance = 0.01f;
 
     RenderTexture bakedWidthOverLifetime;
@@ -65,6 +65,8 @@ public class TrailRender : MonoBehaviour
         computeShader.SetBuffer(kernelInitNode, "_NodeBuffer", trailData.NodeBuffer);
         computeShader.SetBuffer(kernelInitNode, "_TrailBuffer", trailData.TrailBuffer);
         computeShader.Dispatch(kernelInitNode, vertexNum / 512 / 2, 1, 1);
+
+        particleGen.syncUpdate = true;
     }
 
     protected GraphicsBuffer vertexBuffer;
@@ -168,8 +170,10 @@ public class TrailRender : MonoBehaviour
 
         Bake();
 
-        //if (deltaTimeUpdate > 1 / trailData.inputPerSec)
-        //{
+        if (deltaTimeUpdate > 1 / trailData.inputPerSec)
+        {
+            particleGen.Update_();
+
             computeShader.SetBuffer(kernelAppendNode, "_ParticleBuffer", particleGen.particleBuffer);
             computeShader.SetBuffer(kernelAppendNode, "_NodeBuffer", trailData.NodeBuffer);
             computeShader.SetBuffer(kernelAppendNode, "_TrailBuffer", trailData.TrailBuffer);
@@ -186,7 +190,7 @@ public class TrailRender : MonoBehaviour
             computeShader.SetTexture(kernelVertex, "_TCustomDataOverLifetime", bakedCustomDataOverLifetime);
 
             computeShader.Dispatch(kernelVertex, vertexNum / 512 / 2, 1, 1);
-        //}
+        }
 
         PropertyBlock.SetInt("_VertexPerTrail", vertexPerTrail);
         PropertyBlock.SetBuffer("_VertexBuffer", vertexBuffer);

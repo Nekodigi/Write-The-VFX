@@ -22,11 +22,12 @@ void Initialize(uint3 id : SV_DispatchThreadID)
 void Update(uint3 id : SV_DispatchThreadID)
 {
     Particle p = _ParticleBuffer[id.x];
+    float rate = getRate(p);
     
     /*float2 grad =  simplexNoiseGrad2D(float3(p.pos.xz/10, _Time/100));
     p.pos += float3(grad.y,0,-grad.x)*0.5*_DeltaTime;*/
     float3 curl =  simplexNoiseCurl3D(float4(p.pos/30, _Time/100));
-    p.pos += curl*0.5*_DeltaTime;
+    p.pos += curl*0.5*_DeltaTime*geFieldAt(rate);
 
     p = updateParticle(p, id);
 

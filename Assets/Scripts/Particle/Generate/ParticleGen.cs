@@ -65,6 +65,8 @@ public class ParticleGen : MonoBehaviour
 
     public RenderTexture field;
 
+    public bool syncUpdate = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -95,11 +97,15 @@ public class ParticleGen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!syncUpdate) Update_();
+        Graphics.DrawMeshInstancedProcedural(mesh, 0, material, new Bounds(Vector3.zero, Vector3.one * 100), maxCount);
+    }
+
+    public void Update_()
+    {
         SetTextureToShader(kernelIndexUpdate);
 
         computeShader.Dispatch(kernelIndexUpdate, maxCount / THREAD_NUM, 1, 1);
-
-        Graphics.DrawMeshInstancedProcedural(mesh, 0, material, new Bounds(Vector3.zero, Vector3.one * 100), maxCount);
     }
 
 
