@@ -49,6 +49,7 @@ float3 _VelMin;
 float3 _VelMax;
 float3 _SizeMin;
 float3 _SizeMax;
+bool _UseField;
 
 float getAge(Particle p){
     return _Time - p.spawnTime;
@@ -77,6 +78,9 @@ float geFieldAt(float rate){
 }
 float geDampAt(float rate){
     return _PDampOverLife.SampleLevel(linearClampSampler, float2(rate, 0), 0).x;
+}
+float3 normPos(Particle p){
+    return (p.pos-_PosMin)/(_PosMax-_PosMin);
 }
 
 Particle initParticle(uint3 id){

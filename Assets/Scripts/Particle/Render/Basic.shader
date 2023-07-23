@@ -29,7 +29,7 @@ Shader "Particle/Basic"
             v2f vert (appdata_tan v, uint instanceID : SV_InstanceID)
             {
                 Particle p = _ParticleBuffer[instanceID];
-                v2f o = initVert(v, p.size, p.rot, p.pos);
+                v2f o = initVert(v, p.sizeDest, p.rot, p.pos);
 
                 o.color  = p.colDest;
 

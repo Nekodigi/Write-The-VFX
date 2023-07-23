@@ -24,9 +24,6 @@ public class TrailRender : MonoBehaviour
     RenderTexture bakedColorOverLifetime;
     RenderTexture bakedCustomDataOverLifetime;
 
-    int bakeRes = 128;
-
-
     int vertexPerTrail;
     int vertexNum;//vertex and nodes are different!
     int IndexNumPerTrail;//index used for creating surface
@@ -57,10 +54,8 @@ public class TrailRender : MonoBehaviour
         InitBufferIfNeed();
 
         var kernelInitNode = computeShader.FindKernel("InitNode");
-        computeShader.SetFloat("_Time", 0);
-        computeShader.SetFloat("_Life", life);
-        computeShader.SetInt("_NodePerTrail", trailData.NodeNumPerTrail);
 
+        SetValueToShader();
 
         computeShader.SetBuffer(kernelInitNode, "_NodeBuffer", trailData.NodeBuffer);
         computeShader.SetBuffer(kernelInitNode, "_TrailBuffer", trailData.TrailBuffer);
@@ -149,24 +144,33 @@ public class TrailRender : MonoBehaviour
         vertexBuffer?.Release();
     }
 
-    protected virtual void LateUpdate()
+    void SetValueToShader()
     {
-        deltaTimeUpdate += Time.deltaTime;
         var toCameraDir = default(Vector3);
         if (Camera.main.orthographic)
         {
             toCameraDir = -Camera.main.transform.forward;
         }
-        
-        var kernelAppendNode = computeShader.FindKernel("AppendNode");
-        var kernelVertex = computeShader.FindKernel("CreateVertex");
+
         computeShader.SetFloat("_Time", Time.time);
         computeShader.SetFloat("_DeltaTime", Time.deltaTime);
         computeShader.SetFloat("_TrailWidth", width);
+        computeShader.SetFloat("_Life", life);
+        computeShader.SetInt("_NodePerTrail", trailData.NodeNumPerTrail);
 
         computeShader.SetVector("_ToCameraDir", toCameraDir);
         computeShader.SetVector("_CameraPos", Camera.main.transform.position);
         computeShader.SetInt("_NodePerTrail", trailData.NodeNumPerTrail);
+    }
+
+    protected virtual void LateUpdate()
+    {
+        deltaTimeUpdate += Time.deltaTime;
+        
+        var kernelAppendNode = computeShader.FindKernel("AppendNode");
+        var kernelVertex = computeShader.FindKernel("CreateVertex");
+
+        SetValueToShader();
 
         Bake();
 

@@ -1,5 +1,5 @@
 // Each #kernel tells which function to compile; you can have many kernels
-#pragma kernel Initialize
+#pragma kernel Init
 #pragma kernel Update
 
 #include "Assets/Scripts/Particle/Particle.hlsl"
@@ -11,7 +11,7 @@
 #include "Assets/Scripts/Utils/Sampler/Sampler.hlsl"
 
 [numthreads(16, 1, 1)]
-void Initialize(uint3 id : SV_DispatchThreadID)
+void Init(uint3 id : SV_DispatchThreadID)
 {
     _ParticleBuffer[id.x] = initParticle(id.x);
 }
@@ -27,7 +27,9 @@ void Update(uint3 id : SV_DispatchThreadID)
     /*float2 grad =  simplexNoiseGrad2D(float3(p.pos.xz/10, _Time/100));
     p.pos += float3(grad.y,0,-grad.x)*0.5*_DeltaTime;*/
     float3 curl =  simplexNoiseCurl3D(float4(p.pos/30, _Time/100));
-    p.pos += curl*0.5*_DeltaTime*geFieldAt(rate);
+    if(_UseField)curl = _SourceVec.SampleLevel(linearClampSampler, normPos(p).xz, 0).xyy;
+    curl.y = 0;
+    p.pos += curl*10*_DeltaTime*geFieldAt(rate);
 
     p = updateParticle(p, id);
 
