@@ -6,7 +6,9 @@ using Unity.Collections;
 using System.Runtime.InteropServices;
 using UnityEngine.Pool;
 using UnityEngine.XR;
+using UnityEditor;
 
+[ExecuteInEditMode]
 public class TrailRender : MonoBehaviour
 {
     public float life = 1f;
@@ -62,6 +64,15 @@ public class TrailRender : MonoBehaviour
         computeShader.Dispatch(kernelInitNode, vertexNum / 512 / 2, 1, 1);
 
         particleGen.syncUpdate = true;
+    }
+    private void OnEnable()
+    {
+        EditorApplication.update += LateUpdate;
+    }
+
+    private void OnDisable()
+    {
+        EditorApplication.update -= LateUpdate;
     }
 
     protected GraphicsBuffer vertexBuffer;
@@ -205,5 +216,8 @@ public class TrailRender : MonoBehaviour
         };
 
         Graphics.RenderPrimitivesIndexedIndirect(renderParams, MeshTopology.Triangles, indexBuffer, argsBuffer);
+
+        EditorApplication.QueuePlayerLoopUpdate();
+
     }
 }

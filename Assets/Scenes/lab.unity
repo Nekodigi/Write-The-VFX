@@ -397,8 +397,8 @@ MonoBehaviour:
   inputPerSec: 60
   width: 0.01
   widthOverLifetime:
-    m_Mode: 1
-    m_CurveMultiplier: 1
+    m_Mode: 0
+    m_CurveMultiplier: 0
     m_CurveMin:
       serializedVersion: 2
       m_Curve: []
@@ -407,30 +407,12 @@ MonoBehaviour:
       m_RotationOrder: 4
     m_CurveMax:
       serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: -1
-        outSlope: -1
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: -1
-        outSlope: -1
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+      m_Curve: []
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     m_ConstantMin: 0
-    m_ConstantMax: 0.01
+    m_ConstantMax: 0
   colorOverLifetime:
     m_Mode: 1
     m_GradientMin:
@@ -465,34 +447,34 @@ MonoBehaviour:
       m_NumAlphaKeys: 2
     m_GradientMax:
       serializedVersion: 2
-      key0: {r: 1.1353015, g: 1.1353015, b: 1.1353015, a: 0.38039216}
-      key1: {r: 1.6055589, g: 0.9838323, b: 0, a: 1}
-      key2: {r: 0.74901956, g: 0.1460352, b: 0.1460352, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
-      ctime1: 13685
-      ctime2: 33924
-      ctime3: 65535
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
       ctime4: 0
       ctime5: 0
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 3084
-      atime2: 45682
-      atime3: 65535
+      atime1: 65535
+      atime2: 0
+      atime3: 0
       atime4: 0
       atime5: 0
       atime6: 0
       atime7: 0
       m_Mode: 0
       m_ColorSpace: -1
-      m_NumColorKeys: 4
-      m_NumAlphaKeys: 4
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
     m_ColorMin: {r: 0, g: 0, b: 0, a: 0}
     m_ColorMax: {r: 0, g: 0, b: 0, a: 0}
   customDataXOverLifetime:
@@ -612,7 +594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 312fa495afb84314ba1f292985906317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burst: 12800
+  burst: 0
   inputPerSec: 0
   hdrGradientPicker:
     serializedVersion: 2
@@ -732,7 +714,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     m_ConstantMin: 0
-    m_ConstantMax: 10
+    m_ConstantMax: 0
   velOverLifetimeX:
     m_Mode: 0
     m_CurveMultiplier: 0
@@ -851,7 +833,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     m_ConstantMin: 0
-    m_ConstantMax: 1
+    m_ConstantMax: 0
   sizeOverLifetimeY:
     m_Mode: 0
     m_CurveMultiplier: 0
@@ -868,7 +850,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     m_ConstantMin: 0
-    m_ConstantMax: 1
+    m_ConstantMax: 0
   sizeOverLifetimeZ:
     m_Mode: 0
     m_CurveMultiplier: 0
@@ -885,9 +867,9 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     m_ConstantMin: 0
-    m_ConstantMax: 1
+    m_ConstantMax: 0
   colorOverLifetime:
-    m_Mode: 1
+    m_Mode: 0
     m_GradientMin:
       serializedVersion: 2
       key0: {r: 1, g: 1, b: 1, a: 1}
@@ -949,7 +931,7 @@ MonoBehaviour:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     m_ColorMin: {r: 0, g: 0, b: 0, a: 0}
-    m_ColorMax: {r: 1, g: 1, b: 1, a: 0}
+    m_ColorMax: {r: 0, g: 0, b: 0, a: 0}
   customDataOverLifetimeX:
     m_Mode: 0
     m_CurveMultiplier: 0
@@ -1034,7 +1016,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     m_ConstantMin: 0
-    m_ConstantMax: 30
+    m_ConstantMax: 0
   dampOverLifetime:
     m_Mode: 0
     m_CurveMultiplier: 0
@@ -1053,7 +1035,7 @@ MonoBehaviour:
     m_ConstantMin: 0
     m_ConstantMax: 0
   computeShader: {fileID: 7200000, guid: afe33e89d01ab5440b811fe6067c4144, type: 3}
-  fieldController: {fileID: 1846527329}
+  fieldController: {fileID: 0}
   syncUpdate: 0
 --- !u!4 &1153580335
 Transform:
@@ -1384,12 +1366,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b96bba9ee23651b4ca565364eaa0b152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resolution: {x: 2048, y: 2048}
+  resolution: {x: 512, y: 512}
   scale: {x: 1, y: 1}
   transition: 1
-  multiplier: 10
-  range: 0
-  gamma: 0
+  multiplier: 1
+  range: 1
+  gamma: 1
   computeShader: {fileID: 7200000, guid: c8e81d9ca289d8f47a897015d72a135e, type: 3}
   source: {fileID: 0}
   dest: {fileID: 0}
