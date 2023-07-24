@@ -1,0 +1,69 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel Init
+#pragma kernel Update
+
+#include "Assets/Scripts/Particle/Particle.hlsl"
+#include "Assets/Scripts/Field/Field.hlsl"
+#include "Assets/Scripts/Particle/Function/GetFieldValue.hlsl"
+#include "Assets/Scripts/Utils/Time/Time.hlsl"
+#include "Assets/Scripts/Utils/Consts/Consts.hlsl"
+#include "Assets/Scripts/Utils/Sampler/Sampler.hlsl"
+
+[numthreads(8,8,1)]
+void Init (uint3 id : SV_DispatchThreadID)
+{
+    float width, height;
+    _Source.GetDimensions(width, height);
+    float dx = 1/width;
+    float dy = 1/height;
+    float x = id.x/width+0.5*dx;
+    float y = id.y/height+0.5*dy;
+    float3 size = float3((_PosMax-_PosMin).xz/float2(width, height), 0);
+    size.z = size.x*10;
+    Particle p = (Particle)0;
+    p.pos = _PosMin+float3(x,0,y)*(_PosMax-_PosMin);
+    //float3 vec = _SourceVec.SampleLevel(linearClampSampler, float2(x, y), 0).xyy;
+    float3 vec = _Source.SampleLevel(linearClampSampler, float2(x, y), 0).xxx;
+
+    float rotY = atan2(vec.x, vec.z);
+    float rotX =-asin(vec.y / length(vec.xyz)-1e-8);
+    //p.rot = float3(rotX,rotY,0);
+    p.rot = float3(0,0,0);
+    p.sizeDest = size*vec;
+    p.colDest = float4(1,1,1,1);
+    p.disable = 0;
+    _ParticleBuffer[id.x+id.y*width] = p;
+}
+
+[numthreads(8,8,1)]
+void Update (uint3 id : SV_DispatchThreadID)
+{
+    float width, height;
+    _SourceVec.GetDimensions(width, height);
+    //id = id * _Interval.xyy;
+    float dx = 1/width;
+    float dy = 1/height;
+    float x = id.x/width+0.5*dx;
+    float y = id.y/height+0.5*dy;
+    float3 size = float3((_PosMax-_PosMin).xz/float2(width, height), 0)*length(_Interval);
+
+    float3 vec = _SourceVec[id.xy* _Interval.xy].xyy;
+
+    vec = (vec - _VecMin) / (_VecMax - _VecMin);
+
+    size.z = size.x*length(vec.xyz)*10;
+    //size.z = size.x*_Source[id.xy]*10;
+    Particle p = (Particle)0;
+    p.pos = _PosMin+float3(x,0,y)*(_PosMax-_PosMin)* _Interval.xyy;
+    
+    vec.y = 0.001;
+    //float3 vec = _Source.SampleLevel(linearClampSampler, float2(x, y), 0).xxx;
+
+    float rotY = atan2(vec.x, vec.z);
+    float rotX =-asin(vec.y / length(vec.xyz)-1e-8);
+    p.rot = float3(rotX,rotY,0);
+    p.sizeDest = size/10;
+    p.colDest = float4(vec*0.5+0.5,1);
+    p.disable = 0;
+    _ParticleBuffer[id.x+id.y*width/_Interval.x] = p;
+}

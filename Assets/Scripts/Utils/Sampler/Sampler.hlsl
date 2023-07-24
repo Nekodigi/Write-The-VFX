@@ -1,4 +1,4 @@
 #ifndef SAMPLER
-#define
+#define SAMPLER
 SamplerState linearClampSampler;
 #endif

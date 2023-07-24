@@ -2,11 +2,13 @@
 #define TRAIL_NODE
 
 #include "Assets/Scripts/Particle/Particle.hlsl"
+#include "Assets/Scripts/Utils/Sampler/Sampler.hlsl"
+
 struct Trail
 {
     float spawnTime;
     float life;
-    int totalInputNum;
+    uint totalInputNum;
 };
 
 RWStructuredBuffer<Particle> _NodeBuffer;
@@ -14,12 +16,9 @@ RWStructuredBuffer<Trail> _TrailBuffer;
 uint _NodePerTrail;
 float _TrailWidth;
 
-Texture2D<float4> _WidthOverLifetime;
-Texture2D<float4> _ColorOverLifetime;
-Texture2D<float4> _CustomDataOverLifetime;
-#ifndef CLAMPSAMPLE
-SamplerState linearClampSampler;
-#endif
+Texture2D<float4> _TWidthOverLifetime;
+Texture2D<float4> _TColorOverLifetime;
+Texture2D<float4> _TCustomDataOverLifetime;
 
 //*NOTE OFFSET ARE ALREADY APPLIED
 int getTrailId(int nodeId){
@@ -63,15 +62,15 @@ float getRate(Trail trail, Particle node){
 }
 
 float getWidth(float rate){
-    float mult = _WidthOverLifetime.SampleLevel(linearClampSampler, float2(rate, 0), 0);
+    float mult = _TWidthOverLifetime.SampleLevel(linearClampSampler, float2(rate, 0), 0).x;
     return mult * _TrailWidth;
 }
 float4 getColor(float rate){
-    float4 col = _ColorOverLifetime.SampleLevel(linearClampSampler, float2(rate, 0), 0);
+    float4 col = _TColorOverLifetime.SampleLevel(linearClampSampler, float2(rate, 0), 0);
     return col;
 }
 float4 getCustomData(float rate){
-    float4 customData = _CustomDataOverLifetime.SampleLevel(linearClampSampler, float2(rate, 0), 0);
+    float4 customData = _TCustomDataOverLifetime.SampleLevel(linearClampSampler, float2(rate, 0), 0);
     return customData;
 }
 
