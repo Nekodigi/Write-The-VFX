@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
+using UnityEditor;
 
 //VALUE NOT APPLIED IN INSPECTOR, PLEASE USE PROPERTY
 public class IParticleController : MonoBehaviour
@@ -82,9 +83,20 @@ public class IParticleController : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+        EditorApplication.update += Update;
+    }
+
+    private void OnDisable()
+    {
+        EditorApplication.update -= Update;
+    }
+
     void Update()
     {
         if (!syncUpdate) Update_();
+        EditorApplication.QueuePlayerLoopUpdate();
     }
 
     public void Update_()

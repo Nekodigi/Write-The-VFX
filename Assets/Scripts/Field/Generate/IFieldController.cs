@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
+[ExecuteInEditMode]
 public class IFieldController : MonoBehaviour
 {
     public Vector2Int resolution = new Vector2Int(512, 512);
@@ -55,10 +57,21 @@ public class IFieldController : MonoBehaviour
         Dispatch(kernelInit);
     }
 
+    private void OnEnable()
+    {
+        EditorApplication.update += Update;
+    }
+
+    private void OnDisable()
+    {
+        EditorApplication.update -= Update;
+    }
+
     // Update is called once per frame
     protected virtual void Update()
     {
         Dispatch(kernelUpdate);
+        EditorApplication.QueuePlayerLoopUpdate();
     }
 
     protected void Dispatch(int kernelId)
