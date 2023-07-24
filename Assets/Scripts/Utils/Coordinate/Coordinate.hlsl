@@ -1,6 +1,12 @@
 #ifndef COORDINATE
 #define COORDINATE
 
+float2 vecToRot(float3 vec){
+    float rotY = atan2(vec.x, vec.z);
+    float rotX =-asin(vec.y / length(vec.xyz)-1e-8);
+    return float2(rotX, rotY);
+}
+
 float4x4 eulerAnglesToRotationMatrix(float3 angles)
 {
     float ch = cos(angles.y); float sh = sin(angles.y); // heading

@@ -1,0 +1,49 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel InitNode NUM_THREAD_X=512
+#pragma kernel AppendNode NUM_THREAD_X=512
+#pragma kernel CreateVertex NUM_THREAD_X=512
+
+#include "Assets/Scripts/Particle/Particle.hlsl"
+#include "Assets/Scripts/Utils/Time/Time.hlsl"
+#include "Assets/Scripts/Trail/TrailNode.hlsl"
+#include "Assets/Scripts/Utils/Camera/Camera.hlsl"
+#include "Assets/Scripts/Utils/Vertex/Vertex.hlsl"
+
+
+[numthreads(NUM_THREAD_X,1,1)]
+void InitNode(uint3 id : SV_DispatchThreadID)
+{
+    _NodeBuffer[id.x] = initInactivatedNode();
+    _TrailBuffer[id.x/_NodePerTrail] = initTrail();
+}
+
+[numthreads(NUM_THREAD_X,1,1)]
+void AppendNode(uint3 id : SV_DispatchThreadID)
+{
+	uint nodeId = id.x;
+    uint trailId = getTrailId(id.x);
+
+    //Particle ref = getNode(trailId, trail.totalInputNum-1);
+    //if(p.pos.x == ref.pos.x && p.pos.y == ref.pos.y && p.pos.z == ref.pos.z){return;}//if nothing changed, then return.
+    Particle node = initNode(_ParticleBuffer[trailId]);
+    appendNode(node, trailId);
+}
+
+[numthreads(NUM_THREAD_X,1,1)]
+void CreateVertex(uint3 id : SV_DispatchThreadID)
+{
+    uint trailId = getTrailId(id.x);
+    Trail trail = _TrailBuffer[trailId];
+    uint nodeId = getLocalNodeId(trailId, id.x);
+    Particle node = getNode(trailId, nodeId);
+    int vertexId = getVertexId(trailId, nodeId);
+    Vertex v = _VertexBuffer[vertexId];
+
+    float rateA = getRate(trail, node);
+    float rate = getRelativeRate(trailId, nodeId);
+
+    v = updateVertex(v, trailId, nodeId, rateA);
+
+    float3 right = getNodeRight(trailId, nodeId, getWidth(rate));
+    addPairVertex(v, vertexId, right);
+}

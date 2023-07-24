@@ -8,6 +8,7 @@
 #include "Assets/Scripts/Utils/Time/Time.hlsl"
 #include "Assets/Scripts/Utils/Consts/Consts.hlsl"
 #include "Assets/Scripts/Utils/Sampler/Sampler.hlsl"
+#include "Assets/Scripts/Utils/Coordinate/Coordinate.hlsl"
 
 [numthreads(8,8,1)]
 void Init (uint3 id : SV_DispatchThreadID)
@@ -52,16 +53,14 @@ void Update (uint3 id : SV_DispatchThreadID)
     vec = (vec - _VecMin) / (_VecMax - _VecMin);
 
     size.z = size.x*length(vec.xyz)*10;
-    //size.z = size.x*_Source[id.xy]*10;
     Particle p = (Particle)0;
-    p.pos = _PosMin+float3(x,0,y)*(_PosMax-_PosMin)* _Interval.xyy;
-    
-    vec.y = 0.001;
-    //float3 vec = _Source.SampleLevel(linearClampSampler, float2(x, y), 0).xxx;
+    //p.pos = _PosMin+float3(x,0,y)*(_PosMax-_PosMin)* _Interval.xyy;
+    p.pos = lerp(_PosMin, _PosMax, float3(x, 0, y)* _Interval.xyy);
+    //p.pos *= _Interval.xyy;
+   
+    vec.y = 0.000;
 
-    float rotY = atan2(vec.x, vec.z);
-    float rotX =-asin(vec.y / length(vec.xyz)-1e-8);
-    p.rot = float3(rotX,rotY,0);
+    p.rot = float3(vecToRot(vec),0);
     p.sizeDest = size/10;
     p.colDest = float4(vec*0.5+0.5,1);
     p.disable = 0;

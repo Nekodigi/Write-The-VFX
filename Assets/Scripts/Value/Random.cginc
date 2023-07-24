@@ -43,7 +43,7 @@ float3 random3(float3 seeds)
 }
 
 float3 randomBetween(float3 seeds, float3 min, float3 max){
-    return min + random3(seeds)*(max-min);
+    return lerp(min, max, random3(seeds));
 }
 
 //ADD VOLUMETRIC
