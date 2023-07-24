@@ -66,3 +66,11 @@ public class TrailData
         NodeBuffer?.Release();
     }
 }
+
+public struct Vertex
+{
+    public Vector3 pos;
+    public Vector4 customData;
+    public Vector2 uv;
+    public Color col;
+}

@@ -33,8 +33,8 @@ void AppendNode(uint3 id : SV_DispatchThreadID)
 
     Trail trail = _TrailBuffer[trailId];
     Particle p = _ParticleBuffer[trailId];
-    Particle ref = getNode(trailId, trail.totalInputNum-1);
-    if(p.pos.x == ref.pos.x && p.pos.y == ref.pos.y && p.pos.z == ref.pos.z){return;}//if nothing changed, then return.
+    //Particle ref = getNode(trailId, trail.totalInputNum-1);
+    //if(p.pos.x == ref.pos.x && p.pos.y == ref.pos.y && p.pos.z == ref.pos.z){return;}//if nothing changed, then return.
     Particle node = p;
     node.spawnTime = _Time;
     _NodeBuffer[nodeStartId+trail.totalInputNum] = node;
@@ -48,20 +48,19 @@ void AppendNode(uint3 id : SV_DispatchThreadID)
 void CreateVertex(uint3 id : SV_DispatchThreadID)
 {
     uint trailId = getTrailId(id.x);
+    Trail trail = _TrailBuffer[trailId];
     uint nodeId = getLocalNodeId(trailId, id.x);
+    Particle node = getNode(trailId, nodeId);
     int vertexId = getVertexId(trailId, nodeId);
     Vertex v = _VertexBuffer[vertexId];
-    Particle node = getNode(trailId, nodeId);
-    Trail trail = _TrailBuffer[trailId];
+    
     float rate = getRate(trail, node);
 
-    float3 toCameraDir = calcToCameraDir(node.pos);
-	float3 right = rightFromCamera(getNodeDir(trailId, nodeId), getWidth(rate), toCameraDir);
+    float3 right = getNodeRight(trailId, nodeId);
 
     v.col = getColor(rate);
     v.customData = getCustomData(rate);
-    v.pos = node.pos-right;
-    _VertexBuffer[vertexId] = v;
-    v.pos = node.pos+right;
-    _VertexBuffer[vertexId+1] = v;
+    v.pos = node.pos;
+
+    addPairVertex(v, vertexId, right);
 }

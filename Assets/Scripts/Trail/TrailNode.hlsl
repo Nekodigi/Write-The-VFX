@@ -3,6 +3,9 @@
 
 #include "Assets/Scripts/Particle/Particle.hlsl"
 #include "Assets/Scripts/Utils/Sampler/Sampler.hlsl"
+#include "Assets/Scripts/Utils/Camera/Camera.hlsl"
+#include "Assets/Scripts/Utils/Vertex/Vertex.hlsl"
+
 
 struct Trail
 {
@@ -74,5 +77,17 @@ float4 getCustomData(float rate){
     return customData;
 }
 
+float3 getNodeRight(uint trailId, uint nodeId){
+    Particle node = getNode(trailId, nodeId);
+    float rate = getRate(_TrailBuffer[trailId], node);
+    float3 toCameraDir = calcToCameraDir(node.pos);
+	return rightFromCamera(getNodeDir(trailId, nodeId), getWidth(rate), toCameraDir);
+}
+void addPairVertex(Vertex v, uint vertexId, float3 right){
+    v.pos = v.pos-right;
+    _VertexBuffer[vertexId] = v;
+    v.pos = v.pos+right*2;
+    _VertexBuffer[vertexId+1] = v;
+}
 
 #endif
