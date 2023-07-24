@@ -9,19 +9,12 @@
 #include "Assets/Scripts/Utils/Camera/Camera.hlsl"
 #include "Assets/Scripts/Utils/Vertex/Vertex.hlsl"
 
-float _Life;
 
 [numthreads(NUM_THREAD_X,1,1)]
 void InitNode(uint3 id : SV_DispatchThreadID)
 {
-    Particle node = (Particle)0;
-    node.disable = 1;
-    _NodeBuffer[id.x] = node;
-    //too much repeat. remove later
-    Trail trail = (Trail)0;
-    trail.spawnTime = _Time;
-    trail.life = _Life;
-    _TrailBuffer[id.x/_NodePerTrail] = trail;
+    _NodeBuffer[id.x] = initInactivatedNode();
+    _TrailBuffer[id.x/_NodePerTrail] = initTrail();
 }
 
 [numthreads(NUM_THREAD_X,1,1)]
@@ -29,19 +22,11 @@ void AppendNode(uint3 id : SV_DispatchThreadID)
 {
 	uint nodeId = id.x;
     uint trailId = getTrailId(id.x);
-    uint nodeStartId = getGlobalNodeIdNoOffset(trailId, 0);
 
-    Trail trail = _TrailBuffer[trailId];
-    Particle p = _ParticleBuffer[trailId];
     //Particle ref = getNode(trailId, trail.totalInputNum-1);
     //if(p.pos.x == ref.pos.x && p.pos.y == ref.pos.y && p.pos.z == ref.pos.z){return;}//if nothing changed, then return.
-    Particle node = p;
-    node.spawnTime = _Time;
-    _NodeBuffer[nodeStartId+trail.totalInputNum] = node;
-
-    trail.totalInputNum += 1;
-    trail.totalInputNum %= _NodePerTrail;
-	_TrailBuffer[trailId] = trail;
+    Particle node = initNode(_ParticleBuffer[trailId]);
+    appendNode(node, trailId);
 }
 
 [numthreads(NUM_THREAD_X,1,1)]
@@ -53,14 +38,12 @@ void CreateVertex(uint3 id : SV_DispatchThreadID)
     Particle node = getNode(trailId, nodeId);
     int vertexId = getVertexId(trailId, nodeId);
     Vertex v = _VertexBuffer[vertexId];
-    
-    float rate = getRate(trail, node);
 
-    float3 right = getNodeRight(trailId, nodeId);
+    float rateA = getRate(trail, node);
+    float rate = getRelativeRate(trailId, nodeId);
 
-    v.col = getColor(rate);
-    v.customData = getCustomData(rate);
-    v.pos = node.pos;
+    v = updateVertex(v, trailId, nodeId, rateA);
 
+    float3 right = getNodeRight(trailId, nodeId, getWidth(rate));
     addPairVertex(v, vertexId, right);
 }

@@ -80,8 +80,6 @@ public class ITrailController : MonoBehaviour
 
             computeShader.Dispatch(kernelVertex, vertexNum / 512 / 2, 1, 1);
             totalFrame++;
-            Debug.Log(totalFrame / Time.time);
-            
         }
 
         EditorApplication.QueuePlayerLoopUpdate();
@@ -135,7 +133,7 @@ public class ITrailController : MonoBehaviour
         computeShader.SetFloat("_Time", Time.time);
         computeShader.SetFloat("_DeltaTime", Time.deltaTime);
         computeShader.SetFloat("_TrailWidth", width);
-        computeShader.SetFloat("_Life", life);
+        computeShader.SetFloat("_TLife", life);
         computeShader.SetInt("_NodePerTrail", trailData.NodeNumPerTrail);
 
         computeShader.SetVector("_ToCameraDir", toCameraDir);
