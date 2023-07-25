@@ -21,6 +21,9 @@ float4x4 eulerAnglesToRotationMatrix(float3 angles)
     );
 }
 
+float3 degToRad(float3 deg){
+    return deg*PI/180;
+}
 float4 sizeRotPos(float4 target, float3 size, float3 rot, float3 pos){
     float4x4 object2world = (float4x4)0;
     object2world._11_22_33_44 = float4(size, 1.0);

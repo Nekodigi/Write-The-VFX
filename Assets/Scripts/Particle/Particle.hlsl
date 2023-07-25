@@ -5,6 +5,7 @@
 #include "Assets/Scripts/Utils/Time/Time.hlsl"
 #include "Assets/Scripts/Value/Random.cginc"
 #include "Assets/Scripts/Utils/Consts/Consts.hlsl"
+#include "Assets/Scripts/Utils/Coordinate/Coordinate.hlsl"
 
 
 struct Particle
@@ -41,6 +42,9 @@ RWStructuredBuffer<Particle>  _ParticleBuffer;
 StructuredBuffer<Particle>  _ParticleBuffer;
 #endif
 
+ConsumeStructuredBuffer<uint> _PooledParticleBuffer;
+AppendStructuredBuffer<uint> _DeadParticleBuffer;
+
 float _PosRange;
 float3 _PosMax;
 float3 _PosMin;
@@ -50,6 +54,10 @@ float3 _VelMax;
 float3 _SizeMin;
 float3 _SizeMax;
 bool _UseField;
+
+float3 _PosOrigin;
+float3 _RotOrigin;
+float3 _SizeOrigin;
 
 float getAge(Particle p){
     return _Time - p.spawnTime;
@@ -83,7 +91,8 @@ float3 normPos(Particle p){
     return (p.pos-_PosMin)/(_PosMax-_PosMin);
 }
 
-Particle initParticle(uint3 id){
+Particle initParticle(int id_){
+    uint3 id = uint3(id_,0,0);
     Particle p = _ParticleBuffer[id.x];
     if(_PosRange == 0){
         p.pos = randomBetween(id.xxx, _PosMin, _PosMax);
@@ -102,10 +111,21 @@ Particle initParticle(uint3 id){
     p.lifeTime = _PLife.SampleLevel(linearClampSampler, random2(id.xx+0.01), 0).x;
     p.col = _PCol.SampleLevel(linearClampSampler, random2(id.xx), 0);
     p.disable = 2;
+
+    p.pos += _PosOrigin;
+    p.vel = rotCoord(p.vel.xyzz, degToRad(_RotOrigin)).xyz;
+    return p;
+}
+
+Particle deleteParticle(int id){
+    _DeadParticleBuffer.Append(id);
+    Particle p = (Particle)0;
+    p.disable = 1;
     return p;
 }
 
 Particle updateParticle(Particle p, uint3 id){
+    if(p.disable == 2)p.disable = 0;
     float rate = getRate(p);
     p.vel *= (1-geDampAt(rate));
 
@@ -119,8 +139,7 @@ Particle updateParticle(Particle p, uint3 id){
     p.sizeDest = p.size * getSizeAt(rate);
     p.customData = getCustomDataAt(rate);
 
-    if(p.disable == 2)p.disable = 0;
-    if(p.lifeTime < getAge(p))p = initParticle(id.x);
+    if(p.disable == 0 && p.lifeTime < getAge(p))p = deleteParticle(id.x);
 
     return p;
 }

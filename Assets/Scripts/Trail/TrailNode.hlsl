@@ -90,6 +90,13 @@ float getRelativeRate(uint trailId, float nodeId){//heavy! multiple warp not pre
     return 1.0-(nodeId-lowBound)/(highBound-lowBound);
 }
 
+bool isInvalidNode(int trailId, int nodeId){
+    Trail trail = _TrailBuffer[trailId];
+    Particle ref = getNode(trailId, trail.totalInputNum-1);
+    Particle p = _ParticleBuffer[trailId];
+    return p.pos.x == ref.pos.x && p.pos.y == ref.pos.y && p.pos.z == ref.pos.z;//if nothing changed, then return.
+}
+
 float getRelativeWidth(float rate){
     float mult = _TWidthOverLifetime.SampleLevel(linearClampSampler, float2(rate, 0), 0).x;
     return mult;

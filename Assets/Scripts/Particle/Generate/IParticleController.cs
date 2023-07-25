@@ -8,8 +8,9 @@ using UnityEditor;
 public class IParticleController : MonoBehaviour
 {
     public int burst;
+    public float burstPerSec;
     public int inputPerSec;
-    public int maxCount { get {int t = Mathf.CeilToInt(burst + inputPerSec * life.constantMax);
+    public int maxCount { get {int t = Mathf.CeilToInt(((burstPerSec == 0 ? 0 : burst/burstPerSec) + inputPerSec) * life.constantMax + (burstPerSec == 0 ? burst : 0));
             return Mathf.CeilToInt(t / THREAD_NUM) * THREAD_NUM;
         } }
 
@@ -51,9 +52,13 @@ public class IParticleController : MonoBehaviour
     public ComputeShader computeShader;
 
     public ComputeBuffer particleBuffer;
+    ComputeBuffer pooledParticleBuffer;
+    ComputeBuffer particleCountBuffer;
     Particle[] particles;
+    uint[] particleCount;
 
     protected int kernelIndexInitialize;
+    protected int kernelIndexEmit;
     protected int kernelIndexUpdate;
 
     protected const int THREAD_NUM = 16;
@@ -62,24 +67,40 @@ public class IParticleController : MonoBehaviour
 
     [HideInInspector]
     public bool syncUpdate = false;
+    int totalEmit = 0;
+    float lastBurst;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        computeShader = Instantiate(computeShader);
+        //computeShader = Instantiate(computeShader);
         kernelIndexInitialize = computeShader.FindKernel("Init");
+        kernelIndexEmit = computeShader.FindKernel("Emit");
         kernelIndexUpdate = computeShader.FindKernel("Update");
 
         particleBuffer = new ComputeBuffer(maxCount, Marshal.SizeOf(typeof(Particle)));
         particles = new Particle[maxCount];
         particleBuffer.SetData(particles);
 
+        pooledParticleBuffer = new ComputeBuffer(maxCount, Marshal.SizeOf(typeof(uint)), ComputeBufferType.Append);
+        pooledParticleBuffer.SetCounterValue(0);
+
+        particleCountBuffer = new ComputeBuffer(1, Marshal.SizeOf(typeof(uint)), ComputeBufferType.IndirectArguments);
+        particleCount = new uint[] { 0 };
+        particleCountBuffer.SetData(particleCount);
+
         SetValueToShader();
         SetTextureToShader(kernelIndexInitialize);
         SetBufferToShader(kernelIndexInitialize);
         SetBufferToShader(kernelIndexUpdate);
 
+        SetTextureToShader(kernelIndexEmit);
+        SetBufferToShader(kernelIndexEmit);
+
         computeShader.Dispatch(kernelIndexInitialize, maxCount / THREAD_NUM, 1, 1);
+        if(burst > 0)computeShader.Dispatch(kernelIndexEmit, burst , 1, 1);//seems certain amount not rendererd
+        lastBurst = Time.time;
 
     }
 
@@ -96,19 +117,47 @@ public class IParticleController : MonoBehaviour
     void Update()
     {
         if (!syncUpdate) Update_();
+
         EditorApplication.QueuePlayerLoopUpdate();
     }
 
     public void Update_()
     {
         SetValueToShader();
+
+        ComputeBuffer.CopyCount(pooledParticleBuffer, particleCountBuffer, 0);
+        particleCountBuffer.GetData(particleCount);
+        Debug.Log(particleCount[0]);
+
+        int emitCount = (int)((Time.time * inputPerSec-totalEmit));
+        int additional = 0;
+        if (burstPerSec < Time.time - lastBurst)
+        {
+            additional += burst;
+            lastBurst = Time.time;
+        }
+        if (emitCount+additional > 0)
+        {
+            SetBufferToShader(kernelIndexEmit);
+            SetTextureToShader(kernelIndexEmit);
+            
+            computeShader.Dispatch(kernelIndexEmit, (int)Mathf.Min(emitCount+additional, particleCount[0]), 1, 1);
+        }
+
+
+        SetBufferToShader(kernelIndexUpdate);
         SetTextureToShader(kernelIndexUpdate);
         computeShader.Dispatch(kernelIndexUpdate, maxCount / THREAD_NUM, 1, 1);
+        
+        //Debug.Log(particleCount[0]);
+        totalEmit += emitCount;
     }
 
     protected void OnDestroy()
     {
         particleBuffer.Release();
+        pooledParticleBuffer.Release();
+
     }
 
     protected void Bake()
@@ -136,6 +185,9 @@ public class IParticleController : MonoBehaviour
         computeShader.SetFloat("_PosRange", posRange);
         computeShader.SetVector("_PosMin", posMin);
         computeShader.SetVector("_PosMax", posMax);
+        computeShader.SetVector("_PosOrigin", transform.position) ;
+        computeShader.SetVector("_RotOrigin", transform.rotation.eulerAngles);
+        computeShader.SetVector("_SizeOrigin", transform.localScale);
         computeShader.SetFloat("_VelRange", velRange);
         computeShader.SetVector("_VelMin", velMin);
         computeShader.SetVector("_VelMax", velMax);
@@ -174,6 +226,8 @@ public class IParticleController : MonoBehaviour
     void SetBufferToShader(int kernelId)
     {
         computeShader.SetBuffer(kernelId, "_ParticleBuffer", particleBuffer);
+        computeShader.SetBuffer(kernelId, "_DeadParticleBuffer", pooledParticleBuffer);
+        computeShader.SetBuffer(kernelId, "_PooledParticleBuffer", pooledParticleBuffer);
     }
 
 }
