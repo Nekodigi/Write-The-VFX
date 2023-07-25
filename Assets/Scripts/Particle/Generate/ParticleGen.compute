@@ -1,5 +1,6 @@
 // Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel Init
+#pragma kernel Emit
 #pragma kernel Update
 
 #include "Assets/Scripts/Particle/Particle.hlsl"
@@ -13,10 +14,15 @@
 [numthreads(16, 1, 1)]
 void Init(uint3 id : SV_DispatchThreadID)
 {
-    _ParticleBuffer[id.x] = initParticle(id.x);
+    _ParticleBuffer[id.x] = deleteParticle(id.x);
 }
 
-
+[numthreads(1, 1, 1)]
+void Emit()
+{
+    int id = _PooledParticleBuffer.Consume();
+    _ParticleBuffer[id] = initParticle(id);
+}
 
 [numthreads(16, 1, 1)]
 void Update(uint3 id : SV_DispatchThreadID)
@@ -32,6 +38,7 @@ void Update(uint3 id : SV_DispatchThreadID)
     p.pos += curl*10*_DeltaTime*geFieldAt(rate);
 
     p = updateParticle(p, id);
+
 
     collideBoundary(p);
 

@@ -22,9 +22,8 @@ void AppendNode(uint3 id : SV_DispatchThreadID)
 {
 	uint nodeId = id.x;
     uint trailId = getTrailId(id.x);
-
-    //Particle ref = getNode(trailId, trail.totalInputNum-1);
-    //if(p.pos.x == ref.pos.x && p.pos.y == ref.pos.y && p.pos.z == ref.pos.z){return;}//if nothing changed, then return.
+    
+    if(isInvalidNode(trailId, nodeId))return;
     Particle node = initNode(_ParticleBuffer[trailId]);
     appendNode(node, trailId);
 }
@@ -40,10 +39,10 @@ void CreateVertex(uint3 id : SV_DispatchThreadID)
     Vertex v = _VertexBuffer[vertexId];
 
     float rateA = getRate(trail, node);
-    float rate = getRelativeRate(trailId, nodeId);
+    //float rate = getRelativeRate(trailId, nodeId);
 
     v = updateVertex(v, trailId, nodeId, rateA);
 
-    float3 right = getNodeRight(trailId, nodeId, getWidth(rate));
+    float3 right = getNodeRight(trailId, nodeId, getWidth(rateA));
     addPairVertex(v, vertexId, right);
 }

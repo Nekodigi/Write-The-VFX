@@ -24,6 +24,6 @@ public class ParticleRenderer : MonoBehaviour
     {
         material_.SetBuffer("_ParticleBuffer", particleController.particleBuffer);
 
-        Graphics.DrawMeshInstancedProcedural(mesh, 0, material_, new Bounds(transform.position, Vector3.one * 10000), particleController.maxCount);
+        Graphics.DrawMeshInstancedProcedural(mesh, 0, material_, new Bounds(Vector3.zero, Vector3.one * 10000), particleController.maxCount);
     }
 }

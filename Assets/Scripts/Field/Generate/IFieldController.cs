@@ -28,9 +28,9 @@ public class IFieldController : MonoBehaviour
 
         public ThreadSize(uint x, uint y, uint z)
         {
-            this.x = (int)x;
-            this.y = (int)y;
-            this.z = (int)z;
+            this.x = Mathf.Max(8, (int)x);
+            this.y = Mathf.Max(8, (int)y);
+            this.z = Mathf.Max(8, (int)z);
         }
     }
 

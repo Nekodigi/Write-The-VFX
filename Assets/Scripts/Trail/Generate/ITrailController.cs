@@ -37,7 +37,7 @@ public class ITrailController : MonoBehaviour
     float totalFrame;
 
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         this.trailData = new TrailData(particleGen.maxCount, life, inputPerSec);
         vertexPerTrail = trailData.NodeNumPerTrail * 2;
