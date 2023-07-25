@@ -24,9 +24,15 @@ public class TrailRender : MonoBehaviour
     int IndexNumPerTrail;
     TrailData trailData;
 
-    void Start()
+    private void Awake()
     {
         trailController = GetComponent<ITrailController>();
+        trailController.syncStart = true;
+    }
+
+    void Start()
+    {
+        trailController.Start_();
         IndexNumPerTrail = IndexNumPerTrail = (trailController.vertexPerTrail - 1) * 6;
         trailData = trailController.trailData;
         InitBufferIfNeed();
@@ -97,6 +103,7 @@ public class TrailRender : MonoBehaviour
             worldBounds = bounds
         };
 
+        Debug.Log(argsBuffer);
         Graphics.RenderPrimitivesIndexedIndirect(renderParams, MeshTopology.Triangles, indexBuffer, argsBuffer);
 
         EditorApplication.QueuePlayerLoopUpdate();

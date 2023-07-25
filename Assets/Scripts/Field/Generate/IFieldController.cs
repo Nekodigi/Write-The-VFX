@@ -15,6 +15,8 @@ public class IFieldController : MonoBehaviour
 
     public ComputeShader computeShader;
 
+    public ParticleGen particleGen;
+
     [HideInInspector]
     public RenderTexture source, dest, sourceVec, destVec;
 
@@ -33,7 +35,6 @@ public class IFieldController : MonoBehaviour
             this.z = Mathf.Max(8, (int)z);
         }
     }
-
     protected ThreadSize threadSize;
 
     // Start is called before the first frame update
@@ -76,8 +77,9 @@ public class IFieldController : MonoBehaviour
 
     protected void Dispatch(int kernelId)
     {
-        SetValuesToBuffer();
-        SetTexturesToBuffer(kernelId);
+        SetValuesToShader();
+        SetTexturesToShader(kernelId);
+        SetBufferToShader(kernelId);
         computeShader.Dispatch(kernelId,
                                     source.width / threadSize.x,
                                     source.height / threadSize.y,
@@ -92,7 +94,7 @@ public class IFieldController : MonoBehaviour
         return rt;
     }
 
-    protected void SetValuesToBuffer()
+    protected void SetValuesToShader()
     {
         computeShader.SetFloat("_Time", Time.time);
         computeShader.SetFloat("_DeltaTime", Time.deltaTime);
@@ -102,13 +104,23 @@ public class IFieldController : MonoBehaviour
         computeShader.SetFloat("_FMult", multiplier);
         computeShader.SetFloat("_FRange", range);
         computeShader.SetFloat("_FGamma", gamma);
+        if (particleGen.particleBuffer != null)
+        {
+            computeShader.SetVector("_PosMin", particleGen.posMin);
+            computeShader.SetVector("_PosMax", particleGen.posMax);
+        }
     }
 
-    protected void SetTexturesToBuffer(int kernelId)
+    protected void SetTexturesToShader(int kernelId)
     {
         computeShader.SetTexture(kernelId, "_Source", source);
         computeShader.SetTexture(kernelId, "_Dest", dest);
         computeShader.SetTexture(kernelId, "_SourceVec", sourceVec);
         computeShader.SetTexture(kernelId, "_DestVec", destVec);
+    }
+
+    protected void SetBufferToShader(int kernelId)
+    {
+        if(particleGen.particleBuffer != null) computeShader.SetBuffer(kernelId, "_ParticleBuffer", particleGen.particleBuffer);
     }
 }

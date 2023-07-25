@@ -48,7 +48,7 @@ public class FieldRenderer : MonoBehaviour
                 targetRT = fieldController.destVec;
                 break;
         }
-        Material mat = GetComponent<Renderer>().material;
+        Material mat = GetComponent<Renderer>().sharedMaterial;
         mat.SetVector("_VecMin", VecMin);
         mat.SetVector("_VecMax", VecMax);
         mat.mainTexture = targetRT;

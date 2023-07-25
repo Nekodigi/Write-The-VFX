@@ -4,6 +4,7 @@
 #pragma kernel Update2
 
 #include "Assets/Scripts/Field/Field.hlsl"
+#include "Assets/Scripts/Particle/Particle.hlsl"
 #include "Assets/Scripts/Value/ClassicPerlinNoise.cginc"
 #include "Assets/Scripts/Field/Function/Grad.hlsl"
 #include "Assets/Scripts/Utils/Time/Time.hlsl"
@@ -18,7 +19,19 @@ void Update (uint3 id : SV_DispatchThreadID)
 {
     float width, height;
     _SourceVec.GetDimensions(width, height);
-    _Dest[id.xy] = perlinNoise(float3(id.xy/float2(width, height)/_FScale, _Time/100.0*_FTrans))*0.5+0.5;
+
+    uint pcount_, pcount2_;
+    _ParticleBuffer.GetDimensions(pcount_, pcount2_);
+    float pcount = pcount_;
+
+    float2 worldSamplePos = lerp(_PosMin.xz, _PosMax.xz, id.xy/float2(width, height));
+    float res = 0;
+    for(int i=0; i<pcount; i++){
+        Particle p = _ParticleBuffer[i];
+        if(p.disable == 0) res += pow(distance(worldSamplePos, p.pos.xz)/_FRange, _FGamma);
+    }
+    _Dest[id.xy] = res;
+
 
 }
 
