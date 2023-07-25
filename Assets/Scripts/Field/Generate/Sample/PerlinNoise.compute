@@ -1,0 +1,45 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel Init
+#pragma kernel Update
+#pragma kernel Update2
+
+#include "Assets/Scripts/Field/Field.hlsl"
+#include "Assets/Scripts/Particle/Particle.hlsl"
+#include "Assets/Scripts/Value/ClassicPerlinNoise.cginc"
+#include "Assets/Scripts/Field/Function/Grad.hlsl"
+#include "Assets/Scripts/Utils/Time/Time.hlsl"
+
+[numthreads(8,8,1)]
+void Init (uint3 id : SV_DispatchThreadID)
+{
+}
+
+[numthreads(8,8,1)]
+void Update (uint3 id : SV_DispatchThreadID)
+{
+    float width, height;
+    _SourceVec.GetDimensions(width, height);
+    //uint pcount_, pcount2_;
+    //_ParticleBuffer.GetDimensions(pcount_, pcount2_);
+    //float pcount = pcount_;
+
+    //float2 worldSamplePos = lerp(_PosMin.xz, _PosMax.xz, id.xy/float2(width, height));
+    /*float res = 0;
+    for(int i=0; i<pcount; i++){
+        Particle p = _ParticleBuffer[i];
+        if(p.disable == 0) res += distance(worldSamplePos, p.pos.xz);
+    }*/
+    //float2 worldSamplePos = id.xy/float2(width, height);
+    
+    _Dest[id.xy] = perlinNoise(float3(id.xy/float2(width, height)/_FScale, _Time/100.0*_FTrans))*0.5+0.5;
+    //_Dest[id.xy] = res;
+
+}
+
+[numthreads(8,8,1)]
+void Update2 (uint3 id : SV_DispatchThreadID)
+{
+    float2 grad = Grad(id.xy);
+    _DestVec[id.xy] = float2(grad.y, -grad.x)*_FMult;
+
+}

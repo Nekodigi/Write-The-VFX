@@ -8,10 +8,10 @@ using UnityEditor;
 public class IParticleController : MonoBehaviour
 {
     public int burst;
-    public float burstPerSec;
+    public float burstIntervalSec;
     public int inputPerSec;
-    public int maxCount { get {int t = Mathf.CeilToInt(((burstPerSec == 0 ? 0 : burst/burstPerSec) + inputPerSec) * life.constantMax + (burstPerSec == 0 ? burst : 0));
-            return Mathf.CeilToInt(t / THREAD_NUM) * THREAD_NUM;
+    public int maxCount { get {int t = Mathf.CeilToInt((1f*(burstIntervalSec == 0 ? 0 : burst / burstIntervalSec) + inputPerSec) * life.constantMax + (burstIntervalSec == 0 ? burst : 0));
+            return Mathf.CeilToInt(1f*t / THREAD_NUM) * THREAD_NUM;
         } }
 
     [GradientUsage(true)] public Gradient hdrGradientPicker;
@@ -49,7 +49,8 @@ public class IParticleController : MonoBehaviour
         bakedRotVelOverLifetime, bakedColorOverLifetime, bakedCustomDataOverLifetime,
         bakedFieldOverLifetime, bakedDampDataOverLifetime;
 
-    public ComputeShader computeShader;
+    public ComputeShader computeShader_;
+    ComputeShader computeShader;
 
     public ComputeBuffer particleBuffer;
     ComputeBuffer pooledParticleBuffer;
@@ -72,9 +73,16 @@ public class IParticleController : MonoBehaviour
 
 
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        syncUpdate = false;
+
+    }
+
     void Start()
     {
-        //computeShader = Instantiate(computeShader);
+        computeShader = Instantiate(computeShader_);
         kernelIndexInitialize = computeShader.FindKernel("Init");
         kernelIndexEmit = computeShader.FindKernel("Emit");
         kernelIndexUpdate = computeShader.FindKernel("Update");
@@ -101,7 +109,6 @@ public class IParticleController : MonoBehaviour
         computeShader.Dispatch(kernelIndexInitialize, maxCount / THREAD_NUM, 1, 1);
         if(burst > 0)computeShader.Dispatch(kernelIndexEmit, burst , 1, 1);//seems certain amount not rendererd
         lastBurst = Time.time;
-
     }
 
     private void OnEnable()
@@ -123,15 +130,16 @@ public class IParticleController : MonoBehaviour
 
     public void Update_()
     {
+
         SetValueToShader();
 
         ComputeBuffer.CopyCount(pooledParticleBuffer, particleCountBuffer, 0);
         particleCountBuffer.GetData(particleCount);
-        Debug.Log(particleCount[0]);
+        //Debug.Log(particleCount[0]);
 
         int emitCount = (int)((Time.time * inputPerSec-totalEmit));
         int additional = 0;
-        if (burstPerSec < Time.time - lastBurst)
+        if (burstIntervalSec != 0 && burstIntervalSec < Time.time - lastBurst)
         {
             additional += burst;
             lastBurst = Time.time;
@@ -155,8 +163,8 @@ public class IParticleController : MonoBehaviour
 
     protected void OnDestroy()
     {
-        particleBuffer.Release();
-        pooledParticleBuffer.Release();
+        if(particleBuffer != null) particleBuffer.Release();
+        if (pooledParticleBuffer != null) pooledParticleBuffer.Release();
 
     }
 

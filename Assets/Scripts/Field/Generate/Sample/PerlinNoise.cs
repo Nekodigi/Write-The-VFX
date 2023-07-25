@@ -7,8 +7,6 @@ public class Noise : IFieldController
 {
     public GameObject display;
 
-    public ParticleGen particleGen;
-
     int kernelUpdate2;
 
     protected override void Awake()
