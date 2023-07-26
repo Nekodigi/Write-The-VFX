@@ -40,7 +40,7 @@ public class IParticleController : MonoBehaviour
     public ParticleSystem.MinMaxCurve sizeOverLifetimeY = 1;
     public ParticleSystem.MinMaxCurve sizeOverLifetimeZ = 1;
     public ParticleSystem.MinMaxGradient colorOverLifetime;
-    public ParticleSystem.MinMaxCurve weightOverLifetimeX;// addUV
+    public ParticleSystem.MinMaxCurve weightOverLifetime = 1;
     public ParticleSystem.MinMaxCurve customDataOverLifetimeX;// addUV
     public ParticleSystem.MinMaxCurve customDataOverLifetimeY;
     public ParticleSystem.MinMaxCurve customDataOverLifetimeZ;
@@ -184,6 +184,7 @@ public class IParticleController : MonoBehaviour
         MyCurve.Bake(ref bakedRotVelOverLifetime, rotVelOverLifetimeX, rotVelOverLifetimeY, rotVelOverLifetimeZ);
         MyCurve.Bake(ref bakedSizeOverLifetime, sizeOverLifetimeX, sizeOverLifetimeY, sizeOverLifetimeZ);
         MyGradient.Bake(ref bakedColorOverLifetime, colorOverLifetime);
+        MyCurve.Bake(ref bakedWeightOverLifetime, weightOverLifetime);
         MyCurve.Bake(ref bakedCustomDataOverLifetime, customDataOverLifetimeX, customDataOverLifetimeY, customDataOverLifetimeZ, customDataOverLifetimeW);
         MyCurve.Bake(ref bakedFieldOverLifetime, fieldOverLifetime);
         MyCurve.Bake(ref bakedDampDataOverLifetime, dampOverLifetime);
@@ -221,11 +222,13 @@ public class IParticleController : MonoBehaviour
 
         computeShader.SetTexture(kernelId, "_PCol", bakedCol);
         computeShader.SetTexture(kernelId, "_PLife", bakedLife);
+        computeShader.SetTexture(kernelId, "_PWeight", bakedWeight);
 
         computeShader.SetTexture(kernelId, "_PVelOverLife", bakedVelOverLifetime);
         computeShader.SetTexture(kernelId, "_PRotVelOverLife", bakedRotVelOverLifetime);
         computeShader.SetTexture(kernelId, "_PSizeOverLife", bakedSizeOverLifetime);
         computeShader.SetTexture(kernelId, "_PColOverLife", bakedColorOverLifetime);
+        computeShader.SetTexture(kernelId, "_PWeightOverLife", bakedWeightOverLifetime);
         computeShader.SetTexture(kernelId, "_PCustomDataOverLife", bakedCustomDataOverLifetime);
         computeShader.SetTexture(kernelId, "_PFieldOverLife", bakedFieldOverLifetime);
         computeShader.SetTexture(kernelId, "_PDampOverLife", bakedDampDataOverLifetime);

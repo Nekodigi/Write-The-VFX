@@ -132,7 +132,7 @@ Vertex updateVertex(Vertex v, uint trailId, uint nodeId, float rate){
     Particle node = getNode(trailId, nodeId);
     int vertexId = getVertexId(trailId, nodeId);
     
-    v.col = getColor(rate);
+    v.col = node.col*getColor(rate);
     v.customData = getCustomData(rate);
     v.pos = node.pos;
     return v;
