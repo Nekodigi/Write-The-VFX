@@ -29,6 +29,7 @@ public class IParticleController : MonoBehaviour
     public Vector3 sizeMax = Vector3.one;
 
     public ParticleSystem.MinMaxCurve life;
+    public ParticleSystem.MinMaxCurve weight = 1;// addUV
     public ParticleSystem.MinMaxCurve velOverLifetimeX;
     public ParticleSystem.MinMaxCurve velOverLifetimeY;
     public ParticleSystem.MinMaxCurve velOverLifetimeZ;
@@ -39,6 +40,7 @@ public class IParticleController : MonoBehaviour
     public ParticleSystem.MinMaxCurve sizeOverLifetimeY = 1;
     public ParticleSystem.MinMaxCurve sizeOverLifetimeZ = 1;
     public ParticleSystem.MinMaxGradient colorOverLifetime;
+    public ParticleSystem.MinMaxCurve weightOverLifetimeX;// addUV
     public ParticleSystem.MinMaxCurve customDataOverLifetimeX;// addUV
     public ParticleSystem.MinMaxCurve customDataOverLifetimeY;
     public ParticleSystem.MinMaxCurve customDataOverLifetimeZ;
@@ -47,8 +49,8 @@ public class IParticleController : MonoBehaviour
     public ParticleSystem.MinMaxCurve dampOverLifetime;
 
     [HideInInspector]
-    protected RenderTexture bakedCol, bakedLife, bakedSizeOverLifetime, bakedVelOverLifetime,
-        bakedRotVelOverLifetime, bakedColorOverLifetime, bakedCustomDataOverLifetime,
+    protected RenderTexture bakedCol, bakedLife, bakedWeight, bakedSizeOverLifetime, bakedVelOverLifetime,
+        bakedRotVelOverLifetime, bakedColorOverLifetime, bakedWeightOverLifetime, bakedCustomDataOverLifetime,
         bakedFieldOverLifetime, bakedDampDataOverLifetime;
 
     public ComputeShader computeShader_;
@@ -174,16 +176,17 @@ public class IParticleController : MonoBehaviour
 
     protected void Bake()
     {
-        bakedCol = MyGradient.Bake(bakedCol, gradient);
+        MyGradient.Bake(ref bakedCol, gradient);
 
-        bakedLife = MyCurve.Bake(bakedLife, life);
-        bakedVelOverLifetime = MyCurve.Bake(bakedVelOverLifetime, velOverLifetimeX, velOverLifetimeY, velOverLifetimeZ);
-        bakedRotVelOverLifetime = MyCurve.Bake(bakedRotVelOverLifetime, rotVelOverLifetimeX, rotVelOverLifetimeY, rotVelOverLifetimeZ);
-        bakedSizeOverLifetime = MyCurve.Bake(bakedSizeOverLifetime, sizeOverLifetimeX, sizeOverLifetimeY, sizeOverLifetimeZ);
-        bakedColorOverLifetime = MyGradient.Bake(bakedColorOverLifetime, colorOverLifetime);
-        bakedCustomDataOverLifetime = MyCurve.Bake(bakedCustomDataOverLifetime, customDataOverLifetimeX, customDataOverLifetimeY, customDataOverLifetimeZ, customDataOverLifetimeW);
-        bakedFieldOverLifetime = MyCurve.Bake(bakedFieldOverLifetime, fieldOverLifetime);
-        bakedDampDataOverLifetime = MyCurve.Bake(bakedDampDataOverLifetime, dampOverLifetime);
+        MyCurve.Bake(ref bakedLife, life);
+        MyCurve.Bake(ref bakedWeight, weight);
+        MyCurve.Bake(ref bakedVelOverLifetime, velOverLifetimeX, velOverLifetimeY, velOverLifetimeZ);
+        MyCurve.Bake(ref bakedRotVelOverLifetime, rotVelOverLifetimeX, rotVelOverLifetimeY, rotVelOverLifetimeZ);
+        MyCurve.Bake(ref bakedSizeOverLifetime, sizeOverLifetimeX, sizeOverLifetimeY, sizeOverLifetimeZ);
+        MyGradient.Bake(ref bakedColorOverLifetime, colorOverLifetime);
+        MyCurve.Bake(ref bakedCustomDataOverLifetime, customDataOverLifetimeX, customDataOverLifetimeY, customDataOverLifetimeZ, customDataOverLifetimeW);
+        MyCurve.Bake(ref bakedFieldOverLifetime, fieldOverLifetime);
+        MyCurve.Bake(ref bakedDampDataOverLifetime, dampOverLifetime);
     }
 
     protected void SetDataToShader(int kernelId)

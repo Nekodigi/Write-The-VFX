@@ -124,9 +124,9 @@ public class ITrailController : MonoBehaviour
 
     void Bake()
     {
-        bakedWidthOverLifetime = MyCurve.Bake(bakedWidthOverLifetime, widthOverLifetime);
-        bakedColorOverLifetime = MyGradient.Bake(bakedColorOverLifetime, colorOverLifetime);
-        bakedCustomDataOverLifetime = MyCurve.Bake(bakedCustomDataOverLifetime, customDataXOverLifetime, customDataYOverLifetime, customDataZOverLifetime, customDataWOverLifetime);
+        MyCurve.Bake(ref bakedWidthOverLifetime, widthOverLifetime);
+        MyGradient.Bake(ref bakedColorOverLifetime, colorOverLifetime);
+        MyCurve.Bake(ref bakedCustomDataOverLifetime, customDataXOverLifetime, customDataYOverLifetime, customDataZOverLifetime, customDataWOverLifetime);
     }
 
     public void Dispose()

@@ -8,21 +8,21 @@ public class MyTexture
     static Texture2D texture;
 
 
-    static public RenderTexture Bake(RenderTexture rt, Func<float, float> sampler)
+    static public RenderTexture Bake(ref RenderTexture rt, Func<float, float> sampler)
     {
-        return Bake(rt, (fac) => new Vector4(sampler(fac), sampler(fac), sampler(fac), sampler(fac)));
+        return Bake(ref rt, (fac) => new Vector4(sampler(fac), sampler(fac), sampler(fac), sampler(fac)));
     }
-    static public RenderTexture Bake(RenderTexture rt, Func<float, float> sampler1, Func<float, float> sampler2, Func<float, float> sampler3)
+    static public RenderTexture Bake(ref RenderTexture rt, Func<float, float> sampler1, Func<float, float> sampler2, Func<float, float> sampler3)
     {
-        return Bake(rt, (fac) => new Vector4(sampler1(fac), sampler2(fac), sampler3(fac), sampler3(fac)));
-    }
-
-    static public RenderTexture Bake(RenderTexture rt, Func<float, float> sampler1, Func<float, float> sampler2, Func<float, float> sampler3, Func<float, float> sampler4)
-    {
-        return Bake(rt, (fac) => new Vector4(sampler1(fac), sampler2(fac), sampler3(fac), sampler4(fac)));
+        return Bake(ref rt, (fac) => new Vector4(sampler1(fac), sampler2(fac), sampler3(fac), sampler3(fac)));
     }
 
-    static public RenderTexture Bake(RenderTexture rt, Func<float, Vector4> sampler)
+    static public RenderTexture Bake(ref RenderTexture rt, Func<float, float> sampler1, Func<float, float> sampler2, Func<float, float> sampler3, Func<float, float> sampler4)
+    {
+        return Bake(ref rt, (fac) => new Vector4(sampler1(fac), sampler2(fac), sampler3(fac), sampler4(fac)));
+    }
+
+    static public RenderTexture Bake(ref RenderTexture rt, Func<float, Vector4> sampler)
     {
         if(!texture) texture = new Texture2D(res, 1, TextureFormat.RGBAFloat, false);
         for (int h = 0; h < texture.height; h++)
@@ -34,10 +34,10 @@ public class MyTexture
             }
         }
         texture.Apply();
-        return Tex2DtoRT(rt, texture);
+        return Tex2DtoRT(ref rt, texture);
     }
 
-    static public RenderTexture Tex2DtoRT(RenderTexture rt, Texture2D texture)
+    static public RenderTexture Tex2DtoRT(ref RenderTexture rt, Texture2D texture)
     {
         if(!rt) rt = new RenderTexture(texture.width, 1, 0, RenderTextureFormat.ARGBFloat);
         rt.enableRandomWrite = true;
