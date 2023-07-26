@@ -123,6 +123,43 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!84 &106906887
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 5
+  m_Width: 512
+  m_Height: 512
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 0
+  m_ColorFormat: 52
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!1 &157207112
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,600 +507,248 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 2}
---- !u!84 &176563271
-RenderTexture:
+--- !u!1 &210533839
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 210533842}
+  - component: {fileID: 210533841}
+  - component: {fileID: 210533840}
+  m_Layer: 0
+  m_Name: Trail (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &210533840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210533839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aae0ea1cc6646ab4588ac063f779f505, type: 3}
   m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 5
-  m_Width: 512
-  m_Height: 512
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 0
-  m_ColorFormat: 52
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
---- !u!72 &356073560
-ComputeShader:
+  m_EditorClassIdentifier: 
+  life: 2
+  inputPerSec: 60
+  width: 0.1
+  widthOverLifetime:
+    m_Mode: 1
+    m_CurveMultiplier: 1
+    m_CurveMin:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_CurveMax:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.15390776
+        value: 0.9381617
+        inSlope: 0.5829947
+        outSlope: 0.5829947
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.94137937
+        value: 0.0044844747
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ConstantMin: 0
+    m_ConstantMax: 1
+  colorOverLifetime:
+    m_Mode: 1
+    m_GradientMin:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    m_GradientMax:
+      serializedVersion: 2
+      key0: {r: 0, g: 0.54684716, b: 3.0314336, a: 0}
+      key1: {r: 0.6385339, g: 1.1668583, b: 3.4415903, a: 1}
+      key2: {r: 0.4940716, g: 0.18939552, b: 1.7207953, a: 1}
+      key3: {r: 0.2096905, g: 0, b: 0.46226418, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 9059
+      ctime2: 29684
+      ctime3: 65535
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 4048
+      atime2: 61295
+      atime3: 65535
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 4
+      m_NumAlphaKeys: 4
+    m_ColorMin: {r: 0, g: 0, b: 0, a: 0}
+    m_ColorMax: {r: 0, g: 0, b: 0, a: 0}
+  customDataXOverLifetime:
+    m_Mode: 0
+    m_CurveMultiplier: 0
+    m_CurveMin:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_CurveMax:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ConstantMin: 0
+    m_ConstantMax: 1
+  customDataYOverLifetime:
+    m_Mode: 0
+    m_CurveMultiplier: 0
+    m_CurveMin:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_CurveMax:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ConstantMin: 0
+    m_ConstantMax: 1
+  customDataZOverLifetime:
+    m_Mode: 0
+    m_CurveMultiplier: 0
+    m_CurveMin:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_CurveMax:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ConstantMin: 0
+    m_ConstantMax: 1
+  customDataWOverLifetime:
+    m_Mode: 0
+    m_CurveMultiplier: 0
+    m_CurveMin:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_CurveMax:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ConstantMin: 0
+    m_ConstantMax: 1
+  minimalDistance: 0.01
+  vertexPerTrail: 240
+  computeShader: {fileID: 7200000, guid: 3f14267416fd36e4bb000643d1567db3, type: 3}
+  particleGen: {fileID: 1958879675}
+  syncStart: 0
+--- !u!114 &210533841
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TrailVertexGen(Clone)
-  variants:
-  - serializedVersion: 2
-    targetRenderer: 2
-    targetLevel: 0
-    kernels:
-    - serializedVersion: 3
-      name: InitNode
-      uniqueVariants:
-      - serializedVersion: 2
-        cbVariantIndices: 00000000
-        cbs:
-        - name: $Globals
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: -1
-        textures: []
-        builtinSamplers: []
-        inBuffers: []
-        outBuffers:
-        - name: _NodeBuffer
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: -1
-        - name: _TrailBuffer
-          generatedName: 
-          bindPoint: 1
-          samplerBindPoint: -1
-          texDimension: -1
-        code: 445842431805477d35ba8fbb4a6eb7ad4dbcfff701000000bc020000030000002c0000003c0000004c0000004953474e0800000000000000080000004f53474e0800000000000000080000005348455868020000500005009a0000006a08000159000004468e2000000000000d0000009e00000400e0110000000000840000009e00000400e01100010000000c0000005f0000021200020068000002020000009b000004000200000100000001000000a800000bf2e01100000000000a00020001400000000000000240000000000000000000000000000000000000a800000bf2e01100000000000a00020001400000100000000240000000000000000000000000000000000000a800000bf2e01100000000000a00020001400000200000000240000000000000000000000000000000000000a800000bf2e01100000000000a00020001400000300000000240000000000000000000000000000000000000a800000bf2e01100000000000a00020001400000400000000240000000000000000000000000000000000000a800000bf2e01100000000000a00020001400000500000000240000000000000000000000000000000000000a800000bf2e01100000000000a00020001400000600000000240000000000000000000000000000000000000a800000bf2e01100000000000a00020001400000700000000240000000000000000000000000000000000000a800000812e01100000000000a000200014000008000000001400000010000004e000008120010000000000000d000000a0002000a802000000000000c0000003600000612001000010000000a80200000000000000000003600000622001000010000003a802000000000000b0000003600000542001000010000000140000000000000a800000972e01100010000000a00100000000000014000000000000046021000010000003e000001
-        threadGroupSize: 000200000100000001000000
-        requirements: 16385
-        keywords: []
-        isCompiled: 1
-      variantIndices:
-      - : 0
-      globalKeywords: []
-      localKeywords: []
-      dynamicKeywords: []
-    - serializedVersion: 3
-      name: AppendNode
-      uniqueVariants:
-      - serializedVersion: 2
-        cbVariantIndices: 01000000
-        cbs:
-        - name: $Globals
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: -1
-        textures: []
-        builtinSamplers: []
-        inBuffers: []
-        outBuffers:
-        - name: _ParticleBuffer
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: -1
-        - name: _NodeBuffer
-          generatedName: 
-          bindPoint: 1
-          samplerBindPoint: -1
-          texDimension: -1
-        - name: _TrailBuffer
-          generatedName: 
-          bindPoint: 2
-          samplerBindPoint: -1
-          texDimension: -1
-        code: 44584243bf1c7d8550c242dec88eb8efa7ed9fb00100000014060000030000002c0000003c0000004c0000004953474e0800000000000000080000004f53474e08000000000000000800000053484558c005000050000500700100006a08000159000004468e2000000000000d0000009e00000400e0110000000000840000009e00000400e0110001000000840000009e00000400e01100020000000c0000005f0000021200020068000002090000009b0000040002000001000000010000004e000008120010000000000000d000000a0002000a802000000000000c000000a700008b026300808399190022001000000000000a00100000000000014000000800000006e01100020000002900000742001000000000001a0010000000000001400000010000001e00000822001000000000002a001000000000000a802000000000000c0000001e00000722001000000000001a0010000000000001400000ffffffff4e00000900d0000022001000000000001a001000000000000a802000000000000c0000002300000a22001000000000000a001000000000000a802000000000000c0000001a00100000000000a700008b0223048083991900e2001000000000001a00100000000000014000000000000006e9110001000000a700008b022304808399190072001000010000000a00100000000000014000000000000046e211000000000018000007e200100000000000560e10000000000006091000010000000100000722001000000000002a001000000000001a001000000000000100000722001000000000003a001000000000001a001000000000001f0004031a001000000000003e00000115000001a700008b0223048083991900f2001000010000000a00100000000000014000000000000046ee110000000000a700008b0223048083991900f2001000020000000a00100000000000014000001000000046ee110000000000a700008b0223048083991900f2001000030000000a00100000000000014000002000000046ee110000000000a700008b0223048083991900f2001000040000000a00100000000000014000003000000046ee110000000000a700008b0223048083991900f2001000050000000a00100000000000014000004000000046ee110000000000a700008b0223048083991900f2001000060000000a00100000000000014000005000000046ee110000000000a700008b0223048083991900f2001000070000000a00100000000000014000006000000046ee110000000000a700008b022304808399190072001000080000000a00100000000000014000007000000046e2110000000000a700008b022304808399190022001000000000000a00100000000000014000008000000006e0110000000000a700008b026300808399190042001000000000000a00100000000000014000000800000006e01100020000002300000a82001000000000000a001000000000000a802000000000000c0000002a00100000000000a8000009f2e01100010000003a001000000000000140000000000000460e100001000000a8000009f2e01100010000003a001000000000000140000010000000460e100002000000a8000009f2e01100010000003a001000000000000140000020000000460e100003000000a8000009f2e01100010000003a001000000000000140000030000000460e100004000000a8000009f2e01100010000003a001000000000000140000040000000460e100005000000a8000009f2e01100010000003a001000000000000140000050000000460e100006000000a8000009f2e01100010000003a001000000000000140000060000000460e1000070000003600000682001000080000000a8020000000000000000000a8000009f2e01100010000003a001000000000000140000070000000460e100008000000a800000912e01100010000003a0010000000000001400000800000001a001000000000001e00000722001000000000002a0010000000000001400000010000004e00000900d0000022001000000000001a001000000000000a802000000000000c000000a800000912e01100020000000a0010000000000001400000080000001a001000000000003e000001
-        threadGroupSize: 000200000100000001000000
-        requirements: 16385
-        keywords: []
-        isCompiled: 1
-      variantIndices:
-      - : 0
-      globalKeywords: []
-      localKeywords: []
-      dynamicKeywords: []
-    - serializedVersion: 3
-      name: CreateVertex
-      uniqueVariants:
-      - serializedVersion: 2
-        cbVariantIndices: 02000000
-        cbs:
-        - name: $Globals
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: -1
-        textures:
-        - name: _TWidthOverLifetime
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: 2
-        - name: _TColorOverLifetime
-          generatedName: 
-          bindPoint: 1
-          samplerBindPoint: -1
-          texDimension: 2
-        - name: _TCustomDataOverLifetime
-          generatedName: 
-          bindPoint: 2
-          samplerBindPoint: -1
-          texDimension: 2
-        builtinSamplers:
-        - sampler: 85
-          bindPoint: 0
-        inBuffers: []
-        outBuffers:
-        - name: _VertexBuffer
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: -1
-        - name: _NodeBuffer
-          generatedName: 
-          bindPoint: 1
-          samplerBindPoint: -1
-          texDimension: -1
-        - name: _TrailBuffer
-          generatedName: 
-          bindPoint: 2
-          samplerBindPoint: -1
-          texDimension: -1
-        code: 445842434920722d2c9df39fb74c2e1da53959bd01000000ec080000030000002c0000003c0000004c0000004953474e0800000000000000080000004f53474e080000000000000008000000534845589808000050000500260200006a08000159000004468e2000000000000d0000005a00000300601000000000005818000400701000000000005555000058180004007010000100000055550000581800040070100002000000555500009e00000400e0110000000000340000009e00000400e0110001000000840000009e00000400e01100020000000c0000005f0000021200020068000002060000009b0000040002000001000000010000004e000008120010000000000000d000000a0002000a802000000000000c000000a700008b026300808399190062001000000000000a00100000000000014000000400000006e11100020000001e00000742001000000000002a00108041000000000000000a0002001e00000842001000000000002a001000000000000a802000000000000c0000004e00000900d0000042001000000000002a001000000000000a802000000000000c0000002300000a82001000000000000a001000000000000a802000000000000c0000002a001000000000002900000712001000010000003a0010000000000001400000010000008c00000b8200100000000000014000001f00000001400000010000003a001000000000000140000001000000a700008b02a301808399190032001000020000000a00100001000000014000001c00000016e0110000000000a700008b026300808399190022001000010000000a00100000000000014000000800000006e01100020000001e00000742001000000000002a001000000000001a001000010000001e00000842001000000000002a001000000000000a802000000000000c0000001e00000722001000010000002a0010000000000001400000010000004e00000900d0000042001000000000002a001000000000000a802000000000000c0000002300000a42001000000000000a001000000000000a802000000000000c0000002a001000000000004e00000900d0000022001000010000001a001000010000000a802000000000000c0000002300000a12001000000000000a001000000000000a802000000000000c0000001a00100001000000a700008b022304808399190022001000010000000a00100000000000014000008000000006e0110001000000a700008b022304808399190072001000030000000a00100000000000014000000000000046e21100010000002000000712001000000000001a001000010000000140000000000000a700008b022304808399190062001000010000002a00100000000000014000007c00000006e1110001000000a700008b022304808399190072001000040000002a00100000000000014000000000000046e21100010000002000000742001000000000002a0010000100000001400000000000000000000922001000010000001a00108041000000010000000a80200000000000000000000e00000712001000050000001a001000010000001a001000000000000100000712001000000000000a001000000000002a0010000000000000000008e200100001000000a604100003000000a604108041000000040000000100000772001000000000000600100000000000960710000100000000000009e20010000100000056021080410000000400000056822000000000000b000000100000071200100003000000960710000100000096071000010000004400000512001000030000000a0010000300000038000007e200100001000000560e10000100000006001000030000001800000b720010000300000046822000000000000a00000002400000000000000000000000000000000000000100000712001000030000001a001000030000000a001000030000000100000712001000030000002a001000030000000a001000030000003700000ae2001000010000000600100003000000560e10000100000056822000000000000a000000380000077200100003000000460210000000000096071000010000003200000a72001000000000002609100000000000e609100001000000460210804100000003000000100000072200100001000000460210000000000046021000000000004400000522001000010000001a001000010000003800000772001000000000004602100000000000560510000100000036000005220010000500000001400000000000004800008dc20000804355150022001000010000004600100005000000167e100000000000006010000000000001400000000000003800000822001000010000001a001000010000001a802000000000000c000000380000077200100003000000460210000000000056051000010000003200000d7200100003000000460210804100000003000000024000000000003f0000003f0000003f0000000046021000040000004800008dc200008043551500f20010000400000046001000050000009673100002000000006010000000000001400000000000004800008dc200008043551500f2001000050000004600100005000000467e100001000000006010000000000001400000000000003600000582001000030000003a00100004000000a8000009f2e01100000000000a001000010000000140000000000000460e100003000000320000097200100003000000460210000000000056051000010000004602100003000000a800000972e01100000000000a0010000100000001400000100000004602100004000000a8000009f2e01100000000000a001000010000000140000024000000460e100005000000a8000009f2e01100000000003a001000000000000140000000000000460e1000030000003600000582001000040000001a00100002000000a8000009f2e01100000000003a001000000000000140000010000000460e10000400000036000005e2001000020000000609100005000000a8000009f2e01100000000003a001000000000000140000020000000460e100002000000a800000912e01100000000003a0010000000000001400000300000003a001000050000003e000001
-        threadGroupSize: 000200000100000001000000
-        requirements: 16385
-        keywords: []
-        isCompiled: 1
-      variantIndices:
-      - : 0
-      globalKeywords: []
-      localKeywords: []
-      dynamicKeywords: []
-    constantBuffers:
-    - name: $Globals
-      byteSize: 208
-      params:
-      - name: _Time
-        type: 0
-        offset: 0
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-      - name: _TLife
-        type: 0
-        offset: 188
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-      - name: _NodePerTrail
-        type: 5
-        offset: 192
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-    - name: $Globals
-      byteSize: 208
-      params:
-      - name: _Time
-        type: 0
-        offset: 0
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-      - name: _NodePerTrail
-        type: 5
-        offset: 192
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-    - name: $Globals
-      byteSize: 208
-      params:
-      - name: _Time
-        type: 0
-        offset: 0
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-      - name: _ToCameraDir
-        type: 0
-        offset: 160
-        arraySize: 0
-        rowCount: 1
-        colCount: 3
-      - name: _CameraPos
-        type: 0
-        offset: 176
-        arraySize: 0
-        rowCount: 1
-        colCount: 3
-      - name: _NodePerTrail
-        type: 5
-        offset: 192
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-      - name: _TrailWidth
-        type: 0
-        offset: 196
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-    resourcesResolved: 1
-    compilerPlatform: 4
-    needsReflectionData: 0
-  m_CompilationContext:
-    serializedVersion: 2
-    buildTarget:
-      platform: 19
-      subTarget: 0
-      extendedPlatform: 0
-      isEditor: 0
-    platformGroup: 1
-    sourceFileName: TrailVertexGen.compute
-    source: "// Each #kernel tells which function to compile; you can have many kernels\n//ragma
-      kernel InitNode NUM_THREAD_X=512\n//ragma kernel AppendNode NUM_THREAD_X=512\n//ragma
-      kernel CreateVertex NUM_THREAD_X=512\n\n#include \"Assets/Scripts/Particle/Particle.hlsl\"\n#include
-      \"Assets/Scripts/Utils/Time/Time.hlsl\"\n#include \"Assets/Scripts/Trail/TrailNode.hlsl\"\n#include
-      \"Assets/Scripts/Utils/Camera/Camera.hlsl\"\n#include \"Assets/Scripts/Utils/Vertex/Vertex.hlsl\"\n\n\n[numthreads(NUM_THREAD_X,1,1)]\nvoid
-      InitNode(uint3 id : SV_DispatchThreadID)\n{\n    _NodeBuffer[id.x] = initInactivatedNode();\n   
-      _TrailBuffer[id.x/_NodePerTrail] = initTrail();\n}\n\n[numthreads(NUM_THREAD_X,1,1)]\nvoid
-      AppendNode(uint3 id : SV_DispatchThreadID)\n{\n\tuint nodeId = id.x;\n    uint
-      trailId = getTrailId(id.x);\n    \n    if(isInvalidNode(trailId, nodeId))return;\n   
-      Particle node = initNode(_ParticleBuffer[trailId]);\n    appendNode(node, trailId);\n}\n\n[numthreads(NUM_THREAD_X,1,1)]\nvoid
-      CreateVertex(uint3 id : SV_DispatchThreadID)\n{\n    uint trailId = getTrailId(id.x);\n   
-      Trail trail = _TrailBuffer[trailId];\n    uint nodeId = getLocalNodeId(trailId,
-      id.x);\n    Particle node = getNode(trailId, nodeId);\n    int vertexId = getVertexId(trailId,
-      nodeId);\n    Vertex v = _VertexBuffer[vertexId];\n\n    float rateA = getRate(trail,
-      node);\n    //float rate = getRelativeRate(trailId, nodeId);\n\n    v = updateVertex(v,
-      trailId, nodeId, rateA);\n\n    float3 right = getNodeRight(trailId, nodeId,
-      getWidth(rateA));\n    addPairVertex(v, vertexId, right);\n}"
-    sourceFile: Assets/Scripts/Trail/Renderer/TrailVertexGen.compute
-    kernels:
-    - InitNode
-    - AppendNode
-    - CreateVertex
-    kernelMacros:
-    - - NUM_THREAD_X: 512
-    - - NUM_THREAD_X: 512
-    - - NUM_THREAD_X: 512
-    compilationFlags: 0
-    supportedAPIs: 4294967295
-    useDxcAPIs: 0
-    neverUseDxcAPIs: 0
-    includeHash0: 930895444
-    includeHash1: 1761419697
-    includeHash2: 4030564762
-    includeHash3: 1374388420
-  errors:
-  - message: signed/unsigned mismatch, unsigned assumed at kernel AppendNode
-    messageDetails: 
-    file: Assets/Scripts/Trail/TrailNode.hlsl
-    compilerPlatform: 4
-    line: 82
-    warning: 1
-    runtimeError: 1
-  - message: signed/unsigned mismatch, unsigned assumed at kernel CreateVertex
-    messageDetails: 
-    file: Assets/Scripts/Trail/TrailNode.hlsl
-    compilerPlatform: 4
-    line: 82
-    warning: 1
-    runtimeError: 1
-  - message: signed/unsigned mismatch, unsigned assumed at kernel InitNode
-    messageDetails: 
-    file: Assets/Scripts/Trail/TrailNode.hlsl
-    compilerPlatform: 4
-    line: 82
-    warning: 1
-    runtimeError: 1
---- !u!72 &366280900
-ComputeShader:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: FieldAroundPoint(Clone)
-  variants:
-  - serializedVersion: 2
-    targetRenderer: 2
-    targetLevel: 0
-    kernels:
-    - serializedVersion: 3
-      name: Init
-      uniqueVariants:
-      - serializedVersion: 2
-        cbVariantIndices: 
-        cbs: []
-        textures: []
-        builtinSamplers: []
-        inBuffers: []
-        outBuffers: []
-        code: 44584243347e9cbd4ac6d4b378821741ba4434d70100000074000000030000002c0000003c0000004c0000004953474e0800000000000000080000004f53474e080000000000000008000000534845582000000050000500080000006a0800019b0000040800000008000000010000003e000001
-        threadGroupSize: 080000000800000001000000
-        requirements: 16385
-        keywords: []
-        isCompiled: 1
-      variantIndices:
-      - : 0
-      globalKeywords: []
-      localKeywords: []
-      dynamicKeywords: []
-    - serializedVersion: 3
-      name: Update
-      uniqueVariants:
-      - serializedVersion: 2
-        cbVariantIndices: 00000000
-        cbs:
-        - name: $Globals
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: -1
-        textures:
-        - name: _SourceVec
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: 2
-        builtinSamplers: []
-        inBuffers: []
-        outBuffers:
-        - name: _Dest
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: 2
-        - name: _ParticleBuffer
-          generatedName: 
-          bindPoint: 1
-          samplerBindPoint: -1
-          texDimension: -1
-        code: 445842432a949325263fe6500af69e5b39ab4cf401000000b0030000030000002c0000003c0000004c0000004953474e0800000000000000080000004f53474e080000000000000008000000534845585c03000050000500d70000006a08000159000004468e20000000000007000000581800040070100000000000555500009c18000400e0110000000000555500009e00000400e0110001000000840000005f0000023200020068000002030000009b0000040800000008000000010000003d000089c20000804355150032001000000000000140000000000000467e100000000000790000870223048083991900420010000000000096ec1100010000005600000542001000000000002a00100000000000560000043200100001000000460002000e0000073200100000000000460010000100000046001000000000000000000a3200100001000000d68520000000000005000000868020804100000000000000060000003200000a32001000000000004600100000000000460010000100000086802000000000000600000036000005820010000000000001400000000000003600000512001000010000000140000000000000300000012b00000522001000010000000a001000010000001d00000722001000010000001a001000010000002a00100000000000030004031a00100001000000a700008b022304808399190012001000020000000a00100001000000014000000000000006e0110001000000a700008b022304808399190022001000020000000a00100001000000014000000800000006e0110001000000a700008b022304808399190022001000010000000a00100001000000014000008000000006e011000100000000000008c20010000100000006041000000000000604108041000000020000000f0000074200100001000000e60a100001000000e60a1000010000004b00000542001000010000002a001000010000000e00000842001000010000002a001000010000000a80200000000000040000002f00000542001000010000002a001000010000003800000842001000010000002a001000010000001a80200000000000040000001900000542001000010000002a001000010000000000000742001000010000003a001000000000002a001000010000003700000982001000000000001a001000010000003a001000000000002a001000010000001e00000712001000010000000a00100001000000014000000100000016000001a4000006f2e011000000000046050200f60f1000000000003e000001
-        threadGroupSize: 080000000800000001000000
-        requirements: 16385
-        keywords: []
-        isCompiled: 1
-      variantIndices:
-      - : 0
-      globalKeywords: []
-      localKeywords: []
-      dynamicKeywords: []
-    - serializedVersion: 3
-      name: Update2
-      uniqueVariants:
-      - serializedVersion: 2
-        cbVariantIndices: 01000000
-        cbs:
-        - name: $Globals
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: -1
-        textures:
-        - name: _Source
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: 2
-        builtinSamplers: []
-        inBuffers: []
-        outBuffers:
-        - name: _DestVec
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: 2
-        code: 445842439c4b1883e921d2e26c7a174d7c6a135d01000000d4040000030000002c0000003c0000004c0000004953474e0800000000000000080000004f53474e080000000000000008000000534845588004000050000500200100006a08000159000004468e20000000000004000000581800040070100000000000555500009c18000400e0110000000000555500005f0000023200020068000002040000009b0000040800000008000000010000003600000422001000000000001a00020036000008c20010000000000002400000000000000000000000000000000000001e000009320010000100000046000200024000000100000001000000000000000000000056000005320010000100000046001000010000003d000089c200008043551500c2001000010000000140000000000000e6741000000000000000000ac200100001000000a60e100001000000024000000000000000000000000080bf000080bf330000073200100001000000e60a10000100000046001000010000001c00000512001000000000000a001000010000001c00000522001000020000001a001000010000002d000089c2000080435515001200100000000000460e100000000000467e100000000000560000046200100000000000060102000000000782001000000000001a0010000000000001400000000080bf3400000782001000000000003a0010000000000001400000000000003300000782001000000000002a001000010000003a001000000000001c00000512001000030000003a001000000000003600000422001000030000001a00020036000008c20010000300000002400000000000000000000000000000000000002d000089c2000080435515008200100000000000460e10000300000096731000000000000000000812001000000000003a00108041000000000000000a0010000000000018000007a200100000000000a60e10000100000056091000000000003300000742001000000000003a001000010000002a001000000000001c00000522001000010000002a001000000000002000000932001000030000004600020002400000000000000000000000000000000000003c0000076200100000000000560710000000000006011000030000003700000f6200100000000000560610000000000002400000000000000000803f0000803f0000000002400000000000000000004000000040000000000e00000712001000000000000a001000000000001a001000000000003600000622001000030000000a00108041000000000000003600000412001000010000000a00020036000008c20010000100000002400000000000000000000000000000000000002d000089c2000080435515001200100000000000460e100001000000467e1000000000003600000412001000020000000a00020036000008c20010000200000002400000000000000000000000000000000000002d000089c2000080435515002200100000000000460e100002000000167e1000000000000000000812001000000000000a00108041000000000000001a001000000000000e000007d2001000030000000600100000000000a60a10000000000038000008f200100000000000460e100003000000f68f20000000000003000000a4000006f2e011000000000046050200460e1000000000003e000001
-        threadGroupSize: 080000000800000001000000
-        requirements: 16385
-        keywords: []
-        isCompiled: 1
-      variantIndices:
-      - : 0
-      globalKeywords: []
-      localKeywords: []
-      dynamicKeywords: []
-    constantBuffers:
-    - name: $Globals
-      byteSize: 224
-      params:
-      - name: _FRange
-        type: 0
-        offset: 64
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-      - name: _FGamma
-        type: 0
-        offset: 68
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-      - name: _PosMax
-        type: 0
-        offset: 84
-        arraySize: 0
-        rowCount: 1
-        colCount: 3
-      - name: _PosMin
-        type: 0
-        offset: 96
-        arraySize: 0
-        rowCount: 1
-        colCount: 3
-    - name: $Globals
-      byteSize: 224
-      params:
-      - name: _FMult
-        type: 0
-        offset: 60
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-    resourcesResolved: 1
-    compilerPlatform: 4
-    needsReflectionData: 0
-  m_CompilationContext:
-    serializedVersion: 2
-    buildTarget:
-      platform: 19
-      subTarget: 0
-      extendedPlatform: 0
-      isEditor: 0
-    platformGroup: 1
-    sourceFileName: FieldAroundPoint.compute
-    source: "// Each #kernel tells which function to compile; you can have many kernels\n//ragma
-      kernel Init\n//ragma kernel Update\n//ragma kernel Update2\n\n#include \"Assets/Scripts/Field/Field.hlsl\"\n#include
-      \"Assets/Scripts/Particle/Particle.hlsl\"\n#include \"Assets/Scripts/Value/ClassicPerlinNoise.cginc\"\n#include
-      \"Assets/Scripts/Field/Function/Grad.hlsl\"\n#include \"Assets/Scripts/Utils/Time/Time.hlsl\"\n\n[numthreads(8,8,1)]\nvoid
-      Init (uint3 id : SV_DispatchThreadID)\n{\n}\n\n[numthreads(8,8,1)]\nvoid Update
-      (uint3 id : SV_DispatchThreadID)\n{\n    float width, height;\n    _SourceVec.GetDimensions(width,
-      height);\n\n    uint pcount_, pcount2_;\n    _ParticleBuffer.GetDimensions(pcount_,
-      pcount2_);\n    float pcount = pcount_;\n\n    float2 worldSamplePos = lerp(_PosMin.xz,
-      _PosMax.xz, id.xy/float2(width, height));\n    float res = 0;\n    for(int
-      i=0; i<pcount; i++){\n        Particle p = _ParticleBuffer[i];\n        if(p.disable
-      == 0) res += pow(distance(worldSamplePos, p.pos.xz)/_FRange, _FGamma);\n   
-      }\n    _Dest[id.xy] = res;\n\n\n}\n\n[numthreads(8,8,1)]\nvoid Update2 (uint3
-      id : SV_DispatchThreadID)\n{\n    float2 grad = Grad(id.xy);\n    _DestVec[id.xy]
-      = float2(grad.y, -grad.x)*_FMult;\n\n}\n"
-    sourceFile: Assets/Scripts/Field/Generate/Sample/FieldAroundPoint.compute
-    kernels:
-    - Init
-    - Update
-    - Update2
-    kernelMacros:
-    - []
-    - []
-    - []
-    compilationFlags: 0
-    supportedAPIs: 4294967295
-    useDxcAPIs: 0
-    neverUseDxcAPIs: 0
-    includeHash0: 875984034
-    includeHash1: 391458198
-    includeHash2: 855324737
-    includeHash3: 660265948
-  errors:
-  - message: signed/unsigned mismatch, unsigned assumed at kernel Init
-    messageDetails: 
-    file: Assets/Scripts/Field/Function/Grad.hlsl
-    compilerPlatform: 4
-    line: 9
-    warning: 1
-    runtimeError: 1
-  - message: signed/unsigned mismatch, unsigned assumed at kernel Update
-    messageDetails: 
-    file: Assets/Scripts/Field/Function/Grad.hlsl
-    compilerPlatform: 4
-    line: 9
-    warning: 1
-    runtimeError: 1
-  - message: signed/unsigned mismatch, unsigned assumed at kernel Update2
-    messageDetails: 
-    file: Assets/Scripts/Field/Function/Grad.hlsl
-    compilerPlatform: 4
-    line: 9
-    warning: 1
-    runtimeError: 1
-  - message: signed/unsigned mismatch, unsigned assumed at kernel Init
-    messageDetails: 
-    file: Assets/Scripts/Field/Function/Grad.hlsl
-    compilerPlatform: 4
-    line: 12
-    warning: 1
-    runtimeError: 1
-  - message: signed/unsigned mismatch, unsigned assumed at kernel Update
-    messageDetails: 
-    file: Assets/Scripts/Field/Function/Grad.hlsl
-    compilerPlatform: 4
-    line: 12
-    warning: 1
-    runtimeError: 1
-  - message: signed/unsigned mismatch, unsigned assumed at kernel Update2
-    messageDetails: 
-    file: Assets/Scripts/Field/Function/Grad.hlsl
-    compilerPlatform: 4
-    line: 12
-    warning: 1
-    runtimeError: 1
-  - message: pow(f, e) will not work for negative f, use abs(f) or conditionally
-      handle negative values if you expect them at kernel Update
-    messageDetails: 
-    file: FieldAroundPoint.compute
-    compilerPlatform: 4
-    line: 31
-    warning: 1
-    runtimeError: 1
---- !u!84 &427054990
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210533839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a68b6755924ea494987423ab3de66d75, type: 3}
   m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 5
-  m_Width: 512
-  m_Height: 512
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 0
-  m_ColorFormat: 52
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: f5a8de47831d6e44db32d283cfddf62b, type: 2}
+--- !u!4 &210533842
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210533839}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &449026345
 GameObject:
   m_ObjectHideFlags: 0
@@ -1304,10 +989,9 @@ MonoBehaviour:
   minimalDistance: 0.01
   vertexPerTrail: 240
   computeShader: {fileID: 7200000, guid: 3f14267416fd36e4bb000643d1567db3, type: 3}
-  computeShader_: {fileID: 356073560}
   particleGen: {fileID: 1153580334}
   syncStart: 0
---- !u!84 &727256752
+--- !u!84 &488509441
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1344,531 +1028,43 @@ RenderTexture:
   m_Dimension: 2
   m_VolumeDepth: 1
   m_ShadowSamplingMode: 2
---- !u!72 &782691799
-ComputeShader:
+--- !u!84 &649983781
+RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TrailVertexGen(Clone)
-  variants:
-  - serializedVersion: 2
-    targetRenderer: 2
-    targetLevel: 0
-    kernels:
-    - serializedVersion: 3
-      name: InitNode
-      uniqueVariants:
-      - serializedVersion: 2
-        cbVariantIndices: 00000000
-        cbs:
-        - name: $Globals
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: -1
-        textures: []
-        builtinSamplers: []
-        inBuffers: []
-        outBuffers:
-        - name: _NodeBuffer
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: -1
-        - name: _TrailBuffer
-          generatedName: 
-          bindPoint: 1
-          samplerBindPoint: -1
-          texDimension: -1
-        code: 445842431805477d35ba8fbb4a6eb7ad4dbcfff701000000bc020000030000002c0000003c0000004c0000004953474e0800000000000000080000004f53474e0800000000000000080000005348455868020000500005009a0000006a08000159000004468e2000000000000d0000009e00000400e0110000000000840000009e00000400e01100010000000c0000005f0000021200020068000002020000009b000004000200000100000001000000a800000bf2e01100000000000a00020001400000000000000240000000000000000000000000000000000000a800000bf2e01100000000000a00020001400000100000000240000000000000000000000000000000000000a800000bf2e01100000000000a00020001400000200000000240000000000000000000000000000000000000a800000bf2e01100000000000a00020001400000300000000240000000000000000000000000000000000000a800000bf2e01100000000000a00020001400000400000000240000000000000000000000000000000000000a800000bf2e01100000000000a00020001400000500000000240000000000000000000000000000000000000a800000bf2e01100000000000a00020001400000600000000240000000000000000000000000000000000000a800000bf2e01100000000000a00020001400000700000000240000000000000000000000000000000000000a800000812e01100000000000a000200014000008000000001400000010000004e000008120010000000000000d000000a0002000a802000000000000c0000003600000612001000010000000a80200000000000000000003600000622001000010000003a802000000000000b0000003600000542001000010000000140000000000000a800000972e01100010000000a00100000000000014000000000000046021000010000003e000001
-        threadGroupSize: 000200000100000001000000
-        requirements: 16385
-        keywords: []
-        isCompiled: 1
-      variantIndices:
-      - : 0
-      globalKeywords: []
-      localKeywords: []
-      dynamicKeywords: []
-    - serializedVersion: 3
-      name: AppendNode
-      uniqueVariants:
-      - serializedVersion: 2
-        cbVariantIndices: 01000000
-        cbs:
-        - name: $Globals
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: -1
-        textures: []
-        builtinSamplers: []
-        inBuffers: []
-        outBuffers:
-        - name: _ParticleBuffer
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: -1
-        - name: _NodeBuffer
-          generatedName: 
-          bindPoint: 1
-          samplerBindPoint: -1
-          texDimension: -1
-        - name: _TrailBuffer
-          generatedName: 
-          bindPoint: 2
-          samplerBindPoint: -1
-          texDimension: -1
-        code: 44584243bf1c7d8550c242dec88eb8efa7ed9fb00100000014060000030000002c0000003c0000004c0000004953474e0800000000000000080000004f53474e08000000000000000800000053484558c005000050000500700100006a08000159000004468e2000000000000d0000009e00000400e0110000000000840000009e00000400e0110001000000840000009e00000400e01100020000000c0000005f0000021200020068000002090000009b0000040002000001000000010000004e000008120010000000000000d000000a0002000a802000000000000c000000a700008b026300808399190022001000000000000a00100000000000014000000800000006e01100020000002900000742001000000000001a0010000000000001400000010000001e00000822001000000000002a001000000000000a802000000000000c0000001e00000722001000000000001a0010000000000001400000ffffffff4e00000900d0000022001000000000001a001000000000000a802000000000000c0000002300000a22001000000000000a001000000000000a802000000000000c0000001a00100000000000a700008b0223048083991900e2001000000000001a00100000000000014000000000000006e9110001000000a700008b022304808399190072001000010000000a00100000000000014000000000000046e211000000000018000007e200100000000000560e10000000000006091000010000000100000722001000000000002a001000000000001a001000000000000100000722001000000000003a001000000000001a001000000000001f0004031a001000000000003e00000115000001a700008b0223048083991900f2001000010000000a00100000000000014000000000000046ee110000000000a700008b0223048083991900f2001000020000000a00100000000000014000001000000046ee110000000000a700008b0223048083991900f2001000030000000a00100000000000014000002000000046ee110000000000a700008b0223048083991900f2001000040000000a00100000000000014000003000000046ee110000000000a700008b0223048083991900f2001000050000000a00100000000000014000004000000046ee110000000000a700008b0223048083991900f2001000060000000a00100000000000014000005000000046ee110000000000a700008b0223048083991900f2001000070000000a00100000000000014000006000000046ee110000000000a700008b022304808399190072001000080000000a00100000000000014000007000000046e2110000000000a700008b022304808399190022001000000000000a00100000000000014000008000000006e0110000000000a700008b026300808399190042001000000000000a00100000000000014000000800000006e01100020000002300000a82001000000000000a001000000000000a802000000000000c0000002a00100000000000a8000009f2e01100010000003a001000000000000140000000000000460e100001000000a8000009f2e01100010000003a001000000000000140000010000000460e100002000000a8000009f2e01100010000003a001000000000000140000020000000460e100003000000a8000009f2e01100010000003a001000000000000140000030000000460e100004000000a8000009f2e01100010000003a001000000000000140000040000000460e100005000000a8000009f2e01100010000003a001000000000000140000050000000460e100006000000a8000009f2e01100010000003a001000000000000140000060000000460e1000070000003600000682001000080000000a8020000000000000000000a8000009f2e01100010000003a001000000000000140000070000000460e100008000000a800000912e01100010000003a0010000000000001400000800000001a001000000000001e00000722001000000000002a0010000000000001400000010000004e00000900d0000022001000000000001a001000000000000a802000000000000c000000a800000912e01100020000000a0010000000000001400000080000001a001000000000003e000001
-        threadGroupSize: 000200000100000001000000
-        requirements: 16385
-        keywords: []
-        isCompiled: 1
-      variantIndices:
-      - : 0
-      globalKeywords: []
-      localKeywords: []
-      dynamicKeywords: []
-    - serializedVersion: 3
-      name: CreateVertex
-      uniqueVariants:
-      - serializedVersion: 2
-        cbVariantIndices: 02000000
-        cbs:
-        - name: $Globals
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: -1
-        textures:
-        - name: _TWidthOverLifetime
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: 2
-        - name: _TColorOverLifetime
-          generatedName: 
-          bindPoint: 1
-          samplerBindPoint: -1
-          texDimension: 2
-        - name: _TCustomDataOverLifetime
-          generatedName: 
-          bindPoint: 2
-          samplerBindPoint: -1
-          texDimension: 2
-        builtinSamplers:
-        - sampler: 85
-          bindPoint: 0
-        inBuffers: []
-        outBuffers:
-        - name: _VertexBuffer
-          generatedName: 
-          bindPoint: 0
-          samplerBindPoint: -1
-          texDimension: -1
-        - name: _NodeBuffer
-          generatedName: 
-          bindPoint: 1
-          samplerBindPoint: -1
-          texDimension: -1
-        - name: _TrailBuffer
-          generatedName: 
-          bindPoint: 2
-          samplerBindPoint: -1
-          texDimension: -1
-        code: 445842434920722d2c9df39fb74c2e1da53959bd01000000ec080000030000002c0000003c0000004c0000004953474e0800000000000000080000004f53474e080000000000000008000000534845589808000050000500260200006a08000159000004468e2000000000000d0000005a00000300601000000000005818000400701000000000005555000058180004007010000100000055550000581800040070100002000000555500009e00000400e0110000000000340000009e00000400e0110001000000840000009e00000400e01100020000000c0000005f0000021200020068000002060000009b0000040002000001000000010000004e000008120010000000000000d000000a0002000a802000000000000c000000a700008b026300808399190062001000000000000a00100000000000014000000400000006e11100020000001e00000742001000000000002a00108041000000000000000a0002001e00000842001000000000002a001000000000000a802000000000000c0000004e00000900d0000042001000000000002a001000000000000a802000000000000c0000002300000a82001000000000000a001000000000000a802000000000000c0000002a001000000000002900000712001000010000003a0010000000000001400000010000008c00000b8200100000000000014000001f00000001400000010000003a001000000000000140000001000000a700008b02a301808399190032001000020000000a00100001000000014000001c00000016e0110000000000a700008b026300808399190022001000010000000a00100000000000014000000800000006e01100020000001e00000742001000000000002a001000000000001a001000010000001e00000842001000000000002a001000000000000a802000000000000c0000001e00000722001000010000002a0010000000000001400000010000004e00000900d0000042001000000000002a001000000000000a802000000000000c0000002300000a42001000000000000a001000000000000a802000000000000c0000002a001000000000004e00000900d0000022001000010000001a001000010000000a802000000000000c0000002300000a12001000000000000a001000000000000a802000000000000c0000001a00100001000000a700008b022304808399190022001000010000000a00100000000000014000008000000006e0110001000000a700008b022304808399190072001000030000000a00100000000000014000000000000046e21100010000002000000712001000000000001a001000010000000140000000000000a700008b022304808399190062001000010000002a00100000000000014000007c00000006e1110001000000a700008b022304808399190072001000040000002a00100000000000014000000000000046e21100010000002000000742001000000000002a0010000100000001400000000000000000000922001000010000001a00108041000000010000000a80200000000000000000000e00000712001000050000001a001000010000001a001000000000000100000712001000000000000a001000000000002a0010000000000000000008e200100001000000a604100003000000a604108041000000040000000100000772001000000000000600100000000000960710000100000000000009e20010000100000056021080410000000400000056822000000000000b000000100000071200100003000000960710000100000096071000010000004400000512001000030000000a0010000300000038000007e200100001000000560e10000100000006001000030000001800000b720010000300000046822000000000000a00000002400000000000000000000000000000000000000100000712001000030000001a001000030000000a001000030000000100000712001000030000002a001000030000000a001000030000003700000ae2001000010000000600100003000000560e10000100000056822000000000000a000000380000077200100003000000460210000000000096071000010000003200000a72001000000000002609100000000000e609100001000000460210804100000003000000100000072200100001000000460210000000000046021000000000004400000522001000010000001a001000010000003800000772001000000000004602100000000000560510000100000036000005220010000500000001400000000000004800008dc20000804355150022001000010000004600100005000000167e100000000000006010000000000001400000000000003800000822001000010000001a001000010000001a802000000000000c000000380000077200100003000000460210000000000056051000010000003200000d7200100003000000460210804100000003000000024000000000003f0000003f0000003f0000000046021000040000004800008dc200008043551500f20010000400000046001000050000009673100002000000006010000000000001400000000000004800008dc200008043551500f2001000050000004600100005000000467e100001000000006010000000000001400000000000003600000582001000030000003a00100004000000a8000009f2e01100000000000a001000010000000140000000000000460e100003000000320000097200100003000000460210000000000056051000010000004602100003000000a800000972e01100000000000a0010000100000001400000100000004602100004000000a8000009f2e01100000000000a001000010000000140000024000000460e100005000000a8000009f2e01100000000003a001000000000000140000000000000460e1000030000003600000582001000040000001a00100002000000a8000009f2e01100000000003a001000000000000140000010000000460e10000400000036000005e2001000020000000609100005000000a8000009f2e01100000000003a001000000000000140000020000000460e100002000000a800000912e01100000000003a0010000000000001400000300000003a001000050000003e000001
-        threadGroupSize: 000200000100000001000000
-        requirements: 16385
-        keywords: []
-        isCompiled: 1
-      variantIndices:
-      - : 0
-      globalKeywords: []
-      localKeywords: []
-      dynamicKeywords: []
-    constantBuffers:
-    - name: $Globals
-      byteSize: 208
-      params:
-      - name: _Time
-        type: 0
-        offset: 0
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-      - name: _TLife
-        type: 0
-        offset: 188
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-      - name: _NodePerTrail
-        type: 5
-        offset: 192
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-    - name: $Globals
-      byteSize: 208
-      params:
-      - name: _Time
-        type: 0
-        offset: 0
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-      - name: _NodePerTrail
-        type: 5
-        offset: 192
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-    - name: $Globals
-      byteSize: 208
-      params:
-      - name: _Time
-        type: 0
-        offset: 0
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-      - name: _ToCameraDir
-        type: 0
-        offset: 160
-        arraySize: 0
-        rowCount: 1
-        colCount: 3
-      - name: _CameraPos
-        type: 0
-        offset: 176
-        arraySize: 0
-        rowCount: 1
-        colCount: 3
-      - name: _NodePerTrail
-        type: 5
-        offset: 192
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-      - name: _TrailWidth
-        type: 0
-        offset: 196
-        arraySize: 0
-        rowCount: 1
-        colCount: 1
-    resourcesResolved: 1
-    compilerPlatform: 4
-    needsReflectionData: 0
-  m_CompilationContext:
+  m_Name: 
+  m_ImageContentsHash:
     serializedVersion: 2
-    buildTarget:
-      platform: 19
-      subTarget: 0
-      extendedPlatform: 0
-      isEditor: 0
-    platformGroup: 1
-    sourceFileName: TrailVertexGen.compute
-    source: "// Each #kernel tells which function to compile; you can have many kernels\n//ragma
-      kernel InitNode NUM_THREAD_X=512\n//ragma kernel AppendNode NUM_THREAD_X=512\n//ragma
-      kernel CreateVertex NUM_THREAD_X=512\n\n#include \"Assets/Scripts/Particle/Particle.hlsl\"\n#include
-      \"Assets/Scripts/Utils/Time/Time.hlsl\"\n#include \"Assets/Scripts/Trail/TrailNode.hlsl\"\n#include
-      \"Assets/Scripts/Utils/Camera/Camera.hlsl\"\n#include \"Assets/Scripts/Utils/Vertex/Vertex.hlsl\"\n\n\n[numthreads(NUM_THREAD_X,1,1)]\nvoid
-      InitNode(uint3 id : SV_DispatchThreadID)\n{\n    _NodeBuffer[id.x] = initInactivatedNode();\n   
-      _TrailBuffer[id.x/_NodePerTrail] = initTrail();\n}\n\n[numthreads(NUM_THREAD_X,1,1)]\nvoid
-      AppendNode(uint3 id : SV_DispatchThreadID)\n{\n\tuint nodeId = id.x;\n    uint
-      trailId = getTrailId(id.x);\n    \n    if(isInvalidNode(trailId, nodeId))return;\n   
-      Particle node = initNode(_ParticleBuffer[trailId]);\n    appendNode(node, trailId);\n}\n\n[numthreads(NUM_THREAD_X,1,1)]\nvoid
-      CreateVertex(uint3 id : SV_DispatchThreadID)\n{\n    uint trailId = getTrailId(id.x);\n   
-      Trail trail = _TrailBuffer[trailId];\n    uint nodeId = getLocalNodeId(trailId,
-      id.x);\n    Particle node = getNode(trailId, nodeId);\n    int vertexId = getVertexId(trailId,
-      nodeId);\n    Vertex v = _VertexBuffer[vertexId];\n\n    float rateA = getRate(trail,
-      node);\n    //float rate = getRelativeRate(trailId, nodeId);\n\n    v = updateVertex(v,
-      trailId, nodeId, rateA);\n\n    float3 right = getNodeRight(trailId, nodeId,
-      getWidth(rateA));\n    addPairVertex(v, vertexId, right);\n}"
-    sourceFile: Assets/Scripts/Trail/Renderer/TrailVertexGen.compute
-    kernels:
-    - InitNode
-    - AppendNode
-    - CreateVertex
-    kernelMacros:
-    - - NUM_THREAD_X: 512
-    - - NUM_THREAD_X: 512
-    - - NUM_THREAD_X: 512
-    compilationFlags: 0
-    supportedAPIs: 4294967295
-    useDxcAPIs: 0
-    neverUseDxcAPIs: 0
-    includeHash0: 930895444
-    includeHash1: 1761419697
-    includeHash2: 4030564762
-    includeHash3: 1374388420
-  errors:
-  - message: signed/unsigned mismatch, unsigned assumed at kernel AppendNode
-    messageDetails: 
-    file: Assets/Scripts/Trail/TrailNode.hlsl
-    compilerPlatform: 4
-    line: 82
-    warning: 1
-    runtimeError: 1
-  - message: signed/unsigned mismatch, unsigned assumed at kernel CreateVertex
-    messageDetails: 
-    file: Assets/Scripts/Trail/TrailNode.hlsl
-    compilerPlatform: 4
-    line: 82
-    warning: 1
-    runtimeError: 1
-  - message: signed/unsigned mismatch, unsigned assumed at kernel InitNode
-    messageDetails: 
-    file: Assets/Scripts/Trail/TrailNode.hlsl
-    compilerPlatform: 4
-    line: 82
-    warning: 1
-    runtimeError: 1
---- !u!1 &793888242
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 793888245}
-  - component: {fileID: 793888244}
-  - component: {fileID: 793888243}
-  m_Layer: 0
-  m_Name: Trail (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &793888243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 793888242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aae0ea1cc6646ab4588ac063f779f505, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  life: 2
-  inputPerSec: 60
-  width: 0.5
-  widthOverLifetime:
-    m_Mode: 1
-    m_CurveMultiplier: 1
-    m_CurveMin:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_CurveMax:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 2
-        outSlope: 2
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 0.15390776
-        value: 0.9381617
-        inSlope: 0.5829947
-        outSlope: 0.5829947
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.94137937
-        value: 0.0044844747
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_ConstantMin: 0
-    m_ConstantMax: 1
-  colorOverLifetime:
-    m_Mode: 1
-    m_GradientMin:
-      serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_ColorSpace: -1
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    m_GradientMax:
-      serializedVersion: 2
-      key0: {r: 0, g: 0.54684716, b: 3.0314336, a: 0}
-      key1: {r: 0.6385339, g: 1.1668583, b: 3.4415903, a: 1}
-      key2: {r: 0.4940716, g: 0.18939552, b: 1.7207953, a: 1}
-      key3: {r: 0.2096905, g: 0, b: 0.46226418, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 9059
-      ctime2: 29684
-      ctime3: 65535
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 4048
-      atime2: 61295
-      atime3: 65535
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_ColorSpace: -1
-      m_NumColorKeys: 4
-      m_NumAlphaKeys: 4
-    m_ColorMin: {r: 0, g: 0, b: 0, a: 0}
-    m_ColorMax: {r: 0, g: 0, b: 0, a: 0}
-  customDataXOverLifetime:
-    m_Mode: 0
-    m_CurveMultiplier: 0
-    m_CurveMin:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_CurveMax:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_ConstantMin: 0
-    m_ConstantMax: 1
-  customDataYOverLifetime:
-    m_Mode: 0
-    m_CurveMultiplier: 0
-    m_CurveMin:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_CurveMax:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_ConstantMin: 0
-    m_ConstantMax: 1
-  customDataZOverLifetime:
-    m_Mode: 0
-    m_CurveMultiplier: 0
-    m_CurveMin:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_CurveMax:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_ConstantMin: 0
-    m_ConstantMax: 1
-  customDataWOverLifetime:
-    m_Mode: 0
-    m_CurveMultiplier: 0
-    m_CurveMin:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_CurveMax:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_ConstantMin: 0
-    m_ConstantMax: 1
-  minimalDistance: 0.01
-  vertexPerTrail: 240
-  computeShader: {fileID: 7200000, guid: 3f14267416fd36e4bb000643d1567db3, type: 3}
-  computeShader_: {fileID: 782691799}
-  particleGen: {fileID: 1958879675}
-  syncStart: 0
---- !u!114 &793888244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 793888242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a68b6755924ea494987423ab3de66d75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: f5a8de47831d6e44db32d283cfddf62b, type: 2}
---- !u!4 &793888245
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 793888242}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 5
+  m_Width: 512
+  m_Height: 512
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 0
+  m_ColorFormat: 52
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!1 &1153580333
 GameObject:
   m_ObjectHideFlags: 0
@@ -1998,6 +1194,8 @@ MonoBehaviour:
       m_NumAlphaKeys: 2
     m_ColorMin: {r: 0, g: 0, b: 0, a: 0}
     m_ColorMax: {r: 0, g: 0, b: 0, a: 0}
+  BoundaryMin: {x: -5, y: 0, z: -5}
+  BoundaryMax: {x: 5, y: 0, z: 5}
   posRange: 0.3
   posMin: {x: -5, y: 0, z: -5}
   posMax: {x: 5, y: 0, z: 5}
@@ -2503,7 +1701,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 427054990}
+        m_Texture: {fileID: 488509441}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
@@ -2690,7 +1888,7 @@ Material:
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!84 &1660655926
+--- !u!84 &1775378950
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3028,18 +2226,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resolution: {x: 512, y: 512}
+  BoundaryMin: {x: -5, y: 0, z: -5}
+  BoundaryMax: {x: 5, y: 0, z: 5}
   scale: {x: 1, y: 1}
   transition: 1
   multiplier: 500
   range: 100
   gamma: 0.1
   computeShader: {fileID: 7200000, guid: d54c9f7c03ddd0f4d8e65f256cac9996, type: 3}
-  computeShader_: {fileID: 366280900}
   particleGen: {fileID: 1958879675}
-  source: {fileID: 727256752}
-  dest: {fileID: 176563271}
-  sourceVec: {fileID: 427054990}
-  destVec: {fileID: 1660655926}
+  source: {fileID: 1775378950}
+  dest: {fileID: 106906887}
+  sourceVec: {fileID: 488509441}
+  destVec: {fileID: 649983781}
   display: {fileID: 1846527328}
 --- !u!64 &1846527330
 MeshCollider:
@@ -3290,6 +2489,8 @@ MonoBehaviour:
       m_NumAlphaKeys: 2
     m_ColorMin: {r: 0, g: 0, b: 0, a: 0}
     m_ColorMax: {r: 0, g: 0, b: 0, a: 0}
+  BoundaryMin: {x: -5, y: 0, z: -5}
+  BoundaryMax: {x: 5, y: 0, z: 5}
   posRange: 0.3
   posMin: {x: -5, y: 0, z: -5}
   posMax: {x: 5, y: 0, z: 5}

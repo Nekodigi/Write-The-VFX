@@ -30,7 +30,7 @@ public class ITrailController : MonoBehaviour
     int vertexNum;//vertex and nodes are different!
 
     public ComputeShader computeShader;
-    public ComputeShader computeShader_;
+    ComputeShader computeShader_;
     public ParticleGen particleGen;
 
     public TrailData trailData;
