@@ -1,6 +1,9 @@
 #ifndef COORDINATE
 #define COORDINATE
 
+float3 _BoundMin;
+float3 _BoundMax;
+
 float2 vecToRot(float3 vec){
     float rotY = atan2(vec.x, vec.z);
     float rotX =-asin(vec.y / length(vec.xyz)-1e-8);

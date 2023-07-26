@@ -7,6 +7,8 @@ using UnityEditor;
 public class IFieldController : MonoBehaviour
 {
     public Vector2Int resolution = new Vector2Int(512, 512);
+    public Vector3 BoundaryMin = new Vector3(-5, 0, -5);
+    public Vector3 BoundaryMax = new Vector3(5, 0, 5);
     public Vector2 scale = new Vector2(1, 1);
     public float transition = 1;
     public float multiplier = 1;
@@ -14,7 +16,7 @@ public class IFieldController : MonoBehaviour
     public float gamma = 1;
 
     public ComputeShader computeShader;
-    public ComputeShader computeShader_;
+    ComputeShader computeShader_;
 
     public ParticleGen particleGen;
 
@@ -106,11 +108,8 @@ public class IFieldController : MonoBehaviour
         computeShader_.SetFloat("_FMult", multiplier);
         computeShader_.SetFloat("_FRange", range);
         computeShader_.SetFloat("_FGamma", gamma);
-        if (particleGen.particleBuffer != null)
-        {
-            computeShader_.SetVector("_PosMin", particleGen.posMin);
-            computeShader_.SetVector("_PosMax", particleGen.posMax);
-        }
+        computeShader_.SetVector("_BoundMin", BoundaryMin);
+        computeShader_.SetVector("_BoundMax", BoundaryMax);
     }
 
     protected void SetTexturesToShader(int kernelId)

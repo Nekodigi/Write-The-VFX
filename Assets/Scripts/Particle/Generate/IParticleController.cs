@@ -17,14 +17,16 @@ public class IParticleController : MonoBehaviour
     [GradientUsage(true)] public Gradient hdrGradientPicker;
 
     public ParticleSystem.MinMaxGradient gradient;
-    public float posRange;
+    public Vector3 BoundaryMin = new Vector3(-5, 0, -5);
+    public Vector3 BoundaryMax = new Vector3(5, 0, 5);
+    public float posRange = 1;
     public Vector3 posMin;
     public Vector3 posMax;
-    public float velRange;
+    public float velRange = 1;
     public Vector3 velMin;
     public Vector3 velMax;
-    public Vector3 sizeMin;
-    public Vector3 sizeMax;
+    public Vector3 sizeMin = Vector3.one;
+    public Vector3 sizeMax = Vector3.one;
 
     public ParticleSystem.MinMaxCurve life;
     public ParticleSystem.MinMaxCurve velOverLifetimeX;
@@ -33,9 +35,9 @@ public class IParticleController : MonoBehaviour
     public ParticleSystem.MinMaxCurve rotVelOverLifetimeX;
     public ParticleSystem.MinMaxCurve rotVelOverLifetimeY;
     public ParticleSystem.MinMaxCurve rotVelOverLifetimeZ;
-    public ParticleSystem.MinMaxCurve sizeOverLifetimeX;
-    public ParticleSystem.MinMaxCurve sizeOverLifetimeY;
-    public ParticleSystem.MinMaxCurve sizeOverLifetimeZ;
+    public ParticleSystem.MinMaxCurve sizeOverLifetimeX = 1;
+    public ParticleSystem.MinMaxCurve sizeOverLifetimeY = 1;
+    public ParticleSystem.MinMaxCurve sizeOverLifetimeZ = 1;
     public ParticleSystem.MinMaxGradient colorOverLifetime;
     public ParticleSystem.MinMaxCurve customDataOverLifetimeX;// addUV
     public ParticleSystem.MinMaxCurve customDataOverLifetimeY;
@@ -70,7 +72,7 @@ public class IParticleController : MonoBehaviour
     public bool syncUpdate = false;
     int totalEmit = 0;
     float lastBurst;
-
+    float deltaTime;
 
     // Start is called before the first frame update
 
@@ -123,6 +125,7 @@ public class IParticleController : MonoBehaviour
 
     void Update()
     {
+        deltaTime += Time.deltaTime;
         if (!syncUpdate) Update_();
 
         EditorApplication.QueuePlayerLoopUpdate();
@@ -159,6 +162,7 @@ public class IParticleController : MonoBehaviour
         
         //Debug.Log(particleCount[0]);
         totalEmit += emitCount;
+        deltaTime = 0;
     }
 
     protected void OnDestroy()
@@ -190,6 +194,8 @@ public class IParticleController : MonoBehaviour
 
     protected void SetValueToShader()
     {
+        computeShader.SetVector("_BoundMin", BoundaryMin);
+        computeShader.SetVector("_BoundMax", BoundaryMax);
         computeShader.SetFloat("_PosRange", posRange);
         computeShader.SetVector("_PosMin", posMin);
         computeShader.SetVector("_PosMax", posMax);
@@ -202,7 +208,7 @@ public class IParticleController : MonoBehaviour
         computeShader.SetVector("_SizeMin", sizeMin);
         computeShader.SetVector("_SizeMax", sizeMax);
         computeShader.SetFloat("_Time", Time.time);
-        computeShader.SetFloat("_DeltaTime", Time.deltaTime);
+        computeShader.SetFloat("_DeltaTime", deltaTime);
         computeShader.SetBool("_UseField", fieldController != null);
     }
 

@@ -24,7 +24,7 @@ void Update (uint3 id : SV_DispatchThreadID)
     _ParticleBuffer.GetDimensions(pcount_, pcount2_);
     float pcount = pcount_;
 
-    float2 worldSamplePos = lerp(_PosMin.xz, _PosMax.xz, id.xy/float2(width, height));
+    float2 worldSamplePos = lerp(_BoundMin.xz, _BoundMax.xz, id.xy/float2(width, height));
     float res = 0;
     for(int i=0; i<pcount; i++){
         Particle p = _ParticleBuffer[i];
