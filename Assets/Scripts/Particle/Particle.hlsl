@@ -19,6 +19,8 @@ struct Particle
     float4 col;
     float4 colDest;
     float4 customData;
+    float weight;
+    float weightDest;
     float lifeTime;
     float spawnTime;
     int disable;//0=enable, 1 disable 2=warped
@@ -27,11 +29,13 @@ struct Particle
 
 Texture2D<float4> _PLife;
 Texture2D<float4> _PCol;
+Texture2D<float4> _PWeight;
 
 Texture2D<float4> _PVelOverLife;
 Texture2D<float4> _PRotVelOverLife;
 Texture2D<float4> _PSizeOverLife;
 Texture2D<float4> _PColOverLife;
+Texture2D<float4> _PWeightOverLife;
 Texture2D<float4> _PCustomDataOverLife;
 Texture2D<float4> _PFieldOverLife;//compress float1
 Texture2D<float4> _PDampOverLife;
@@ -87,9 +91,14 @@ float geFieldAt(float rate){
 float geDampAt(float rate){
     return _PDampOverLife.SampleLevel(linearClampSampler, float2(rate, 0), 0).x;
 }
+float getWeightAt(float rate){
+    return _PWeightOverLife.SampleLevel(linearClampSampler, float2(rate, 0), 0).x;  
+}
+
 float3 normPos(Particle p){
     return (p.pos-_BoundMin)/(_BoundMax-_BoundMin);
 }
+
 
 Particle initParticle(int id_){
     uint3 id = uint3(id_,0,0);
@@ -109,6 +118,7 @@ Particle initParticle(int id_){
     p.size = randomBetween(id.xxx, _SizeMin, _SizeMax);
     p.spawnTime = _Time;
     p.lifeTime = _PLife.SampleLevel(linearClampSampler, random2(id.xx+0.01), 0).x;
+    p.weight = _PWeight.SampleLevel(linearClampSampler, random2(id.xx+0.01), 0).x;    
     p.col = _PCol.SampleLevel(linearClampSampler, random2(id.xx), 0);
     p.disable = 2;
 
@@ -136,6 +146,7 @@ Particle updateParticle(Particle p, uint3 id){
     p.rot += p.rotVel * _DeltaTime;
 
     p.colDest = p.col * getColAt(rate);
+    p.weightDest = p.weight * getWeightAt(rate);  
     p.sizeDest = p.size * getSizeAt(rate);
     p.customData = getCustomDataAt(rate);
 

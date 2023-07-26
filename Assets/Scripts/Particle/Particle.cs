@@ -11,6 +11,8 @@ public struct Particle
     public Color col;
     public Color colDest;
     public Vector4 customData;
+    public float weight;
+    public float weightDest;
     public float lifeTime;
     public float spawnTime;
     public int disable;

@@ -28,7 +28,7 @@ void Update (uint3 id : SV_DispatchThreadID)
     float res = 0;
     for(int i=0; i<pcount; i++){
         Particle p = _ParticleBuffer[i];
-        if(p.disable == 0) res += 5/(pow(distance(worldSamplePos, p.pos.xz)/_FRange, _FGamma)+1);
+        if(p.disable == 0) res += p.weightDest/(pow(distance(worldSamplePos, p.pos.xz)/_FRange, _FGamma)+1);
     }
     res += perlinNoise(float3(id.xy/float2(width, height)/_FScale, _Time/100.0*_FTrans))*_FMult;
     _Dest[id.xy] = res;
