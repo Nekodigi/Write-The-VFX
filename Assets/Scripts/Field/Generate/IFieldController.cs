@@ -14,6 +14,7 @@ public class IFieldController : MonoBehaviour
     public float gamma = 1;
 
     public ComputeShader computeShader;
+    public ComputeShader computeShader_;
 
     public ParticleGen particleGen;
 
@@ -40,9 +41,10 @@ public class IFieldController : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Awake()
     {
+        computeShader_ = Instantiate(computeShader);
         if (resolution.x == 0 || resolution.y == 0) Debug.LogError("Field resolution can't be 0");
-        kernelInit = computeShader.FindKernel("Init");
-        kernelUpdate = computeShader.FindKernel("Update");
+        kernelInit = computeShader_.FindKernel("Init");
+        kernelUpdate = computeShader_.FindKernel("Update");
 
         source = CreateRT();
         dest = CreateRT();
@@ -50,7 +52,7 @@ public class IFieldController : MonoBehaviour
         destVec = CreateRT();
 
         uint threadSizeX, threadSizeY, threadSizeZ;
-        computeShader.GetKernelThreadGroupSizes
+        computeShader_.GetKernelThreadGroupSizes
             (kernelInit,
              out threadSizeX, out threadSizeY, out threadSizeZ);
         threadSize
@@ -80,7 +82,7 @@ public class IFieldController : MonoBehaviour
         SetValuesToShader();
         SetTexturesToShader(kernelId);
         SetBufferToShader(kernelId);
-        computeShader.Dispatch(kernelId,
+        computeShader_.Dispatch(kernelId,
                                     source.width / threadSize.x,
                                     source.height / threadSize.y,
                                     threadSize.z);
@@ -96,31 +98,31 @@ public class IFieldController : MonoBehaviour
 
     protected void SetValuesToShader()
     {
-        computeShader.SetFloat("_Time", Time.time);
-        computeShader.SetFloat("_DeltaTime", Time.deltaTime);
-        computeShader.SetVector("_FRes",(Vector2) resolution);
-        computeShader.SetVector("_FScale", scale);
-        computeShader.SetFloat("_FTrans", transition);
-        computeShader.SetFloat("_FMult", multiplier);
-        computeShader.SetFloat("_FRange", range);
-        computeShader.SetFloat("_FGamma", gamma);
+        computeShader_.SetFloat("_Time", Time.time);
+        computeShader_.SetFloat("_DeltaTime", Time.deltaTime);
+        computeShader_.SetVector("_FRes",(Vector2) resolution);
+        computeShader_.SetVector("_FScale", scale);
+        computeShader_.SetFloat("_FTrans", transition);
+        computeShader_.SetFloat("_FMult", multiplier);
+        computeShader_.SetFloat("_FRange", range);
+        computeShader_.SetFloat("_FGamma", gamma);
         if (particleGen.particleBuffer != null)
         {
-            computeShader.SetVector("_PosMin", particleGen.posMin);
-            computeShader.SetVector("_PosMax", particleGen.posMax);
+            computeShader_.SetVector("_PosMin", particleGen.posMin);
+            computeShader_.SetVector("_PosMax", particleGen.posMax);
         }
     }
 
     protected void SetTexturesToShader(int kernelId)
     {
-        computeShader.SetTexture(kernelId, "_Source", source);
-        computeShader.SetTexture(kernelId, "_Dest", dest);
-        computeShader.SetTexture(kernelId, "_SourceVec", sourceVec);
-        computeShader.SetTexture(kernelId, "_DestVec", destVec);
+        computeShader_.SetTexture(kernelId, "_Source", source);
+        computeShader_.SetTexture(kernelId, "_Dest", dest);
+        computeShader_.SetTexture(kernelId, "_SourceVec", sourceVec);
+        computeShader_.SetTexture(kernelId, "_DestVec", destVec);
     }
 
     protected void SetBufferToShader(int kernelId)
     {
-        if(particleGen.particleBuffer != null) computeShader.SetBuffer(kernelId, "_ParticleBuffer", particleGen.particleBuffer);
+        if(particleGen.particleBuffer != null) computeShader_.SetBuffer(kernelId, "_ParticleBuffer", particleGen.particleBuffer);
     }
 }
