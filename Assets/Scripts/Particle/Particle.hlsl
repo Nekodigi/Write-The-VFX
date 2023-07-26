@@ -88,7 +88,7 @@ float geDampAt(float rate){
     return _PDampOverLife.SampleLevel(linearClampSampler, float2(rate, 0), 0).x;
 }
 float3 normPos(Particle p){
-    return (p.pos-_PosMin)/(_PosMax-_PosMin);
+    return (p.pos-_BoundMin)/(_BoundMax-_BoundMin);
 }
 
 Particle initParticle(int id_){
