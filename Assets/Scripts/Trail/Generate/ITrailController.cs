@@ -30,6 +30,7 @@ public class ITrailController : MonoBehaviour
     int vertexNum;//vertex and nodes are different!
 
     public ComputeShader computeShader;
+    public ComputeShader computeShader_;
     public ParticleGen particleGen;
 
     public TrailData trailData;
@@ -54,18 +55,19 @@ public class ITrailController : MonoBehaviour
 
     public void Start_()
     {
+        computeShader_ = Instantiate(computeShader);
         this.trailData = new TrailData(particleGen.maxCount, life, inputPerSec);
         vertexPerTrail = trailData.NodeNumPerTrail * 2;
         Debug.Log(trailData.NodeNumPerTrail);
         vertexNum = trailData.TrailNum * vertexPerTrail;
         InitBufferIfNeed();
 
-        var kernelInitNode = computeShader.FindKernel("InitNode");
+        var kernelInitNode = computeShader_.FindKernel("InitNode");
 
         SetValueToShader();
-        computeShader.SetBuffer(kernelInitNode, "_NodeBuffer", trailData.NodeBuffer);
-        computeShader.SetBuffer(kernelInitNode, "_TrailBuffer", trailData.TrailBuffer);//cannot contail external ParticleBuffer
-        computeShader.Dispatch(kernelInitNode, vertexNum / 512 / 2, 1, 1);
+        computeShader_.SetBuffer(kernelInitNode, "_NodeBuffer", trailData.NodeBuffer);
+        computeShader_.SetBuffer(kernelInitNode, "_TrailBuffer", trailData.TrailBuffer);//cannot contail external ParticleBuffer
+        computeShader_.Dispatch(kernelInitNode, vertexNum / 512 / 2, 1, 1);
 
         particleGen.syncUpdate = true;
     }
@@ -75,8 +77,8 @@ public class ITrailController : MonoBehaviour
 
     protected virtual void LateUpdate()
     {
-        var kernelAppendNode = computeShader.FindKernel("AppendNode");
-        var kernelVertex = computeShader.FindKernel("CreateVertex");
+        var kernelAppendNode = computeShader_.FindKernel("AppendNode");
+        var kernelVertex = computeShader_.FindKernel("CreateVertex");
 
         SetValueToShader();
 
@@ -88,12 +90,12 @@ public class ITrailController : MonoBehaviour
 
             SetBufferToShader(kernelAppendNode);
 
-            computeShader.Dispatch(kernelAppendNode, vertexNum / 512 / 2, 1, 1);
+            computeShader_.Dispatch(kernelAppendNode, vertexNum / 512 / 2, 1, 1);
 
             SetBufferToShader(kernelVertex);
             SetTextureToShader(kernelVertex);
 
-            computeShader.Dispatch(kernelVertex, vertexNum / 512 / 2, 1, 1);
+            computeShader_.Dispatch(kernelVertex, vertexNum / 512 / 2, 1, 1);
             totalFrame++;
         }
 
@@ -145,29 +147,29 @@ public class ITrailController : MonoBehaviour
             toCameraDir = -Camera.main.transform.forward;
         }
 
-        computeShader.SetFloat("_Time", Time.time);
-        computeShader.SetFloat("_DeltaTime", Time.deltaTime);
-        computeShader.SetFloat("_TrailWidth", width);
-        computeShader.SetFloat("_TLife", life);
-        computeShader.SetInt("_NodePerTrail", trailData.NodeNumPerTrail);
+        computeShader_.SetFloat("_Time", Time.time);
+        computeShader_.SetFloat("_DeltaTime", Time.deltaTime);
+        computeShader_.SetFloat("_TrailWidth", width);
+        computeShader_.SetFloat("_TLife", life);
+        computeShader_.SetInt("_NodePerTrail", trailData.NodeNumPerTrail);
 
-        computeShader.SetVector("_ToCameraDir", toCameraDir);
-        computeShader.SetVector("_CameraPos", Camera.main.transform.position);
-        computeShader.SetInt("_NodePerTrail", trailData.NodeNumPerTrail);
+        computeShader_.SetVector("_ToCameraDir", toCameraDir);
+        computeShader_.SetVector("_CameraPos", Camera.main.transform.position);
+        computeShader_.SetInt("_NodePerTrail", trailData.NodeNumPerTrail);
     }
 
     void SetBufferToShader(int kernelId)
     {
-        computeShader.SetBuffer(kernelId, "_ParticleBuffer", particleGen.particleBuffer);
-        computeShader.SetBuffer(kernelId, "_NodeBuffer", trailData.NodeBuffer);
-        computeShader.SetBuffer(kernelId, "_TrailBuffer", trailData.TrailBuffer);
-        computeShader.SetBuffer(kernelId, "_VertexBuffer", vertexBuffer);
+        computeShader_.SetBuffer(kernelId, "_ParticleBuffer", particleGen.particleBuffer);
+        computeShader_.SetBuffer(kernelId, "_NodeBuffer", trailData.NodeBuffer);
+        computeShader_.SetBuffer(kernelId, "_TrailBuffer", trailData.TrailBuffer);
+        computeShader_.SetBuffer(kernelId, "_VertexBuffer", vertexBuffer);
     }
 
     void SetTextureToShader(int kernelId)
     {
-        computeShader.SetTexture(kernelId, "_TWidthOverLifetime", bakedWidthOverLifetime);
-        computeShader.SetTexture(kernelId, "_TColorOverLifetime", bakedColorOverLifetime);
-        computeShader.SetTexture(kernelId, "_TCustomDataOverLifetime", bakedCustomDataOverLifetime);
+        computeShader_.SetTexture(kernelId, "_TWidthOverLifetime", bakedWidthOverLifetime);
+        computeShader_.SetTexture(kernelId, "_TColorOverLifetime", bakedColorOverLifetime);
+        computeShader_.SetTexture(kernelId, "_TCustomDataOverLifetime", bakedCustomDataOverLifetime);
     }
 }
