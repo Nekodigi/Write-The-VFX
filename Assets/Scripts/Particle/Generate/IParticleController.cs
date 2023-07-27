@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using UnityEditor;
 
 //VALUE NOT APPLIED IN INSPECTOR, PLEASE USE PROPERTY
+[ExecuteInEditMode]
 public class IParticleController : MonoBehaviour
 {
     public int burst;
@@ -90,6 +91,12 @@ public class IParticleController : MonoBehaviour
         kernelIndexInitialize = computeShader.FindKernel("Init");
         kernelIndexEmit = computeShader.FindKernel("Emit");
         kernelIndexUpdate = computeShader.FindKernel("Update");
+
+        if (fieldController != null)
+        {
+            BoundaryMin = fieldController.BoundaryMin;
+            BoundaryMax = fieldController.BoundaryMax;
+        }
 
         particleBuffer = new ComputeBuffer(maxCount, Marshal.SizeOf(typeof(Particle)));
         particles = new Particle[maxCount];
@@ -218,20 +225,26 @@ public class IParticleController : MonoBehaviour
 
     protected void SetTextureToShader(int kernelId)
     {
+        SetTextureToShader(kernelId, computeShader);
+    }
+
+
+    public void SetTextureToShader(int kernelId, ComputeShader cs)//make external call version
+    {
         Bake();
 
-        computeShader.SetTexture(kernelId, "_PCol", bakedCol);
-        computeShader.SetTexture(kernelId, "_PLife", bakedLife);
-        computeShader.SetTexture(kernelId, "_PWeight", bakedWeight);
+        cs.SetTexture(kernelId, "_PCol", bakedCol);
+        cs.SetTexture(kernelId, "_PLife", bakedLife);
+        cs.SetTexture(kernelId, "_PWeight", bakedWeight);
 
-        computeShader.SetTexture(kernelId, "_PVelOverLife", bakedVelOverLifetime);
-        computeShader.SetTexture(kernelId, "_PRotVelOverLife", bakedRotVelOverLifetime);
-        computeShader.SetTexture(kernelId, "_PSizeOverLife", bakedSizeOverLifetime);
-        computeShader.SetTexture(kernelId, "_PColOverLife", bakedColorOverLifetime);
-        computeShader.SetTexture(kernelId, "_PWeightOverLife", bakedWeightOverLifetime);
-        computeShader.SetTexture(kernelId, "_PCustomDataOverLife", bakedCustomDataOverLifetime);
-        computeShader.SetTexture(kernelId, "_PFieldOverLife", bakedFieldOverLifetime);
-        computeShader.SetTexture(kernelId, "_PDampOverLife", bakedDampDataOverLifetime);
+        cs.SetTexture(kernelId, "_PVelOverLife", bakedVelOverLifetime);
+        cs.SetTexture(kernelId, "_PRotVelOverLife", bakedRotVelOverLifetime);
+        cs.SetTexture(kernelId, "_PSizeOverLife", bakedSizeOverLifetime);
+        cs.SetTexture(kernelId, "_PColOverLife", bakedColorOverLifetime);
+        cs.SetTexture(kernelId, "_PWeightOverLife", bakedWeightOverLifetime);
+        cs.SetTexture(kernelId, "_PCustomDataOverLife", bakedCustomDataOverLifetime);
+        cs.SetTexture(kernelId, "_PFieldOverLife", bakedFieldOverLifetime);
+        cs.SetTexture(kernelId, "_PDampOverLife", bakedDampDataOverLifetime);
 
         if (fieldController != null)
         {

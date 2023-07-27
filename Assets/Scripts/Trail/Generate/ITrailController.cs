@@ -75,7 +75,7 @@ public class ITrailController : MonoBehaviour
     public GraphicsBuffer vertexBuffer;
 
 
-    protected virtual void LateUpdate()
+    protected virtual void Update()
     {
         var kernelAppendNode = computeShader_.FindKernel("AppendNode");
         var kernelVertex = computeShader_.FindKernel("CreateVertex");
@@ -104,12 +104,12 @@ public class ITrailController : MonoBehaviour
 
     private void OnEnable()
     {
-        EditorApplication.update += LateUpdate;
+        EditorApplication.update += Update;
     }
 
     private void OnDisable()
     {
-        EditorApplication.update -= LateUpdate;
+        EditorApplication.update -= Update;
     }
 
     protected void InitBufferIfNeed()

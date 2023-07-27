@@ -1,0 +1,17 @@
+#pragma kernel Update
+
+#include "Assets/Scripts/Particle/Particle.hlsl"
+
+[numthreads(16, 1, 1)]
+void Update(uint3 id : SV_DispatchThreadID)
+{
+    Particle p = _ParticleBuffer[id.x];
+    float rate = getRate(p);
+    _PosBuffer[id.x] = p.pos;
+    _VelBuffer[id.x] = p.vel;
+    _ColBuffer[id.x] = p.colDest;
+    _RotBuffer[id.x] = p.rot;
+    _SizeBuffer[id.x] = p.sizeDest;
+    _WeightsBuffer[id.x] = float3(p.weightDest, getFieldAt(rate), getDampAt(rate));//field temporary 0
+    _LifesBuffer[id.x] = float3(p.lifeTime, getAge(p), p.disable);
+}

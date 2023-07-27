@@ -8,8 +8,8 @@ public class VectorVisParticleController : MonoBehaviour
 {
     int width, height;
     public int maxCount;
-    Vector3 posMin;
-    Vector3 posMax;
+    Vector3 boundMin;
+    Vector3 boundMax;
     Vector4 vecMin;
     Vector4 vecMax;
     Vector2 interval;
@@ -27,14 +27,14 @@ public class VectorVisParticleController : MonoBehaviour
     RenderTexture target;
 
     //Set target RenderTexture as target.
-    public VectorVisParticleController(Vector2 interval, Vector3 posMin, Vector3 posMax, ComputeShader computeShader, Vector2 res)
+    public VectorVisParticleController(Vector2 interval, Vector3 boundMin, Vector3 boundMax, ComputeShader computeShader, Vector2 res)
     {
         width = Mathf.CeilToInt(res.x / interval.x);
         height = Mathf.CeilToInt(res.y / interval.y);
         this.maxCount = Mathf.CeilToInt(width / THREAD_NUM) * THREAD_NUM * Mathf.CeilToInt(height / THREAD_NUM) * THREAD_NUM ;
         this.interval = interval;
-        this.posMin = posMin;
-        this.posMax = posMax;
+        this.boundMin = boundMin;
+        this.boundMax = boundMax;
         
         this.computeShader = computeShader;
 
@@ -74,8 +74,8 @@ public class VectorVisParticleController : MonoBehaviour
     protected void SetValueToShader()
     {
         computeShader.SetVector("_Interval", interval);
-        computeShader.SetVector("_PosMin", posMin);
-        computeShader.SetVector("_PosMax", posMax);
+        computeShader.SetVector("_BoundMin", boundMin);
+        computeShader.SetVector("_BoundMax", boundMax);
         computeShader.SetVector("_VecMin", vecMin);
         computeShader.SetVector("_VecMax", vecMax);
         computeShader.SetFloat("_Time", Time.time);

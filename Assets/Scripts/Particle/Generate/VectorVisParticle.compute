@@ -19,10 +19,10 @@ void Init (uint3 id : SV_DispatchThreadID)
     float dy = 1/height;
     float x = id.x/width+0.5*dx;
     float y = id.y/height+0.5*dy;
-    float3 size = float3((_PosMax-_PosMin).xz/float2(width, height), 0);
+    float3 size = float3((_BoundMax-_BoundMin).xz/float2(width, height), 0);
     size.z = size.x*10;
     Particle p = (Particle)0;
-    p.pos = _PosMin+float3(x,0,y)*(_PosMax-_PosMin);
+    p.pos = _BoundMin+float3(x,0,y)*(_BoundMax-_BoundMin);
     //float3 vec = _SourceVec.SampleLevel(linearClampSampler, float2(x, y), 0).xyy;
     float3 vec = _Source.SampleLevel(linearClampSampler, float2(x, y), 0).xxx;
 
@@ -46,7 +46,7 @@ void Update (uint3 id : SV_DispatchThreadID)
     float dy = 1/height;
     float x = id.x/width+0.5*dx;
     float y = id.y/height+0.5*dy;
-    float3 size = float3((_PosMax-_PosMin).xz/float2(width, height), 0)*length(_Interval);
+    float3 size = float3((_BoundMax-_BoundMin).xz/float2(width, height), 0)*length(_Interval);
 
     float3 vec = _SourceVec[id.xy* _Interval.xy].xyy;
 
@@ -55,7 +55,7 @@ void Update (uint3 id : SV_DispatchThreadID)
     size.z = size.x*length(vec.xyz)*10;
     Particle p = (Particle)0;
     //p.pos = _PosMin+float3(x,0,y)*(_PosMax-_PosMin)* _Interval.xyy;
-    p.pos = lerp(_PosMin, _PosMax, float3(x, 0, y)* _Interval.xyy);
+    p.pos = lerp(_BoundMax, _BoundMin, float3(x, 0, y)* _Interval.xyy);
     //p.pos *= _Interval.xyy;
    
     vec.y = 0.000;

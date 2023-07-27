@@ -35,7 +35,7 @@ void Update(uint3 id : SV_DispatchThreadID)
     float3 curl =  simplexNoiseCurl3D(float4(p.pos/30, _Time/100));
     if(_UseField)curl = _SourceVec.SampleLevel(linearClampSampler, normPos(p).xz, 0).xyy;
     curl.y = 0;
-    p.pos += curl*10*_DeltaTime*geFieldAt(rate);
+    p.pos += curl*10*_DeltaTime*getFieldAt(rate);
 
     p = updateParticle(p, id);
 

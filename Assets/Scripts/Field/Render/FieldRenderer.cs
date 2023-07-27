@@ -27,7 +27,10 @@ public class FieldRenderer : MonoBehaviour
     void Start()
     {
         fieldController = GetComponent<IFieldController>();
-        vectorVisControler = new VectorVisParticleController(interval, renderer_.bounds.min, renderer_.bounds.max, computeShader, fieldController.resolution);
+        transform.localScale = -(fieldController.BoundaryMax - fieldController.BoundaryMin) / 10;
+        transform.localScale = new Vector3(transform.localScale.x, 1, transform.localScale.z);
+        vectorVisControler = new VectorVisParticleController(interval, renderer_.bounds.max, renderer_.bounds.min, computeShader, fieldController.resolution);
+        
     }
 
     // Update is called once per frame
