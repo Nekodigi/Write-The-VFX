@@ -5,8 +5,6 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class Noise : IFieldController
 {
-    public GameObject display;
-
     int kernelUpdate2;
 
     protected override void Awake()

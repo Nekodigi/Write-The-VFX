@@ -1,0 +1,23 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel Update
+#pragma kernel Init
+
+#include "Assets/Scripts/Field/Field.hlsl"
+#include "Assets/Scripts/Particle/Particle.hlsl"
+#include "Assets/Scripts/Value/ClassicPerlinNoise.cginc"
+#include "Assets/Scripts/Field/Function/Grad.hlsl"
+#include "Assets/Scripts/Utils/Time/Time.hlsl"
+
+[numthreads(8,8,1)]
+void Init (uint3 id : SV_DispatchThreadID){}
+
+[numthreads(8,8,1)]
+void Update (uint3 id : SV_DispatchThreadID)
+{
+    /*float width, height;
+    _SourceVec.GetDimensions(width, height);
+    _Dest[id.xy] = perlinNoise(float3(id.xy/float2(width, height)/_FScale, _Time/100.0*_FTrans))*0.5+0.5;*/
+
+     float2 grad = Grad(id.xy);
+    _DestVec[id.xy] = float2(grad.y, -grad.x)*_FMult;
+}

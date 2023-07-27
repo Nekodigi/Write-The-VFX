@@ -34,7 +34,7 @@ public class FieldRenderer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         switch (target)
         {

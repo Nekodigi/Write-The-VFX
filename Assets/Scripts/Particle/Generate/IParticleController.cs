@@ -156,12 +156,13 @@ public class IParticleController : MonoBehaviour
             additional += burst;
             lastBurst = Time.time;
         }
-        if (emitCount+additional > 0)
+        int total = (int)Mathf.Min(emitCount + additional, particleCount[0]);
+        if (total > 0)
         {
             SetBufferToShader(kernelIndexEmit);
             SetTextureToShader(kernelIndexEmit);
             
-            computeShader.Dispatch(kernelIndexEmit, (int)Mathf.Min(emitCount+additional, particleCount[0]), 1, 1);
+            computeShader.Dispatch(kernelIndexEmit, total, 1, 1);
         }
 
 

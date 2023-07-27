@@ -45,6 +45,7 @@ Shader "Field/VectorShader"
             {
                 // sample the texture
                 fixed4 col = (tex2D(_MainTex, i.uv)-_VecMin)/(_VecMax-_VecMin);
+                //fixed4 col = fixed4(0.3,0.3,0.3,1)+tex2D(_MainTex, i.uv)*100;
                 // apply fog
                 //UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
