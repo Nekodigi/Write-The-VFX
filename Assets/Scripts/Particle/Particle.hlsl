@@ -42,6 +42,14 @@ Texture2D<float4> _PDampOverLife;
 
 #ifndef SHADER
 RWStructuredBuffer<Particle>  _ParticleBuffer;
+RWStructuredBuffer<float3>  _PosBuffer;
+RWStructuredBuffer<float3>  _VelBuffer;
+RWStructuredBuffer<float4>  _ColBuffer;
+RWStructuredBuffer<float3>  _RotBuffer;
+RWStructuredBuffer<float3>  _SizeBuffer;
+RWStructuredBuffer<float3>  _WeightsBuffer;//weight, field, damp
+RWStructuredBuffer<float3>  _LifesBuffer;//life, age
+
 #else
 StructuredBuffer<Particle>  _ParticleBuffer;
 #endif
@@ -85,10 +93,10 @@ float4 getColAt(float rate){
 float4 getCustomDataAt(float rate){
     return _PCustomDataOverLife.SampleLevel(linearClampSampler, float2(rate, 0), 0);
 }
-float geFieldAt(float rate){
+float getFieldAt(float rate){
     return _PFieldOverLife.SampleLevel(linearClampSampler, float2(rate, 0), 0).x;
 }
-float geDampAt(float rate){
+float getDampAt(float rate){
     return _PDampOverLife.SampleLevel(linearClampSampler, float2(rate, 0), 0).x;
 }
 float getWeightAt(float rate){
@@ -137,7 +145,7 @@ Particle deleteParticle(int id){
 Particle updateParticle(Particle p, uint3 id){
     if(p.disable == 2)p.disable = 0;
     float rate = getRate(p);
-    p.vel *= (1-geDampAt(rate));
+    p.vel *= (1-getDampAt(rate));
 
     float3 vel = p.vel;
     vel += getVelAt(rate);
