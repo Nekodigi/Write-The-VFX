@@ -122,6 +122,6 @@ public class IFieldController : MonoBehaviour
 
     protected void SetBufferToShader(int kernelId)
     {
-        if(particleGen.particleBuffer != null) computeShader_.SetBuffer(kernelId, "_ParticleBuffer", particleGen.particleBuffer);
+        if(particleGen != null && particleGen.particleBuffer != null) computeShader_.SetBuffer(kernelId, "_ParticleBuffer", particleGen.particleBuffer);
     }
 }

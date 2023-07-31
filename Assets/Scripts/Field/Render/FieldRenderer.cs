@@ -34,7 +34,7 @@ public class FieldRenderer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         switch (target)
         {
@@ -51,10 +51,7 @@ public class FieldRenderer : MonoBehaviour
                 targetRT = fieldController.destVec;
                 break;
         }
-        Material mat = GetComponent<Renderer>().sharedMaterial;
-        mat.SetVector("_VecMin", VecMin);
-        mat.SetVector("_VecMax", VecMax);
-        mat.mainTexture = targetRT;
+        
 
         if (asVector)
         {
@@ -64,9 +61,14 @@ public class FieldRenderer : MonoBehaviour
 
             Graphics.DrawMeshInstancedProcedural(mesh, 0, material, new Bounds(Vector3.zero, Vector3.one * 10000), vectorVisControler.maxCount);
             //Debug.Log(vectorVisControler.maxCount);
+
         }
         else
         {
+            Material mat = GetComponent<Renderer>().sharedMaterial;
+            mat.SetVector("_VecMin", VecMin);
+            mat.SetVector("_VecMax", VecMax);
+            mat.mainTexture = targetRT;
             renderer_.enabled = true;
         }
         

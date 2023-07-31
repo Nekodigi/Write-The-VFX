@@ -110,6 +110,7 @@ float3 normPos(Particle p){
 
 Particle initParticle(int id_){
     uint3 id = uint3(id_,0,0);
+    float3 offset = 0;
     Particle p = _ParticleBuffer[id.x];
     if(_PosRange == 0){
         p.pos = randomBetween(id.xxx, _PosMin, _PosMax);
@@ -117,17 +118,17 @@ Particle initParticle(int id_){
         p.pos = randomSphere(id.xx, float3(0, 0, 0), _PosRange);
     }
     if(_VelRange == 0){
-        p.vel = randomBetween(id.xxx, _VelMin, _VelMax);
+        p.vel = randomBetween(id.xxx+offset, _VelMin, _VelMax);offset+=1.23;
     }else{
         p.vel = randomSphere(id.xx, float3(0, 0, 0), _VelRange);
     }
-    p.rot = randomBetween(id.xxx, float(0).xxx, float(2*PI).xxx);
-    p.rotVel = randomBetween(id.xxx, float(0).xxx, float(0.5).xxx);
-    p.size = randomBetween(id.xxx, _SizeMin, _SizeMax);
+    p.rot = randomBetween(id.xxx+offset, float(0).xxx, float(2*PI).xxx);offset+=1.23;
+    p.rotVel = randomBetween(id.xxx+offset, float(0).xxx, float(0.5).xxx);offset+=1.23;
+    p.size = randomBetween(id.xxx+offset, _SizeMin, _SizeMax);offset+=1.23;
     p.spawnTime = _Time;
-    p.lifeTime = _PLife.SampleLevel(linearClampSampler, random2(id.xx+0.01), 0).x;
-    p.weight = _PWeight.SampleLevel(linearClampSampler, random2(id.xx+0.01), 0).x;    
-    p.col = _PCol.SampleLevel(linearClampSampler, random2(id.xx), 0);
+    p.lifeTime = _PLife.SampleLevel(linearClampSampler, random2(id.xx+offset), 0).x;offset+=1.23;
+    p.weight = _PWeight.SampleLevel(linearClampSampler, random2(id.xx+offset), 0).x;    offset+=1.23;
+    p.col = _PCol.SampleLevel(linearClampSampler, random2(id.xx+offset), 0);offset+=1.23;
     p.disable = 2;
 
     p.pos += _PosOrigin;
