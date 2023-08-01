@@ -58,7 +58,6 @@ public class ITrailController : MonoBehaviour
         computeShader_ = Instantiate(computeShader);
         this.trailData = new TrailData(particleGen.maxCount, life, inputPerSec);
         vertexPerTrail = trailData.NodeNumPerTrail * 2;
-        Debug.Log(trailData.NodeNumPerTrail);
         vertexNum = trailData.TrailNum * vertexPerTrail;
         InitBufferIfNeed();
 
