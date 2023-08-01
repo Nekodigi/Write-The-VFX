@@ -102,8 +102,6 @@ public class TrailRender : MonoBehaviour
             matProps = PropertyBlock,
             worldBounds = bounds
         };
-
-        Debug.Log(argsBuffer);
         Graphics.RenderPrimitivesIndexedIndirect(renderParams, MeshTopology.Triangles, indexBuffer, argsBuffer);
 
         EditorApplication.QueuePlayerLoopUpdate();
