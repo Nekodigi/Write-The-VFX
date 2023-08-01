@@ -76,6 +76,8 @@ public class ITrailController : MonoBehaviour
 
     protected virtual void Update()
     {
+        if(trailData == null)return;
+
         var kernelAppendNode = computeShader_.FindKernel("AppendNode");
         var kernelVertex = computeShader_.FindKernel("CreateVertex");
 
