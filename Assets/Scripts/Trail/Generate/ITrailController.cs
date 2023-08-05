@@ -38,6 +38,8 @@ public class ITrailController : MonoBehaviour
     float totalFrame;
     public bool syncStart = false;
 
+    public IFieldController fieldController;
+
 
 
     protected virtual void Awake()
@@ -138,6 +140,7 @@ public class ITrailController : MonoBehaviour
     protected virtual void ReleaseBuffer()
     {
         vertexBuffer?.Release();
+
     }
 
     void SetValueToShader()
@@ -154,6 +157,8 @@ public class ITrailController : MonoBehaviour
         computeShader_.SetFloat("_TLife", life);
         computeShader_.SetInt("_NodePerTrail", trailData.NodeNumPerTrail);
 
+        computeShader_.SetVector("_BoundMax", particleGen.BoundaryMax);
+        computeShader_.SetVector("_BoundMin", particleGen.BoundaryMin);
         computeShader_.SetVector("_ToCameraDir", toCameraDir);
         computeShader_.SetVector("_CameraPos", Camera.main.transform.position);
         computeShader_.SetInt("_NodePerTrail", trailData.NodeNumPerTrail);
@@ -165,6 +170,16 @@ public class ITrailController : MonoBehaviour
         computeShader_.SetBuffer(kernelId, "_NodeBuffer", trailData.NodeBuffer);
         computeShader_.SetBuffer(kernelId, "_TrailBuffer", trailData.TrailBuffer);
         computeShader_.SetBuffer(kernelId, "_VertexBuffer", vertexBuffer);
+
+        if (fieldController != null)
+        {
+            computeShader_.SetTexture(kernelId, "_Source", fieldController.source);
+            computeShader_.SetTexture(kernelId, "_Dest", fieldController.dest);
+            computeShader_.SetTexture(kernelId, "_SourceVec", fieldController.sourceVec);
+            computeShader_.SetTexture(kernelId, "_DestVec", fieldController.destVec);
+            computeShader_.SetTexture(kernelId, "_SourceVec4", fieldController.sourceVec4);
+            computeShader_.SetTexture(kernelId, "_DestVec4", fieldController.destVec4);
+        }
     }
 
     void SetTextureToShader(int kernelId)

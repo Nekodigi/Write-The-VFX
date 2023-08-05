@@ -14,6 +14,8 @@ public class FieldToVFXGraph : MonoBehaviour
     readonly int boundMinProp = Shader.PropertyToID("boundMin");
     readonly int boundMaxProp = Shader.PropertyToID("boundMax");
 
+    public bool destToSource = true;
+
     IFieldController fieldController;
 
     private void Start()
@@ -31,7 +33,10 @@ public class FieldToVFXGraph : MonoBehaviour
 
     private void LateUpdate()
     {
-        Graphics.Blit(fieldController.dest, fieldController.source);
-        Graphics.Blit(fieldController.destVec, fieldController.sourceVec);
+        if (destToSource)
+        {
+            Graphics.Blit(fieldController.dest, fieldController.source);
+            Graphics.Blit(fieldController.destVec, fieldController.sourceVec);
+        }
     }
 }

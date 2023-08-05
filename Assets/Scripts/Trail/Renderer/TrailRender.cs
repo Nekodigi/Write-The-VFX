@@ -24,6 +24,8 @@ public class TrailRender : MonoBehaviour
     int IndexNumPerTrail;
     TrailData trailData;
 
+    public IFieldController fieldController;
+
     private void Awake()
     {
         trailController = GetComponent<ITrailController>();
