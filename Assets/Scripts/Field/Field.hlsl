@@ -5,8 +5,10 @@
 
 Texture2D<float> _Source;
 Texture2D<float2> _SourceVec;
+Texture2D<float4> _SourceVec4;
 RWTexture2D<float> _Dest;
 RWTexture2D<float2> _DestVec;
+Texture2D<float4> _DestVec4;
 
 float4 _VecMin;
 float4 _VecMax;

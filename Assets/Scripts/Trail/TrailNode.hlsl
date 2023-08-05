@@ -5,6 +5,8 @@
 #include "Assets/Scripts/Utils/Sampler/Sampler.hlsl"
 #include "Assets/Scripts/Utils/Camera/Camera.hlsl"
 #include "Assets/Scripts/Utils/Vertex/Vertex.hlsl"
+#include "Assets/Scripts/Field/Field.hlsl"
+
 
 struct Trail
 {

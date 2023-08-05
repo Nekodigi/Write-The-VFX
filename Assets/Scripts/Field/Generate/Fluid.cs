@@ -38,21 +38,22 @@ public class Fluid : IFieldController
     {
         //obstacle
         fluid.AddObstacles(obstaclePos, obstacleRadius);//Obstacles only need to be added once unless changed.
-                                                        //impluse
-        fluid.ApplyImpulse(fluid.m_temperatureTex, implusePos, impluseRadius, impulseTemperature);//temperature
-        fluid.ApplyImpulse(fluid.m_densityTex, implusePos, impluseRadius, new Vector4(1, 1, 1, impulseDensity));//density
 
+        Color c = Color.HSVToRGB((Time.realtimeSinceStartup / 10f) % 1, 1, 1) * impulseDensity;//color
         if (Input.GetMouseButton(0))
         {
-            Vector2 pos = Input.mousePosition / new Vector2(Camera.main.pixelHeight, Camera.main.pixelHeight);
+            Vector2 pos = Input.mousePosition / new Vector2(Camera.main.pixelWidth, Camera.main.pixelHeight);
+            //Vector2 pos = Input.mousePosition / new Vector2(Camera.main.pixelHeight, Camera.main.pixelHeight);
 
-            pos.x -= 1.0f*(Camera.main.pixelWidth - Camera.main.pixelHeight)/ Camera.main.pixelHeight/2.0f;
+            //pos.x -= 1.0f*(Camera.main.pixelWidth - Camera.main.pixelHeight)/ Camera.main.pixelHeight/2.0f;
+
+
             //pos.y -= fluid.m_rect.yMin;
 
             //pos.x /= fluid.m_rect.width;
             //pos.y /= fluid.m_rect.height;
 
-            Color c = Color.HSVToRGB((Time.realtimeSinceStartup / 3f) % 1, 1, 1) * impulseDensity;//color
+
             c.a = impulseDensity;//simulation density
             Vector4 velocity = new Vector4(Mathf.Cos(Time.realtimeSinceStartup) * 10000, Mathf.Sin(Time.realtimeSinceStartup) * 10000, 0, 0);
 
@@ -60,6 +61,10 @@ public class Fluid : IFieldController
 
             fluid.ApplyImpulse(fluid.m_velocityTex, pos, mouseImpluseRadius / 3, velocity);//add velocity
         }
+
+        //impluse
+        fluid.ApplyImpulse(fluid.m_temperatureTex, implusePos, impluseRadius, impulseTemperature);//temperature
+        fluid.ApplyImpulse(fluid.m_densityTex, implusePos, impluseRadius, c);//density //new Vector4(1, 1, 1, impulseDensity)
         //generate
         fluid.Generate();
 
@@ -67,6 +72,9 @@ public class Fluid : IFieldController
 
         Graphics.Blit(fluid.m_densityTex[1], source);
         Graphics.Blit(fluid.m_velocityTex[1], sourceVec);
+
+        Graphics.Blit(fluid.m_densityTex[1], sourceVec4);
+
 
     }
 }

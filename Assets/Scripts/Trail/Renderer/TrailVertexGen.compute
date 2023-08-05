@@ -42,6 +42,8 @@ void CreateVertex(uint3 id : SV_DispatchThreadID)
     //float rate = getRelativeRate(trailId, nodeId);
 
     v = updateVertex(v, trailId, nodeId, rateA);
+    v.col = _SourceVec4.SampleLevel(linearClampSampler, normPos(node).xz, 0);;
+    v.col.w = 1;
 
     float3 right = getNodeRight(trailId, nodeId, getWidth(rateA));
     addPairVertex(v, vertexId, right);

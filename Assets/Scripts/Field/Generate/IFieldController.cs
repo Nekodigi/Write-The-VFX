@@ -21,7 +21,7 @@ public class IFieldController : MonoBehaviour
     public ParticleGen particleGen;
 
     [HideInInspector]
-    public RenderTexture source, dest, sourceVec, destVec;
+    public RenderTexture source, dest, sourceVec, destVec, sourceVec4, destVec4;
 
     protected int kernelInit;
     protected int kernelUpdate;
@@ -52,6 +52,8 @@ public class IFieldController : MonoBehaviour
         dest = CreateRT();
         sourceVec = CreateRT();
         destVec = CreateRT();
+        sourceVec4 = CreateRT();
+        destVec4 = CreateRT();
 
         uint threadSizeX, threadSizeY, threadSizeZ;
         computeShader_.GetKernelThreadGroupSizes
@@ -118,6 +120,8 @@ public class IFieldController : MonoBehaviour
         computeShader_.SetTexture(kernelId, "_Dest", dest);
         computeShader_.SetTexture(kernelId, "_SourceVec", sourceVec);
         computeShader_.SetTexture(kernelId, "_DestVec", destVec);
+        computeShader_.SetTexture(kernelId, "_SourceVec", sourceVec4);
+        computeShader_.SetTexture(kernelId, "_DestVec", destVec4);
     }
 
     protected void SetBufferToShader(int kernelId)
