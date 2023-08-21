@@ -120,8 +120,8 @@ public class IFieldController : MonoBehaviour
         computeShader_.SetTexture(kernelId, "_Dest", dest);
         computeShader_.SetTexture(kernelId, "_SourceVec", sourceVec);
         computeShader_.SetTexture(kernelId, "_DestVec", destVec);
-        computeShader_.SetTexture(kernelId, "_SourceVec", sourceVec4);
-        computeShader_.SetTexture(kernelId, "_DestVec", destVec4);
+        computeShader_.SetTexture(kernelId, "_SourceVec4", sourceVec4);
+        computeShader_.SetTexture(kernelId, "_DestVec4", destVec4);
     }
 
     protected void SetBufferToShader(int kernelId)

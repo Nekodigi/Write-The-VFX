@@ -62,7 +62,7 @@ namespace ChatGPT {
             Debug.Log(reqJson);
             var headers = new Dictionary<string, string>
             {
-                {"Authorization", "Bearer " + APIKEY.CHATGPT_KEY},
+                //{"Authorization", "Bearer " + APIKEY.CHATGPT_KEY},
                 { "Content-type", "application/json"},
                 { "X-Slack-No-Retry", "1"}
             };

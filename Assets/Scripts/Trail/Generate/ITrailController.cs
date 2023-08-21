@@ -171,6 +171,15 @@ public class ITrailController : MonoBehaviour
         computeShader_.SetBuffer(kernelId, "_TrailBuffer", trailData.TrailBuffer);
         computeShader_.SetBuffer(kernelId, "_VertexBuffer", vertexBuffer);
 
+        
+    }
+
+    void SetTextureToShader(int kernelId)
+    {
+        computeShader_.SetTexture(kernelId, "_TWidthOverLifetime", bakedWidthOverLifetime);
+        computeShader_.SetTexture(kernelId, "_TColorOverLifetime", bakedColorOverLifetime);
+        computeShader_.SetTexture(kernelId, "_TCustomDataOverLifetime", bakedCustomDataOverLifetime);
+
         if (fieldController != null)
         {
             computeShader_.SetTexture(kernelId, "_Source", fieldController.source);
@@ -180,12 +189,5 @@ public class ITrailController : MonoBehaviour
             computeShader_.SetTexture(kernelId, "_SourceVec4", fieldController.sourceVec4);
             computeShader_.SetTexture(kernelId, "_DestVec4", fieldController.destVec4);
         }
-    }
-
-    void SetTextureToShader(int kernelId)
-    {
-        computeShader_.SetTexture(kernelId, "_TWidthOverLifetime", bakedWidthOverLifetime);
-        computeShader_.SetTexture(kernelId, "_TColorOverLifetime", bakedColorOverLifetime);
-        computeShader_.SetTexture(kernelId, "_TCustomDataOverLifetime", bakedCustomDataOverLifetime);
     }
 }
